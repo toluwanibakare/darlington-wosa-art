@@ -145,7 +145,7 @@ export function Hero() {
       skewX: -15,
       transition: {
         duration: 0.25,
-        ease: "easeInOut"
+        ease: [0.4, 0, 0.2, 1]
       }
     },
     visible: { 
@@ -160,7 +160,7 @@ export function Hero() {
         damping: 14
       }
     }
-  };
+  } as const;
 
   return (
     <section className="relative min-h-screen bg-brand-surface w-full flex flex-col items-center justify-center overflow-hidden pt-28">

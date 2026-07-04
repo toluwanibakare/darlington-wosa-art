@@ -70,13 +70,16 @@ export function Header() {
               >
                 <Link
                   href={item.href}
-                  className={`font-sans text-[11px] tracking-[0.2em] uppercase transition-colors duration-300 relative pb-1 ${
+                  className={`font-sans text-[11px] tracking-[0.2em] uppercase transition-colors duration-300 relative pb-1 group ${
                     isActive 
                       ? 'text-brand-black' 
                       : 'text-brand-gray hover:text-brand-black'
                   }`}
                 >
                   {item.label}
+                  {!isActive && (
+                    <span className="absolute -bottom-0.5 left-0 h-[2px] bg-brand-black/30 rounded-full w-0 group-hover:w-full transition-all duration-500 ease-[var(--ease-expo-out)]" />
+                  )}
                   {isActive && (
                     <motion.span
                       layoutId="nav-indicator"
