@@ -28,7 +28,7 @@ export function ContactCTA() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
-              Start Your Commission
+              Start Your Project
             </span>
             <h2 className="font-display text-text-h2 text-brand-black leading-tight mb-8">
               Ready to Create <br />

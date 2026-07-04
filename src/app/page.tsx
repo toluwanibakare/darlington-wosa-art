@@ -5,8 +5,9 @@ import { ArtistJourney } from '@/components/home/ArtistJourney';
 import { Services } from '@/components/home/Services';
 import { FramingProcess } from '@/components/home/FramingProcess';
 import { Exhibition } from '@/components/home/Exhibition';
+import { PromoBanner } from '@/components/home/PromoBanner';
 import { Testimonials } from '@/components/home/Testimonials';
-import { CommissionProcess } from '@/components/home/CommissionProcess';
+import { OrderProcess } from '@/components/home/OrderProcess';
 import { ContactCTA } from '@/components/home/ContactCTA';
 
 export default function Home() {
@@ -18,8 +19,9 @@ export default function Home() {
       <Services />
       <FramingProcess />
       <Exhibition />
+      <PromoBanner />
       <Testimonials />
-      <CommissionProcess />
+      <OrderProcess />
       <ContactCTA />
     </div>
   );

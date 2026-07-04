@@ -104,6 +104,19 @@ export function Services() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-16 text-center"
+        >
+          <Button variant="secondary">
+            View All Services
+            <ArrowRight size={14} className="ml-2 inline-block" />
+          </Button>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="mt-20 pt-16 border-t border-brand-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
         >

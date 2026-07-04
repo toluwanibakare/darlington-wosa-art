@@ -11,7 +11,7 @@ const STEPS = [
   },
   {
     step: '02',
-    title: 'Commission & Reference',
+    title: 'Order & Reference',
     description: 'You confirm the project and provide reference materials. I prepare a detailed quote with all specifications and estimated completion date.',
   },
   {
@@ -22,11 +22,11 @@ const STEPS = [
   {
     step: '04',
     title: 'Delivery & Installation',
-    description: 'Your finished artwork is professionally packed, delivered, and installed — whether it be a single portrait or a multi-piece corporate installation.',
+    description: 'Your finished artwork is professionally packed, delivered, and installed - whether it be a single portrait or a multi-piece corporate installation.',
   },
 ];
 
-export function CommissionProcess() {
+export function OrderProcess() {
   return (
     <section className="relative w-full bg-brand-surface py-32 md:py-40 px-6 overflow-hidden border-t border-brand-border">
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20" style={{ backgroundImage: 'var(--bg-noise)' }} />
@@ -47,7 +47,7 @@ export function CommissionProcess() {
             <span className="text-brand-gold italic">Masterpiece</span>
           </h2>
           <p className="font-sans text-brand-gray text-text-body max-w-xl">
-            Commissioning a custom artwork is a collaborative journey. 
+            Ordering a custom artwork is a collaborative journey. 
             Here is how we bring your vision to life, step by step.
           </p>
         </motion.div>

@@ -77,7 +77,7 @@ export function ArtistJourney() {
             className="space-y-6 text-brand-gray text-text-body"
           >
             <p>
-              I believe that art is more than just pigment on paper—it is the distillation of a moment, a memory, or an emotion. 
+              I believe that art is more than just pigment on paper-it is the distillation of a moment, a memory, or an emotion. 
               My journey began with a simple piece of charcoal and a relentless desire to capture the depth of the human spirit.
             </p>
             <p>
