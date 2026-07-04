@@ -1,0 +1,38 @@
+<svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="brushGold" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#9E651B" stop-opacity="0"/>
+      <stop offset="15%" stop-color="#9E651B" stop-opacity="1"/>
+      <stop offset="85%" stop-color="#C88D3D" stop-opacity="1"/>
+      <stop offset="100%" stop-color:#C88D3D" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Brush stroke path - organic, tapered stroke sweeping left to right -->
+  <path 
+    d="M -50,100 
+       C 100,50 200,150 300,100
+       C 400,50 500,150 600,100
+       C 700,50 800,150 900,100
+       C 1000,50 1100,150 1250,100
+       L 1250,250
+       C 1100,300 1000,200 900,250
+       C 800,300 700,200 600,250
+       C 500,300 400,200 300,250
+       C 200,300 100,200 0,250
+       C -100,200 -50,300 -50,250
+       Z"
+    fill="url(#brushGold)"
+  />
+  <!-- Accent highlight on top of stroke -->
+  <path 
+    d="M -50,90 
+       C 100,40 200,140 300,90
+       C 400,40 500,140 600,90
+       C 700,40 800,140 900,90
+       C 1000,40 1100,140 1250,90"
+    stroke="#F5E6C8"
+    stroke-width="3"
+    fill="none"
+    opacity="0.6"
+  />
+</svg>

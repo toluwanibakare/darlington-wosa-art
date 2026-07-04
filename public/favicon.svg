@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <filter id="white">
+      <feColorMatrix type="matrix" values="0 0 0 0 1
+                                            0 0 0 0 1
+                                            0 0 0 0 1
+                                            0 0 0 1 0"/>
+    </filter>
+  </defs>
+  <rect width="32" height="32" rx="5" fill="#111111"/>
+  <image href="/object_logo.png" x="3" y="3" width="26" height="26" filter="url(#white)"/>
+</svg>
