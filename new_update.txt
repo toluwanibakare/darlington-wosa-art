@@ -1,0 +1,354 @@
+# User Authentication & Customer Portal Specification
+
+## Customer Authentication
+
+Create a complete customer authentication system.
+
+Features:
+
+* Sign Up
+* Login
+* Forgot Password
+* Email Verification
+* Secure Password Reset
+* Remember Me
+* Social login (optional)
+
+Every customer should have a personal dashboard after signing in.
+
+---
+
+# Customer Profile
+
+Each customer profile should store:
+
+* Full Name
+* Email Address
+* Phone Number
+* Date of Birth
+* Delivery Address(es)
+* Profile Photo (optional)
+* Account Creation Date
+* Referral Code (generated automatically and unique)
+* Wallet/Coupon Balance
+* Reward Points (if applicable)
+
+The date of birth should be used to automatically send birthday wishes through SMS, WhatsApp, or email depending on the available notification service.
+
+The customer information should also be available for marketing campaigns, newsletters, promotions, product launches, discounts, and important announcements.
+
+Customers should be able to update their personal information from their dashboard.
+
+---
+
+# Customer Dashboard
+
+After login, customers should see a modern dashboard containing:
+
+## Dashboard Overview
+
+* Welcome message
+* Current orders
+* Completed orders
+* Pending payments
+* Referral earnings
+* Coupon balance
+* Cashback balance
+* Recent activity
+
+---
+
+# Booking System
+
+Customers should be able to book art classes directly from the website.
+
+Workflow:
+
+The customer clicks the "Book a Class" button from the homepage or navigation.
+
+They are shown all available classes, for example:
+
+* Single Session
+* Monthly Package
+* Beginner Workshop
+* Group Session
+* Private Class
+
+Each class displays:
+
+* Description
+* Duration
+* Price
+* Available seats
+* Instructor
+* Location (if physical)
+
+The customer clicks "Book Now."
+
+A live availability calendar opens.
+
+Only available dates and time slots should be selectable.
+
+After selecting a slot, the customer fills in:
+
+* Name
+* Phone Number
+* Email
+* Notes (optional)
+
+The customer proceeds to payment using Korapay.
+
+Once payment is successful:
+
+* Booking is confirmed automatically.
+* The selected time slot becomes unavailable.
+* Customer receives a confirmation page.
+* Customer receives confirmation via email.
+* Customer receives confirmation via SMS or WhatsApp if available.
+* Customer can add the event directly to Google Calendar or Apple Calendar.
+* Automatic reminders should be sent before the scheduled class.
+
+Customers can also view all their booked classes inside their dashboard.
+
+---
+
+# Referral System
+
+Every registered customer should automatically receive a unique referral code.
+
+Example:
+
+DWAF10382
+
+Customers can copy and share this code.
+
+During checkout or booking, new customers should have an optional Referral Code field.
+
+If the referral code is valid:
+
+* Link the new customer to the referrer.
+* Store the referral relationship permanently.
+
+Referral rewards should only be credited after successful payment.
+
+No reward should be given for unpaid or cancelled orders.
+
+The dashboard should display:
+
+* Referral Code
+* Number of referrals
+* Successful referrals
+* Pending referrals
+* Total referral earnings
+* Withdrawable rewards
+* Referral history
+
+Admin should be able to configure:
+
+* Reward amount
+* Percentage
+* Fixed bonus
+* Coupon reward
+* Cashback reward
+
+---
+
+# Coupon & Reward System
+
+Create a flexible coupon engine.
+
+Coupons may be issued through:
+
+* Referral rewards
+* Birthday rewards
+* Promotional campaigns
+* Manual admin rewards
+* Loyalty campaigns
+
+Coupons may include:
+
+* Percentage discount
+* Fixed discount
+* Free delivery
+* Free consultation
+* Free frame upgrade
+* Free artwork gift
+
+Each coupon should have:
+
+* Expiry date
+* Usage limit
+* Applicable products/services
+* Status
+
+Customers should be able to apply coupons during checkout.
+
+---
+
+# Cashback Wallet
+
+Every customer should have a reward wallet.
+
+Cashback can be earned through:
+
+* Successful referrals
+* Promotional campaigns
+* Video testimonials
+* Unboxing videos
+* Customer appreciation rewards
+
+Wallet balance should be visible inside the dashboard.
+
+Admin should choose whether cashback can be:
+
+* Withdrawn
+* Converted into coupons
+* Used for future purchases
+
+---
+
+# Video Reward Program
+
+Customers can submit:
+
+* Feedback videos
+* Unboxing videos
+* Installation videos
+* Testimonial videos
+
+Submission process:
+
+Upload video
+
+Select related order
+
+Write a short description
+
+Submit
+
+Admin reviews the submission.
+
+If approved:
+
+* Reward customer with cashback
+* Reward customer with coupon
+* Reward customer with gift
+* Notify customer automatically
+
+Rejected submissions should include a reason.
+
+---
+
+# Order Tracking
+
+Customers should always know the status of their order.
+
+Order timeline:
+
+Order Placed
+
+Payment Confirmed
+
+Design Review (if applicable)
+
+Production Started
+
+Framing in Progress
+
+Quality Check
+
+Ready for Pickup / Shipment
+
+Out for Delivery
+
+Delivered
+
+Completed
+
+Each status update should generate a notification.
+
+Customers should also see an estimated completion date.
+
+---
+
+# Notifications
+
+Customers should receive notifications for:
+
+* Account creation
+* Booking confirmation
+* Payment confirmation
+* Order status updates
+* Coupon rewards
+* Referral rewards
+* Cashback rewards
+* Birthday wishes
+* Promotions
+* Newsletter announcements
+* Class reminders
+
+Notifications should support:
+
+* Email
+* SMS
+* WhatsApp (future integration)
+
+---
+
+# Customer Order History
+
+Customers should be able to view:
+
+* Current orders
+* Previous orders
+* Invoice
+* Receipt
+* Payment history
+* Download invoice
+* Reorder previous artwork
+
+---
+
+if we can leave admin for now just focus on the users part first. 
+
+# Admin Management
+
+The admin dashboard should include:
+
+Customer Management
+
+Order Management
+
+Booking Management
+
+Coupon Management
+
+Referral Management
+
+Reward Management
+
+Wallet Management
+
+Video Submission Approval
+
+Birthday Campaign Management
+
+Newsletter Management
+
+Push Notification Management
+
+Marketing Campaigns
+
+Analytics Dashboard
+
+Revenue Reports
+
+Referral Reports
+
+Booking Reports
+
+Customer Growth Reports
+
+Coupon Usage Reports
+
+The system should be modular, scalable, mobile responsive, and built with a clean, modern UI while maintaining secure authentication, role based permissions, and optimized database relationships.

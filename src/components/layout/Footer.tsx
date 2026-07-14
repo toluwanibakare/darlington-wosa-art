@@ -1,5 +1,8 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Button, Logo } from '@/components/ui';
 import { MapPin, Phone, Mail, ArrowUpRight } from 'lucide-react';
 
@@ -18,6 +21,31 @@ const SERVICES_LINKS = [
 ];
 
 export function Footer() {
+  const pathname = usePathname();
+  const isDashboard = pathname.startsWith('/dashboard');
+
+  if (isDashboard) {
+    return (
+      <footer className="border-t border-brand-border bg-brand-surface transition-all duration-500 ease-[var(--ease-expo-out)]" style={{ marginLeft: '280px' }}>
+        <div className="px-6 md:px-10 py-6">
+          <div className="flex items-center justify-between gap-4 font-sans text-[10px] tracking-[0.15em] uppercase">
+            <p className="text-brand-gray/50">
+              &copy; {new Date().getFullYear()} Darlington Wosa Art & Frames Ltd.
+            </p>
+            <a
+              href="https://www.tmb.it.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-gold/50 hover:text-brand-gold transition-colors duration-300"
+            >
+              Built by <span className="font-medium">TMB</span>
+            </a>
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer className="relative w-full bg-brand-surface border-t border-brand-border">
       {/* Main Footer Content */}

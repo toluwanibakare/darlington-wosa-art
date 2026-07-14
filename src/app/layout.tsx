@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
 };
 
-import { Header } from "@/components/layout/Header";
+import { HeaderWrapper } from "@/components/layout/HeaderWrapper";
 import { Footer } from "@/components/layout/Footer";
 import { CharcoalDust } from "@/components/effects/CharcoalDust";
 import { LoadingScreen } from "@/components/effects/LoadingScreen";
@@ -44,7 +44,7 @@ export default function RootLayout({
       <body className="bg-brand-surface text-brand-black min-h-full flex flex-col font-sans">
         <LoadingScreen />
         <CharcoalDust />
-        <Header />
+        <HeaderWrapper />
         <main className="flex-1 flex flex-col w-full overflow-x-hidden">
           {children}
         </main>

@@ -37,8 +37,7 @@ export function VisionMission() {
               Our Vision
             </span>
             <p className="font-display text-2xl md:text-3xl text-brand-black leading-relaxed">
-              To be the most trusted name in premium African art and framing — 
-              a brand synonymous with excellence, integrity, and timeless beauty.
+              To be the ultimate name in hyper-realistic art and luxury framing, known for turning personal legacies into priceless masterpieces while setting the standard for elite art education.
             </p>
           </motion.div>
 
@@ -53,10 +52,23 @@ export function VisionMission() {
             <span className="font-sans text-[10px] tracking-[0.25em] uppercase text-brand-gold mb-6 block">
               Our Mission
             </span>
-            <p className="font-display text-2xl md:text-3xl text-brand-black leading-relaxed">
-              To transform memories into heirloom-quality artworks and provide 
-              museum-grade framing that preserves them for generations to come.
-            </p>
+            <ul className="space-y-6">
+              <li>
+                <p className="font-display text-xl md:text-2xl text-brand-black leading-relaxed">
+                  <span className="text-brand-gold">To Elevate Artistry:</span> We use hyper-realism to create timeless charcoal portraits that honor leaders and celebrate loved ones.
+                </p>
+              </li>
+              <li>
+                <p className="font-display text-xl md:text-2xl text-brand-black leading-relaxed">
+                  <span className="text-brand-gold">To Guarantee Luxury:</span> We deliver flawless quality, absolute reliability, and premium framing so that every piece looks extraordinary.
+                </p>
+              </li>
+              <li>
+                <p className="font-display text-xl md:text-2xl text-brand-black leading-relaxed">
+                  <span className="text-brand-gold">To Mentor Mastery:</span> We train the next generation of artists through clear, structured courses, proving that any skill can be mastered with the right guidance.
+                </p>
+              </li>
+            </ul>
           </motion.div>
         </div>
       </div>

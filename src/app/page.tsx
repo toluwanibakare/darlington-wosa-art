@@ -8,6 +8,7 @@ import { Exhibition } from '@/components/home/Exhibition';
 import { PromoBanner } from '@/components/home/PromoBanner';
 import { Testimonials } from '@/components/home/Testimonials';
 import { OrderProcess } from '@/components/home/OrderProcess';
+import { ClassesPreview } from '@/components/home/ClassesPreview';
 import { ContactCTA } from '@/components/home/ContactCTA';
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       <Exhibition />
       <PromoBanner />
       <Testimonials />
+      <ClassesPreview />
       <OrderProcess />
       <ContactCTA />
     </div>

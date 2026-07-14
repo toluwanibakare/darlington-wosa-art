@@ -66,21 +66,13 @@ export function FounderIntro() {
               className="space-y-5 text-brand-gray text-text-body"
             >
               <p>
-                My name is Darlington Wosa, and I have spent over six years mastering the art of 
-                pencil sketching, charcoal portraiture, and museum-grade framing. What began as 
-                a childhood fascination with lines and shadows has grown into a lifelong pursuit 
-                of artistic excellence.
+                True luxury lies in the details. As a self-taught portrait artist, custom framer, and art educator, I blend meticulous technical skill with an uncompromising commitment to premium presentation. My journey into fine art began in childhood, evolving through a lifelong dedication to the craft and a deep passion for hyper-realism.
               </p>
               <p>
-                Every piece I create is an exercise in patience and precision. I believe that a 
-                portrait is not merely a representation — it is a conversation between the artist, 
-                the subject, and the viewer. My hands are simply the instrument; the charcoal and 
-                graphite are the language.
+                Specializing primarily in hyper-realistic charcoal, alongside vibrant work in pastel and acrylic, my studio crafts timeless, priceless masterpieces for high-profile individuals and discerning collectors. These works are designed to honor leadership, celebrate milestones, and gift loved ones with a legacy that transcends generations. Every piece is handled with extreme attention to detail, paired with bespoke luxury framing solutions, and delivered with absolute reliability.
               </p>
               <p>
-                Today, from my studio in Rivers State, I serve private collectors, corporate 
-                clients, and interior designers who refuse to compromise on quality. My work 
-                hangs in boardrooms, luxury homes, and galleries across Nigeria.
+                Parallel to my studio practice, my mission is rooted in the belief that excellence is a learned discipline. As an active art educator and course creator, I provide the structured mentorship and devotion necessary for aspiring artists to scale up their skills. Driven by an unwavering pursuit of creativity and perfection, I don't just create art — I preserve moments, elevate spaces, and mentor the next generation of creative mastery.
               </p>
             </motion.div>
 

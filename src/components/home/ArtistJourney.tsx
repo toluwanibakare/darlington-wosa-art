@@ -3,9 +3,7 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
-
-const IMG_ARTIST = "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80";
-const IMG_HANDS = "https://images.unsplash.com/photo-1596548438137-d426f15e986a?auto=format&fit=crop&w=600&q=80";
+import artistSrc from '@/assets/artist.jpeg';
 
 export function ArtistJourney() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -25,16 +23,16 @@ export function ArtistJourney() {
         {/* Images Column */}
         <div className="relative h-[600px] md:h-[800px] w-full flex items-center justify-center">
           
-          {/* Main Artist / Studio Image */}
+          {/* Main Artist Image */}
           <motion.div 
             className="absolute left-0 top-10 w-[70%] h-[70%] overflow-hidden border border-brand-border bg-white shadow-[0_20px_60px_rgba(0,0,0,0.1)]"
             style={{ y: yArtistImg }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              src={IMG_ARTIST} 
-              alt="Darlington in the studio" 
-              className="w-full h-full object-cover filter contrast-110 saturate-50"
+              src={artistSrc.src} 
+              alt="Darlington Wosa - Portrait Artist & Custom Framer" 
+              className="w-full h-full object-cover"
             />
           </motion.div>
 
@@ -45,8 +43,8 @@ export function ArtistJourney() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              src={IMG_HANDS} 
-              alt="Hands sketching with charcoal" 
+              src={artistSrc.src} 
+              alt="Artist at work" 
               className="w-full h-full object-cover filter contrast-125 sepia-[0.2]"
             />
           </motion.div>
@@ -77,12 +75,13 @@ export function ArtistJourney() {
             className="space-y-6 text-brand-gray text-text-body"
           >
             <p>
-              I believe that art is more than just pigment on paper-it is the distillation of a moment, a memory, or an emotion. 
-              My journey began with a simple piece of charcoal and a relentless desire to capture the depth of the human spirit.
+              True luxury lies in the details. As a self-taught portrait artist, custom framer, and art educator, I blend meticulous technical skill with an uncompromising commitment to premium presentation. My journey into fine art began in childhood, evolving through a lifelong dedication to the craft and a deep passion for hyper-realism.
             </p>
             <p>
-              Today, from my studio in Rivers State, I meticulously craft each portrait and frame entirely by hand. 
-              Whether it’s a high-contrast pencil sketch or a towering corporate commission, I pour the same level of obsessive dedication into every piece.
+              Specializing primarily in hyper-realistic charcoal, alongside vibrant work in pastel and acrylic, my studio crafts timeless, priceless masterpieces for high-profile individuals and discerning collectors. These works are designed to honor leadership, celebrate milestones, and gift loved ones with a legacy that transcends generations. Every piece is handled with extreme attention to detail, paired with bespoke luxury framing solutions, and delivered with absolute reliability.
+            </p>
+            <p>
+              Parallel to my studio practice, my mission is rooted in the belief that excellence is a learned discipline. As an active art educator and course creator, I provide the structured mentorship and devotion necessary for aspiring artists to scale up their skills. Driven by an unwavering pursuit of creativity and perfection, I don't just create art — I preserve moments, elevate spaces, and mentor the next generation of creative mastery.
             </p>
             
             <div className="pt-8">
