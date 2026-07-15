@@ -10,28 +10,28 @@ const PORTFOLIO_ITEMS = [
     title: "The Visionary",
     category: "Charcoal Portrait",
     description: "A highly detailed charcoal portrait capturing intense emotion and depth.",
-    imageUrl: "https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?auto=format&fit=crop&w=800&q=80"
+    imageUrl: '/images/projects/393a2db0-c36d-4f6a-8dfd-0ded87b3743d.JPG'
   },
   {
     id: 2,
     title: "Corporate Excellence",
     category: "Pencil Sketch",
     description: "A refined pencil sketch commissioned for a corporate boardroom.",
-    imageUrl: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80"
+    imageUrl: '/images/projects/601b5547-6a1e-41fd-a757-8fae98b6d6c1.jpg'
   },
   {
     id: 3,
     title: "Eternal Bond",
     category: "Mixed Media",
     description: "A beautiful fusion of graphite and gold leaf detailing.",
-    imageUrl: "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?auto=format&fit=crop&w=800&q=80"
+    imageUrl: '/images/projects/ff27c515-de9c-4644-bc7f-96584864a96b.JPG'
   },
   {
     id: 4,
     title: "The Thinker",
     category: "Charcoal & Ink",
     description: "Deep shadows and sharp ink lines create a striking contrast.",
-    imageUrl: "https://images.unsplash.com/photo-1515405295579-ba7b45403062?auto=format&fit=crop&w=800&q=80"
+    imageUrl: '/images/projects/IMG_5029.JPG'
   }
 ];
 

@@ -30,10 +30,10 @@ export function DashboardHeader() {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 right-0 z-30 transition-all duration-500 ease-[var(--ease-expo-out)] ${
+        className={`fixed top-0 right-0 z-30 transition-all duration-500 ease-[var(--ease-expo-out)] lg:left-[280px] ${
           scrolled ? 'bg-brand-surface/80 backdrop-blur-xl shadow-sm' : 'bg-transparent'
         }`}
-        style={{ left: '280px' }}
+        style={{ left: '0px' }}
       >
         <div className="flex items-center justify-between h-20 px-8">
           {/* Search */}

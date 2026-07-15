@@ -12,9 +12,9 @@ export default function DashboardLayout({
       <DashboardSidebar />
       <DashboardHeader />
       <main
-        className="transition-all duration-500 ease-[var(--ease-expo-out)]"
+        className="transition-all duration-500 ease-[var(--ease-expo-out)] lg:ml-[280px]"
         style={{
-          marginLeft: '280px',
+          marginLeft: '0px',
           paddingTop: '80px',
         }}
       >

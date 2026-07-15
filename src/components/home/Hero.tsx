@@ -4,38 +4,18 @@ import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 /* ─────────────────────────────────────────────
-   Artwork images for the marquee.
+   Artwork images for the marquee — sourced from
+   the studio's own portfolio.
    ───────────────────────────────────────────── */
 
 const ARTWORK_IMAGES = [
-  {
-    src: 'https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?auto=format&fit=crop&w=500&q=80',
-    alt: 'Detailed charcoal portrait drawing',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=500&q=80',
-    alt: 'Artist paintbrushes and creative tools',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?auto=format&fit=crop&w=500&q=80',
-    alt: 'Mixed media artwork in progress',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=500&q=80',
-    alt: 'Oil painting with rich textures',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1515405295579-ba7b45403062?auto=format&fit=crop&w=500&q=80',
-    alt: 'Black and white pencil sketch portrait',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1578926375605-eaf7559b1458?auto=format&fit=crop&w=500&q=80',
-    alt: 'Hand drawing with graphite pencil',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1596548438137-d426f15e986a?auto=format&fit=crop&w=500&q=80',
-    alt: 'Charcoal and drawing materials on desk',
-  },
+  { src: '/images/projects/IMG_5028.JPG', alt: 'Charcoal portrait study' },
+  { src: '/images/projects/IMG_5030.JPG', alt: 'Graphite realism drawing' },
+  { src: '/images/projects/IMG_5032.JPG', alt: 'Commission portrait piece' },
+  { src: '/images/projects/IMG_5033.JPG', alt: 'Fine art pencil work' },
+  { src: '/images/projects/IMG_5035.JPG', alt: 'Portraiture in progress' },
+  { src: '/images/projects/IMG_5036.JPG', alt: 'Artist portfolio piece' },
+  { src: '/images/projects/IMG_5037.JPG', alt: 'Studio artwork collection' },
 ];
 
 /* ─────────────────────────────────────────────

@@ -11,6 +11,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const pathname = usePathname();
   const router = useRouter();
@@ -202,17 +203,85 @@ export function Header() {
 
           {/* Hamburger Menu Icon (Tablet & Mobile only) */}
           <button
-            className="md:hidden text-brand-black/70 p-2 cursor-pointer hover:text-brand-black transition-colors"
-            aria-label="Open menu"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden text-brand-black/70 p-2 cursor-pointer hover:text-brand-black transition-colors relative z-50"
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square">
-              <line x1="4" y1="7" x2="20" y2="7" />
-              <line x1="4" y1="12" x2="20" y2="12" />
-              <line x1="4" y1="17" x2="20" y2="17" />
-            </svg>
+            {mobileMenuOpen ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square">
+                <line x1="6" y1="6" x2="18" y2="18" />
+                <line x1="18" y1="6" x2="6" y2="18" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square">
+                <line x1="4" y1="7" x2="20" y2="7" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="17" x2="20" y2="17" />
+              </svg>
+            )}
           </button>
         </div>
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="md:hidden fixed inset-0 bg-black/40 z-40"
+            />
+            <motion.nav
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="md:hidden fixed top-0 right-0 bottom-0 w-[280px] z-40 bg-brand-surface border-l border-brand-border pt-28 px-8"
+            >
+              <div className="flex flex-col gap-1">
+                {[
+                  { label: 'Home', href: '/' },
+                  { label: 'About', href: '/about' },
+                  { label: 'Portfolio', href: '/portfolio' },
+                  { label: 'Services', href: '/services' },
+                  { label: 'Classes', href: '/classes' },
+                  { label: 'Contact', href: '/contact' },
+                ].map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={`font-sans text-sm tracking-[0.15em] uppercase py-3 px-4 rounded-[8px] transition-all duration-300 ${
+                        isActive
+                          ? 'bg-brand-black text-brand-white'
+                          : 'text-brand-black/70 hover:text-brand-black hover:bg-brand-border/30'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-brand-border">
+                <Link
+                  href="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full text-center px-6 py-3 rounded-full bg-brand-black text-brand-white font-sans text-xs tracking-[0.15em] uppercase hover:bg-brand-black/90 transition-colors"
+                >
+                  Get in Touch
+                </Link>
+              </div>
+            </motion.nav>
+          </>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

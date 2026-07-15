@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { ContactHero } from '@/components/contact/ContactHero';
 import { ContactForm } from '@/components/contact/ContactForm';
 import { ContactFAQ } from '@/components/contact/ContactFAQ';
@@ -9,7 +9,9 @@ export default function ContactPage() {
       <section className="relative w-full bg-brand-surface py-24 md:py-32 px-6 overflow-hidden">
         <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-5 gap-16 lg:gap-20">
           <div className="lg:col-span-3">
-            <ContactForm />
+            <Suspense fallback={<div className="h-[400px] animate-pulse bg-brand-border/30 rounded-[8px]" />}>
+              <ContactForm />
+            </Suspense>
           </div>
           <div className="lg:col-span-2">
             <ContactDetails />

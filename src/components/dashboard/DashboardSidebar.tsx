@@ -88,9 +88,9 @@ export function DashboardSidebar() {
                 style={{ width: collapsed ? '52px' : '72px', height: collapsed ? '52px' : '72px' }}
               />
               {!collapsed && (
-                <div className="min-w-0">
-                  <p className="font-display text-base text-brand-black leading-tight truncate">Darlington Wosa</p>
-                  <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/50 truncate">Art & Frames</p>
+                <div>
+                  <p className="font-display text-base text-brand-black leading-tight">Darlington Wosa</p>
+                  <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/50">Art & Frames</p>
                 </div>
               )}
             </Link>

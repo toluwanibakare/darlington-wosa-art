@@ -53,10 +53,12 @@ export function FramingProcess() {
             initial={{ scale: 1.15, rotateY: -20, rotateX: 10 }}
             animate={isInView ? { scale: 1, rotateY: -10, rotateX: 5 } : { scale: 1.15, rotateY: -20, rotateX: 10 }}
             transition={{ duration: 1.5, ease: easeExpoOut }}
-            className="relative w-64 h-[340px] bg-brand-surface flex items-center justify-center [transform-style:preserve-3d] shadow-[0_20px_60px_rgba(0,0,0,0.15)]"
+            className="relative w-56 sm:w-64 h-[300px] sm:h-[340px] bg-brand-surface flex items-center justify-center [transform-style:preserve-3d] shadow-[0_20px_60px_rgba(0,0,0,0.15)]"
           >
             {/* Inner Art Canvas */}
-            <div className="w-[90%] h-[92%] bg-brand-white shadow-[inset_0_4px_20px_rgba(0,0,0,0.05)] border border-brand-border" />
+            <div className="w-[90%] h-[92%] overflow-hidden bg-brand-white shadow-[inset_0_4px_20px_rgba(0,0,0,0.05)] border border-brand-border">
+              <img src="/images/projects/IMG_5037.JPG" alt="Framed artwork" className="w-full h-full object-cover" />
+            </div>
 
             {/* Frame Pieces attached directly to the canvas edges */}
             <motion.div

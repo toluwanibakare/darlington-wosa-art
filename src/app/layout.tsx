@@ -33,7 +33,7 @@ import { Footer } from "@/components/layout/Footer";
 import { CharcoalDust } from "@/components/effects/CharcoalDust";
 import { LoadingScreen } from "@/components/effects/LoadingScreen";
 import { ScrollToTop } from "@/components/effects/ScrollToTop";
-import { PaintbrushCursor } from "@/components/effects/PaintbrushCursor";
+import { StarPaintDust } from "@/components/effects/StarPaintDust";
 
 export default function RootLayout({
   children,
@@ -51,7 +51,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <ScrollToTop />
-        <PaintbrushCursor />
+        <StarPaintDust />
       </body>
     </html>
   );

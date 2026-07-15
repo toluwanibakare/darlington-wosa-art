@@ -26,7 +26,7 @@ export function Footer() {
 
   if (isDashboard) {
     return (
-      <footer className="border-t border-brand-border bg-brand-surface transition-all duration-500 ease-[var(--ease-expo-out)]" style={{ marginLeft: '280px' }}>
+      <footer className="border-t border-brand-border bg-brand-surface transition-all duration-500 ease-[var(--ease-expo-out)] lg:ml-[280px]" style={{ marginLeft: '0px' }}>
         <div className="px-6 md:px-10 py-6">
           <div className="flex items-center justify-between gap-4 font-sans text-[10px] tracking-[0.15em] uppercase">
             <p className="text-brand-gray/50">

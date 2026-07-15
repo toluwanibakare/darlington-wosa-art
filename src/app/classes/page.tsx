@@ -146,7 +146,7 @@ export default function ClassesPage() {
       {/* Tabs */}
       <section className="relative w-full bg-brand-surface px-6 pb-6">
         <div className="max-w-[1400px] mx-auto">
-          <div className="flex gap-1 p-1 border border-brand-border rounded-[10px] bg-brand-white/50 w-fit">
+          <div className="flex gap-1 p-1 border border-brand-border rounded-[10px] bg-brand-white/50 w-fit overflow-x-auto">
             {TABS.map((tab) => {
               const Icon = tab.icon;
               return (

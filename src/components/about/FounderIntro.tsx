@@ -4,9 +4,6 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Quote } from 'lucide-react';
 
-const STUDIO_IMAGE = "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80";
-const PORTRAIT_IMAGE = "https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?auto=format&fit=crop&w=600&q=80";
-
 export function FounderIntro() {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -30,14 +27,14 @@ export function FounderIntro() {
               style={{ y: yImage1 }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={STUDIO_IMAGE} alt="Darlington in studio" className="w-full h-full object-cover filter contrast-110 saturate-50" />
+              <img src="/images/artist_image.jpg" alt="Darlington in studio" className="w-full h-full object-cover filter contrast-110 saturate-50" />
             </motion.div>
             <motion.div
               className="absolute right-0 bottom-0 w-[55%] h-[60%] overflow-hidden border border-brand-border bg-white shadow-[0_20px_60px_rgba(0,0,0,0.15)] z-10"
               style={{ y: yImage2 }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={PORTRAIT_IMAGE} alt="Charcoal artwork detail" className="w-full h-full object-cover filter contrast-125 sepia-[0.15]" />
+              <img src="/images/projects/IMG_5032.JPG" alt="Charcoal artwork detail" className="w-full h-full object-cover filter contrast-125 sepia-[0.15]" />
             </motion.div>
           </div>
 

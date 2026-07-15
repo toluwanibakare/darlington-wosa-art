@@ -3,7 +3,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
-import artistSrc from '@/assets/artist.jpeg';
 
 export function ArtistJourney() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -30,7 +29,7 @@ export function ArtistJourney() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              src={artistSrc.src} 
+              src="/images/artist.jpeg" 
               alt="Darlington Wosa - Portrait Artist & Custom Framer" 
               className="w-full h-full object-cover"
             />
@@ -43,7 +42,7 @@ export function ArtistJourney() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              src={artistSrc.src} 
+              src="/images/artist.jpeg" 
               alt="Artist at work" 
               className="w-full h-full object-cover filter contrast-125 sepia-[0.2]"
             />
