@@ -110,7 +110,7 @@ export function Header() {
         </nav>
 
         {/* Mobile Active Page */}
-        <span className="md:hidden flex-1 text-center font-sans text-[13px] sm:text-sm tracking-[0.15em] uppercase text-brand-gold font-medium">
+        <span className="md:hidden flex-1 text-left pl-2 font-sans text-sm sm:text-base tracking-[0.15em] uppercase text-brand-gold font-medium">
           {activePage}
         </span>
 
