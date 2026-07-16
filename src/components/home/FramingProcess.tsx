@@ -57,7 +57,7 @@ export function FramingProcess() {
           >
             {/* Inner Art Canvas */}
             <div className="w-[90%] h-[92%] overflow-hidden bg-brand-white shadow-[inset_0_4px_20px_rgba(0,0,0,0.05)] border border-brand-border">
-              <img src="/images/projects/IMG_5037.JPG" alt="Framed artwork" className="w-full h-full object-cover" />
+              <img src="/images/projects/IMG_5030.JPG" alt="Framed artwork" className="w-full h-full object-cover" />
             </div>
 
             {/* Frame Pieces attached directly to the canvas edges */}

@@ -15,7 +15,7 @@ export function ScrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const radius = 20;
+  const radius = 14;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = useTransform(scrollYProgress, [0, 1], [circumference, 0]);
 
@@ -28,26 +28,26 @@ export function ScrollToTop() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.6, y: 20 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-24 right-8 z-50 w-14 h-14 rounded-full bg-white/40 backdrop-blur-lg border border-white/20 hover:border-brand-gold/50 shadow-lg hover:shadow-[0_0_30px_rgba(158,101,27,0.2)] flex items-center justify-center cursor-pointer group transition-all duration-500"
+          className="fixed bottom-6 right-5 sm:right-8 z-50 w-10 h-10 rounded-full bg-white/40 backdrop-blur-lg border border-white/20 hover:border-brand-gold/50 shadow-lg hover:shadow-[0_0_30px_rgba(158,101,27,0.2)] flex items-center justify-center cursor-pointer group transition-all duration-500"
           aria-label="Scroll to top"
         >
           {/* Progress Ring */}
           <svg
             className="absolute inset-0 w-full h-full -rotate-90"
-            viewBox="0 0 48 48"
+            viewBox="0 0 36 36"
             fill="none"
           >
             <circle
-              cx="24"
-              cy="24"
+              cx="18"
+              cy="18"
               r={radius}
               stroke="currentColor"
               strokeWidth="1.5"
               className="text-brand-border/50"
             />
             <motion.circle
-              cx="24"
-              cy="24"
+              cx="18"
+              cy="18"
               r={radius}
               stroke="currentColor"
               strokeWidth="2"
@@ -62,8 +62,8 @@ export function ScrollToTop() {
 
           {/* Arrow Icon */}
           <motion.svg
-            width="18"
-            height="18"
+            width="13"
+            height="13"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -78,7 +78,7 @@ export function ScrollToTop() {
           </motion.svg>
 
           {/* Label on hover */}
-          <span className="absolute -top-7 right-1/2 translate-x-1/2 font-sans text-[9px] tracking-[0.15em] uppercase text-brand-gold/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 whitespace-nowrap">
+          <span className="absolute -top-6 right-1/2 translate-x-1/2 font-sans text-[8px] tracking-[0.15em] uppercase text-brand-gold/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 whitespace-nowrap">
             Back to Top
           </span>
         </motion.button>

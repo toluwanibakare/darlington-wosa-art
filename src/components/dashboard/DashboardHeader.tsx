@@ -2,14 +2,28 @@
 
 import React from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
-import { Bell, User, Search } from 'lucide-react';
+import { Bell, User, Search, Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { NotificationsPanel } from './NotificationsPanel';
 
-export function DashboardHeader() {
+interface DashboardHeaderProps {
+  onToggleMenu: () => void;
+  mobileOpen: boolean;
+}
+
+export function DashboardHeader({ onToggleMenu, mobileOpen }: DashboardHeaderProps) {
   const [scrolled, setScrolled] = React.useState(false);
   const [notifOpen, setNotifOpen] = React.useState(false);
   const { scrollY } = useScroll();
+  const pathname = usePathname();
+
+  const pageTitle = (() => {
+    if (pathname === '/dashboard') return 'Dashboard';
+    const segment = pathname.split('/').filter(Boolean).pop();
+    if (!segment) return 'Dashboard';
+    return segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
+  })();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 20);
@@ -35,8 +49,20 @@ export function DashboardHeader() {
         }`}
         style={{ left: '0px' }}
       >
-        <div className="flex items-center justify-between h-20 px-8">
-          {/* Search */}
+        <div className="flex items-center justify-between h-20 px-4 md:px-8">
+          {/* Left: Menu toggle + Logo (mobile) */}
+          <div className="flex items-center gap-3 lg:hidden">
+            <button
+              onClick={onToggleMenu}
+              className="w-9 h-9 rounded-full border border-brand-border flex items-center justify-center hover:border-brand-gold/50 transition-colors cursor-pointer"
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            >
+              {mobileOpen ? <X size={16} className="text-brand-black" /> : <Menu size={16} className="text-brand-black" />}
+            </button>
+            <span className="font-sans text-sm tracking-[0.05em] text-brand-black font-medium">{pageTitle}</span>
+          </div>
+
+          {/* Search (desktop) */}
           <div className="hidden md:flex items-center gap-3 px-4 py-2 border border-brand-border rounded-full w-72 transition-colors focus-within:border-brand-gold/50">
             <Search size={14} className="text-brand-gray/50" />
             <input

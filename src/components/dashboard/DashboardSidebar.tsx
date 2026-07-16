@@ -12,12 +12,8 @@ import {
   Gift,
   Wallet,
   Ticket,
-  Video,
   LogOut,
   ChevronLeft,
-  Award,
-  Menu,
-  X,
   Home,
 } from 'lucide-react';
 
@@ -29,25 +25,19 @@ const NAV_ITEMS = [
   { label: 'Referrals', href: '/dashboard/referrals', icon: Gift },
   { label: 'Wallet', href: '/dashboard/wallet', icon: Wallet },
   { label: 'Rewards', href: '/dashboard/rewards', icon: Ticket },
-
 ];
 
-export function DashboardSidebar() {
+interface DashboardSidebarProps {
+  mobileOpen: boolean;
+  onClose: () => void;
+}
+
+export function DashboardSidebar({ mobileOpen, onClose }: DashboardSidebarProps) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <>
-      {/* Mobile toggle */}
-      <button
-        onClick={() => setMobileOpen(!mobileOpen)}
-        className="lg:hidden fixed top-24 left-6 z-50 w-10 h-10 rounded-full bg-brand-surface border border-brand-border flex items-center justify-center shadow-lg"
-        aria-label="Toggle menu"
-      >
-        {mobileOpen ? <X size={16} /> : <Menu size={16} />}
-      </button>
-
       {/* Mobile overlay */}
       <AnimatePresence>
         {mobileOpen && (
@@ -55,7 +45,7 @@ export function DashboardSidebar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setMobileOpen(false)}
+            onClick={onClose}
             className="lg:hidden fixed inset-0 bg-black/30 z-40"
           />
         )}
@@ -72,7 +62,7 @@ export function DashboardSidebar() {
         {/* Collapse toggle - desktop only */}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="hidden lg:flex absolute -right-3.5 top-20 w-7 h-7 rounded-full bg-brand-surface border border-brand-border items-center justify-center hover:border-brand-gold/50 hover:text-brand-gold text-brand-gray transition-colors cursor-pointer z-[60] shadow-sm"
+          className="max-lg:hidden absolute -right-3.5 top-20 w-7 h-7 rounded-full bg-brand-surface border border-brand-border items-center justify-center hover:border-brand-gold/50 hover:text-brand-gold text-brand-gray transition-colors cursor-pointer z-[60] shadow-sm hidden lg:flex"
         >
           <ChevronLeft size={14} className={`transition-transform duration-300 ${collapsed ? 'rotate-180' : ''}`} />
         </button>
@@ -121,7 +111,7 @@ export function DashboardSidebar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={() => setMobileOpen(false)}
+                  onClick={onClose}
                   className={`relative flex items-center rounded-[8px] transition-all duration-300 group ${
                     collapsed
                       ? 'justify-center py-2.5'

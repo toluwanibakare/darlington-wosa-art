@@ -19,12 +19,35 @@ const pinyonScript = Pinyon_Script({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://darlingtonwosaart.com"),
   title: "Darlington Wosa Art & Frames Ltd",
-  description: "Premium Art, Framing, and Creative Services",
+  description: "Premium Art, Framing, and Creative Services — Darlington Wosa Art & Frames Ltd, Rivers State, Nigeria. Custom portraiture, museum-grade framing, and art education since 2018.",
   icons: {
     icon: [
       { url: "/object_logo.png", type: "image/png" },
     ],
+  },
+  openGraph: {
+    title: "Darlington Wosa Art & Frames Ltd",
+    description: "Premium handcrafted portraiture, bespoke museum-grade framing, and art education by Darlington Wosa. Based in Rivers State, Nigeria.",
+    url: "https://darlingtonwosaart.com",
+    siteName: "Darlington Wosa Art & Frames Ltd",
+    locale: "en_NG",
+    type: "website",
+    images: [
+      {
+        url: "/object_logo.png",
+        width: 512,
+        height: 512,
+        alt: "Darlington Wosa Art & Frames Ltd",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Darlington Wosa Art & Frames Ltd",
+    description: "Premium handcrafted portraiture, bespoke museum-grade framing, and art education by Darlington Wosa.",
+    images: ["/object_logo.png"],
   },
 };
 

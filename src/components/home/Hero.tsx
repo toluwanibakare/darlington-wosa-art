@@ -151,7 +151,7 @@ export function Hero() {
         style={{
           backgroundImage: 'url("/charcoal_hero_bg.png")',
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: 'center 35%',
           transform: 'scaleX(1.12)', // Stretches the width by 12%
           transformOrigin: 'center center',
         }}
