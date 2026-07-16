@@ -17,10 +17,7 @@ export default function DashboardLayout({
       <DashboardHeader onToggleMenu={() => setMobileSidebarOpen(!mobileSidebarOpen)} mobileOpen={mobileSidebarOpen} />
       <main
         className="transition-all duration-500 ease-[var(--ease-expo-out)] lg:ml-[280px]"
-        style={{
-          marginLeft: '0px',
-          paddingTop: '80px',
-        }}
+        style={{ paddingTop: '80px' }}
       >
         <div className="min-h-screen">
           {children}

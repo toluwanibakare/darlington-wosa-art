@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -16,6 +16,7 @@ import {
   ChevronLeft,
   Home,
 } from 'lucide-react';
+import { useUser } from '@/lib/use-user';
 
 const NAV_ITEMS = [
   { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
@@ -34,7 +35,14 @@ interface DashboardSidebarProps {
 
 export function DashboardSidebar({ mobileOpen, onClose }: DashboardSidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, logout } = useUser();
   const [collapsed, setCollapsed] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
 
   return (
     <>
@@ -142,9 +150,9 @@ export function DashboardSidebar({ mobileOpen, onClose }: DashboardSidebarProps)
 
           {/* Sign out */}
           <div className={`mt-auto pt-4 border-t border-brand-border ${collapsed ? 'px-0' : 'px-3'}`}>
-            <Link
-              href="/"
-              className={`flex items-center rounded-[8px] text-brand-gray hover:text-brand-gold hover:bg-brand-border/30 transition-all duration-300 ${
+            <button
+              onClick={handleLogout}
+              className={`flex items-center rounded-[8px] text-brand-gray hover:text-brand-gold hover:bg-brand-border/30 transition-all duration-300 cursor-pointer w-full ${
                 collapsed
                   ? 'justify-center py-2.5 mx-2'
                   : 'gap-3 px-4 py-2.5'
@@ -154,7 +162,7 @@ export function DashboardSidebar({ mobileOpen, onClose }: DashboardSidebarProps)
               {!collapsed && (
                 <span className="font-sans text-[11px] tracking-[0.1em] uppercase">Sign Out</span>
               )}
-            </Link>
+            </button>
           </div>
         </div>
       </aside>

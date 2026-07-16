@@ -6,10 +6,12 @@ import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Logo } from '@/components/ui';
 import { User, LayoutDashboard, UserCircle, Gift, LogOut } from 'lucide-react';
+import { useUser } from '@/lib/use-user';
+import { api } from '@/lib/api';
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const { user, logout } = useUser();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -25,14 +27,6 @@ export function Header() {
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  React.useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('demo') === '1') {
-      setIsSignedIn(true);
-      window.history.replaceState({}, '', window.location.pathname);
-    }
   }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -55,6 +49,7 @@ export function Header() {
   };
 
   const activePage = navItems.find(item => isActiveCheck(item.href))?.label || '';
+  const isAuthPage = pathname === '/login' || pathname === '/signup';
 
   return (
     <>
@@ -71,8 +66,10 @@ export function Header() {
       <div 
         onClick={() => { if (mobileMenuOpen) setMobileMenuOpen(false); }}
         className={`pl-0 sm:pl-2 md:pl-10 pr-4 sm:pr-6 md:pr-10 h-16 sm:h-20 flex items-center justify-between transition-all duration-500 ease-[var(--ease-expo-out)] ${
-          scrolled 
+          scrolled && !mobileMenuOpen
             ? 'rounded-full bg-brand-surface/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.06)] border border-brand-border/10' 
+            : mobileMenuOpen
+            ? 'bg-transparent'
             : 'bg-brand-surface/30 md:bg-brand-surface/5'
         }`}
       >
@@ -85,7 +82,7 @@ export function Header() {
         </div>
 
         <nav className="hidden md:flex items-center justify-center gap-6 lg:gap-10 flex-1 mt-0.5">
-          {navItems.map((item) => {
+          {!isAuthPage && navItems.map((item) => {
             const isActive = isActiveCheck(item.href);
             return (
             <Link
@@ -110,7 +107,7 @@ export function Header() {
 
         {/* Mobile Active Page */}
         <span className={`md:hidden flex-1 text-left pl-2 font-sans text-sm sm:text-base tracking-[0.15em] uppercase text-brand-gold font-medium ${mobileMenuOpen ? 'invisible pointer-events-none' : ''}`}>
-          {activePage}
+          {isAuthPage ? (pathname === '/login' ? 'Sign In' : 'Sign Up') : activePage}
         </span>
 
         {/* Desktop Actions */}
@@ -136,7 +133,7 @@ export function Header() {
 
             <span className="inline-block h-4 w-[1px] bg-brand-border" />
 
-            {isSignedIn ? (
+            {user ? (
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -156,7 +153,7 @@ export function Header() {
                       className="absolute right-0 mt-3 w-48 bg-brand-surface border border-brand-border rounded-[10px] shadow-xl overflow-hidden z-50 py-1.5 font-sans"
                     >
                       <div className="px-4 py-2.5 border-b border-brand-border text-[10px] tracking-[0.15em] text-brand-gray/60 uppercase">
-                        Client Portal
+                        {user.name}
                       </div>
                       <Link href="/dashboard" className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-brand-black hover:bg-brand-gold/5 transition-colors" onClick={() => setDropdownOpen(false)}>
                         <LayoutDashboard size={13} className="text-brand-gold/70" />
@@ -170,7 +167,7 @@ export function Header() {
                         <Gift size={13} className="text-brand-gold/70" />
                         Referrals
                       </Link>
-                      <button onClick={() => { setIsSignedIn(false); setDropdownOpen(false); router.push('/'); }} className="w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-xs text-brand-gray hover:text-brand-gold hover:bg-brand-gold/5 transition-colors cursor-pointer border-t border-brand-border/50 mt-1 pt-2.5">
+                      <button onClick={async () => { await api.post('/logout', {}); logout(); setDropdownOpen(false); router.push('/'); }} className="w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-xs text-brand-gray hover:text-brand-gold hover:bg-brand-gold/5 transition-colors cursor-pointer border-t border-brand-border/50 mt-1 pt-2.5">
                         <LogOut size={13} />
                         Sign Out
                       </button>
@@ -178,10 +175,17 @@ export function Header() {
                   )}
                 </AnimatePresence>
               </div>
+            ) : isAuthPage ? (
+              <Link
+                href={pathname === '/login' ? '/signup' : '/login'}
+                className="px-6 py-2.5 rounded-full bg-brand-black text-brand-white font-sans text-[11px] tracking-[0.15em] uppercase hover:bg-brand-black/90 transition-all duration-300"
+              >
+                {pathname === '/login' ? 'Sign Up' : 'Sign In'}
+              </Link>
             ) : (
-              <button onClick={() => setIsSignedIn(true)} className="text-[11px] tracking-[0.15em] uppercase font-sans text-brand-gray hover:text-brand-black transition-colors cursor-pointer">
+              <Link href="/login" className="text-[11px] tracking-[0.15em] uppercase font-sans text-brand-gray hover:text-brand-black transition-colors">
                 Sign In
-              </button>
+              </Link>
             )}
           </motion.div>
         </div>
@@ -251,14 +255,15 @@ export function Header() {
               </div>
 
               <div className="mt-8 pt-6 border-t border-brand-border space-y-3">
-                {!isSignedIn ? (
+                {!user ? (
                   <>
-                    <button
-                      onClick={() => { setIsSignedIn(true); setMobileMenuOpen(false); }}
-                      className="w-full text-center px-6 py-3 rounded-full border border-brand-gold/30 text-brand-gold font-sans text-xs tracking-[0.15em] uppercase hover:bg-brand-gold/5 hover:border-brand-gold transition-colors cursor-pointer"
+                    <Link
+                      href="/login"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block w-full text-center px-6 py-3 rounded-full border border-brand-gold/30 text-brand-gold font-sans text-xs tracking-[0.15em] uppercase hover:bg-brand-gold/5 hover:border-brand-gold transition-colors"
                     >
                       Sign In
-                    </button>
+                    </Link>
                     <Link
                       href="/signup"
                       onClick={() => setMobileMenuOpen(false)}

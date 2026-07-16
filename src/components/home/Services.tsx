@@ -6,7 +6,7 @@ import {
   Palette, 
   Frame, 
   Building2, 
-  RefreshCw,
+  Camera,
   ArrowRight
 } from 'lucide-react';
 import { Button } from '@/components/ui';
@@ -31,10 +31,10 @@ const SERVICES = [
     features: ['Boardroom Portraits', 'Lobby Installations', 'Brand Storytelling', 'Art Consulting'],
   },
   {
-    icon: RefreshCw,
-    title: 'Restoration & Consultation',
-    description: 'Expert restoration of cherished artworks and professional guidance for collectors building their personal galleries.',
-    features: ['Art Restoration', 'Collection Curation', 'Appraisal Services', 'Gallery Setup'],
+    icon: Camera,
+    title: 'Creative Events & Workshops',
+    description: 'Live art performances, hands-on sketching workshops, and curated creative experiences for private events, corporate gatherings, and brand activations.',
+    features: ['Live Art Performances', 'Sketching Workshops', 'Event Branding', 'Private Parties'],
   },
 ];
 

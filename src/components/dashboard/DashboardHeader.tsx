@@ -6,6 +6,7 @@ import { Bell, User, Search, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { NotificationsPanel } from './NotificationsPanel';
+import { useUser } from '@/lib/use-user';
 
 interface DashboardHeaderProps {
   onToggleMenu: () => void;
@@ -17,6 +18,7 @@ export function DashboardHeader({ onToggleMenu, mobileOpen }: DashboardHeaderPro
   const [notifOpen, setNotifOpen] = React.useState(false);
   const { scrollY } = useScroll();
   const pathname = usePathname();
+  const { user } = useUser();
 
   const pageTitle = (() => {
     if (pathname === '/dashboard') return 'Dashboard';
@@ -44,10 +46,9 @@ export function DashboardHeader({ onToggleMenu, mobileOpen }: DashboardHeaderPro
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 right-0 z-30 transition-all duration-500 ease-[var(--ease-expo-out)] lg:left-[280px] ${
+        className={`fixed top-0 right-0 z-30 transition-all duration-500 ease-[var(--ease-expo-out)] left-0 lg:left-[280px] ${
           scrolled ? 'bg-brand-surface/80 backdrop-blur-xl shadow-sm' : 'bg-transparent'
         }`}
-        style={{ left: '0px' }}
       >
         <div className="flex items-center justify-between h-20 px-4 md:px-8">
           {/* Left: Menu toggle + Logo (mobile) */}
@@ -91,7 +92,7 @@ export function DashboardHeader({ onToggleMenu, mobileOpen }: DashboardHeaderPro
               <div className="w-7 h-7 rounded-full bg-brand-gold/10 flex items-center justify-center">
                 <User size={13} className="text-brand-gold" />
               </div>
-              <span className="font-sans text-xs text-brand-black hidden sm:block">Darlington</span>
+              <span className="font-sans text-xs text-brand-black hidden sm:block">{user?.name?.split(' ')[0] || 'User'}</span>
             </Link>
           </div>
         </div>

@@ -56,16 +56,9 @@ function GalleryGrid({
           exit={{ opacity: 0, y: -10, scale: 0.96 }}
           transition={{ duration: 0.6, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            aspectRatio:
-              item.width > item.height
-                ? '2 / 1'
-                : item.height > item.width
-                ? '1 / 2'
-                : '1 / 1',
+            aspectRatio: `${item.width} / ${item.height}`,
           }}
-          className={`max-sm:!aspect-[4/5] group relative overflow-hidden rounded-[8px] border border-brand-border bg-brand-white cursor-pointer ${
-            item.width > item.height ? 'sm:col-span-2' : ''
-          } ${item.height > item.width ? 'sm:row-span-2' : ''}`}
+          className={`group relative overflow-hidden rounded-[8px] border border-brand-border bg-brand-white cursor-pointer`}
           onClick={() => onOpen(item.id)}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -18,26 +18,6 @@ export default function SignUpPage() {
             </p>
           </div>
 
-          <div className="mb-6">
-            <Link
-              href="/?demo=1"
-              className="group relative w-full overflow-hidden flex items-center justify-center gap-3 px-6 py-3.5 rounded-full border border-brand-gold/30 text-brand-gold font-sans text-[11px] tracking-[0.2em] uppercase hover:border-brand-gold hover:bg-brand-gold/5 transition-all duration-500"
-            >
-              <span className="relative z-10 flex items-center gap-2">
-                Try Demo Account
-              </span>
-            </Link>
-          </div>
-
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-brand-border" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-brand-surface px-4 font-sans text-[10px] tracking-[0.15em] text-brand-gray/50">or</span>
-            </div>
-          </div>
-
           <div className="p-8 md:p-12 border border-brand-border rounded-[8px] bg-brand-white/50">
             <SignUpForm />
           </div>

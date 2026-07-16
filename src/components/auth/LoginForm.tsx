@@ -2,19 +2,42 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
+import { api } from '@/lib/api';
 
 export function LoginForm() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [form, setForm] = useState({ email: '', password: '' });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1500);
+
+    const res = await api.post('/login', {
+      email: form.email,
+      password: form.password,
+    });
+
+    setIsLoading(false);
+
+    if (res.error) {
+      setError(res.error);
+      return;
+    }
+
+    if (res.data) {
+      const data = res.data as { token: string; user: unknown };
+      localStorage.setItem('auth_token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      router.push('/dashboard');
+    }
   };
 
   return (
@@ -25,6 +48,12 @@ export function LoginForm() {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="space-y-8"
     >
+      {error && (
+        <div className="p-4 rounded-[6px] bg-red-50 border border-red-200">
+          <p className="font-sans text-xs text-red-600">{error}</p>
+        </div>
+      )}
+
       <div>
         <label htmlFor="email" className="font-sans text-[11px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-3">
           Email Address

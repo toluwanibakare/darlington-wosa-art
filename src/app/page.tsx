@@ -9,6 +9,7 @@ import { PromoBanner } from '@/components/home/PromoBanner';
 import { Testimonials } from '@/components/home/Testimonials';
 import { OrderProcess } from '@/components/home/OrderProcess';
 import { ClassesPreview } from '@/components/home/ClassesPreview';
+import { ReferralEarn } from '@/components/home/ReferralEarn';
 import { ContactCTA } from '@/components/home/ContactCTA';
 
 export default function Home() {
@@ -24,6 +25,7 @@ export default function Home() {
       <Testimonials />
       <ClassesPreview />
       <OrderProcess />
+      <ReferralEarn />
       <ContactCTA />
     </div>
   );

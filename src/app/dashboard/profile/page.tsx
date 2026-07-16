@@ -2,22 +2,33 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { Camera, Check, Loader2, MapPin, Calendar, Phone, Mail, User, Award } from 'lucide-react';
+import { useUser } from '@/lib/use-user';
 
 export default function ProfilePage() {
+  const { user, loading } = useUser();
+  const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   const [profile, setProfile] = useState({
-    fullName: 'Darlington Wosa',
-    email: 'darlington@example.com',
-    phone: '+234 813 774 4824',
-    dateOfBirth: '1990-06-15',
-    address: '42 Artisan Street, Port Harcourt',
-    city: 'Rivers State',
-    country: 'Nigeria',
-    bio: 'Art enthusiast and collector.',
+    fullName: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    dateOfBirth: '',
+    address: '',
+    city: '',
+    country: '',
+    bio: '',
   });
+
+  if (loading) return null;
+
+  if (!user) {
+    router.push('/login');
+    return null;
+  }
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();

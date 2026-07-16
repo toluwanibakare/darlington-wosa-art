@@ -34,7 +34,7 @@ export function FounderIntro() {
               style={{ y: yImage2 }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/projects/IMG_5032.JPG" alt="Charcoal artwork detail" className="w-full h-full object-cover filter contrast-125 sepia-[0.15]" />
+              <img src="/images/artist_image.jpg" alt="Darlington in studio" className="w-full h-full object-cover filter contrast-125 sepia-[0.15]" />
             </motion.div>
           </div>
 

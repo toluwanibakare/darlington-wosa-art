@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
   ShoppingBag,
   BookOpen,
@@ -18,6 +19,7 @@ import {
   DollarSign,
   Activity,
 } from 'lucide-react';
+import { useUser } from '@/lib/use-user';
 
 const STATS = [
   { label: 'Current Orders', value: '2', icon: ShoppingBag, color: 'text-brand-gold', bg: 'bg-brand-gold/5' },
@@ -50,6 +52,16 @@ const RECENT_ACTIVITY = [
 ];
 
 export default function DashboardOverview() {
+  const { user, loading } = useUser();
+  const router = useRouter();
+
+  if (loading) return null;
+
+  if (!user) {
+    router.push('/login');
+    return null;
+  }
+
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -61,7 +73,7 @@ export default function DashboardOverview() {
       {/* Welcome */}
       <motion.div {...fadeUp(0)} className="mb-12">
         <h1 className="font-display text-3xl md:text-4xl text-brand-black mb-2">
-          Welcome back, Darlington
+          Welcome back, {user.name}
         </h1>
         <p className="font-sans text-sm text-brand-gray">
           Here&apos;s what&apos;s happening with your account today.

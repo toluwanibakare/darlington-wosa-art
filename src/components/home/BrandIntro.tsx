@@ -188,7 +188,7 @@ export function BrandIntro() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {STATS.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -196,8 +196,9 @@ export function BrandIntro() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-center md:text-left"
             >
-              <span className="font-display text-4xl md:text-5xl lg:text-6xl text-brand-gold mb-4 block">
+              <span className="font-display text-4xl md:text-5xl lg:text-6xl text-brand-gold mb-3 block">
                 {stat.value}
               </span>
               <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gray/80">
