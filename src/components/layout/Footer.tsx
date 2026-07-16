@@ -1,10 +1,11 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button, Logo } from '@/components/ui';
-import { MapPin, Phone, Mail, ArrowUpRight } from 'lucide-react';
+import { MapPin, Phone, Mail, ArrowUpRight, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { api } from '@/lib/api';
 
 const QUICK_LINKS = [
   { label: 'About', href: '/about' },
@@ -23,6 +24,25 @@ const SERVICES_LINKS = [
 export function Footer() {
   const pathname = usePathname();
   const isDashboard = pathname.startsWith('/dashboard');
+  const [email, setEmail] = useState('');
+  const [subStatus, setSubStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [subMessage, setSubMessage] = useState('');
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setSubStatus('loading');
+    const { data, error } = await api.post<{ message: string }>('/newsletter/subscribe', { email });
+    if (data) {
+      setSubStatus('success');
+      setSubMessage(data.message || 'Subscribed successfully');
+      setEmail('');
+    } else {
+      setSubStatus('error');
+      setSubMessage(error || 'Something went wrong');
+    }
+    setTimeout(() => { setSubStatus('idle'); setSubMessage(''); }, 4000);
+  };
 
   if (isDashboard) {
     return (
@@ -128,16 +148,32 @@ export function Footer() {
             <p className="font-sans text-sm text-brand-gray mb-6 leading-relaxed">
               Receive updates on new works, exhibitions, and exclusive commission opportunities.
             </p>
-            <div className="flex flex-col gap-3">
+            <form onSubmit={handleSubscribe} className="flex flex-col gap-3">
               <input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
+                required
                 className="w-full bg-transparent border-b border-brand-border pb-2 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans"
               />
-              <Button variant="text" className="text-xs !p-0 !justify-start">
-                Subscribe
+              {subMessage && (
+                <p className={`font-sans text-[10px] flex items-center gap-1.5 ${subStatus === 'success' ? 'text-green-600' : 'text-red-500'}`}>
+                  {subStatus === 'success' ? <CheckCircle size={10} /> : <AlertCircle size={10} />}
+                  {subMessage}
+                </p>
+              )}
+              <Button
+                type="submit"
+                variant="text"
+                disabled={subStatus === 'loading'}
+                className="text-xs !p-0 !justify-start"
+              >
+                {subStatus === 'loading' ? (
+                  <span className="flex items-center gap-2"><Loader2 size={11} className="animate-spin" />Subscribing</span>
+                ) : 'Subscribe'}
               </Button>
-            </div>
+            </form>
           </div>
         </div>
 
