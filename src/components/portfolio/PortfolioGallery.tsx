@@ -190,7 +190,16 @@ function Lightbox({
       >
         {/* Media */}
         <div className="relative w-full lg:w-auto max-w-[70vw] max-h-[70vh] flex items-center justify-center">
-          {item.type === 'video' && item.videoEmbed ? (
+          {item.type === 'video' && item.videoSrc ? (
+            <div className="relative w-full max-w-[800px] aspect-video">
+              <video
+                src={item.videoSrc}
+                controls
+                className="w-full h-full rounded-[8px] bg-black"
+                playsInline
+              />
+            </div>
+          ) : item.type === 'video' && item.videoEmbed ? (
             <div className="relative w-full max-w-[800px] aspect-video">
               <iframe
                 src={item.videoEmbed}

@@ -76,9 +76,8 @@ export function Header() {
             : 'bg-brand-surface/30 md:bg-brand-surface/5'
         }`}
       >
-
         {/* Desktop Logo */}
-        <div className="flex-1 flex justify-start">
+        <div className={`flex-1 flex justify-start ${mobileMenuOpen ? 'max-md:invisible max-md:pointer-events-none' : ''}`}>
           <Link href="/" className="transition-transform duration-300 hover:scale-105 active:scale-95 flex items-center shrink-0 mt-1 sm:mt-0.5">
             <Logo height={80} className="hidden md:block origin-left transition-transform duration-300" />
             <Logo height={52} className="md:hidden origin-left transition-transform duration-300" />
@@ -110,7 +109,7 @@ export function Header() {
         </nav>
 
         {/* Mobile Active Page */}
-        <span className="md:hidden flex-1 text-left pl-2 font-sans text-sm sm:text-base tracking-[0.15em] uppercase text-brand-gold font-medium">
+        <span className={`md:hidden flex-1 text-left pl-2 font-sans text-sm sm:text-base tracking-[0.15em] uppercase text-brand-gold font-medium ${mobileMenuOpen ? 'invisible pointer-events-none' : ''}`}>
           {activePage}
         </span>
 
@@ -226,9 +225,9 @@ export function Header() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="md:hidden fixed top-0 right-0 bottom-0 w-[75vw] sm:w-[280px] z-[150] bg-brand-surface border-l border-brand-border pt-36 px-6 sm:px-8"
-              onClick={(e) => e.stopPropagation()}>
-              <div className="flex flex-col gap-1">
+               className="md:hidden fixed top-0 right-0 bottom-0 w-[75vw] sm:w-[280px] z-[150] bg-brand-surface border-l border-brand-border px-6 sm:px-8 overflow-y-auto"
+               onClick={(e) => e.stopPropagation()}>
+               <div className="flex flex-col gap-1 pt-20">
                 {[...navItems, { label: 'Contact', href: '/contact' }].map((item) => {
                   const active = isActiveCheck(item.href);
                   return (
@@ -277,14 +276,7 @@ export function Header() {
                     Dashboard
                   </Link>
                 )}
-                <Link
-                  href="/contact"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full text-center px-6 py-3 rounded-full bg-brand-gold/10 text-brand-gold font-sans text-xs tracking-[0.15em] uppercase hover:bg-brand-gold/20 transition-colors border border-brand-gold/20"
-                >
-                  Get in Touch
-                </Link>
-              </div>
+                </div>
             </motion.nav>
           </>
         )}

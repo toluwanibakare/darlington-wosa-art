@@ -16,6 +16,7 @@ export interface PortfolioItem {
   year?: string;
   medium?: string;
   videoEmbed?: string;
+  videoSrc?: string;
 }
 
 const IMG = '/images/projects';
@@ -158,24 +159,24 @@ export const PORTFOLIO_DATA: PortfolioItem[] = [
     title: "The Framing Process",
     category: "Videos",
     type: "video",
-    src: "",
+    src: "/images/videos/3c754ef3-b76b-4b8f-a1ad-1c28a387c26e.MP4",
     thumb: `${IMG}/IMG_5032.JPG`,
     width: 1200, height: 800,
     description: "Watch a time-lapse of a museum-grade frame being handcrafted from raw wood to finished piece.",
     year: "2024",
-    videoEmbed: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    videoSrc: "/images/videos/3c754ef3-b76b-4b8f-a1ad-1c28a387c26e.MP4"
   },
   {
     id: 14,
     title: "Portrait in Progress",
     category: "Videos",
     type: "video",
-    src: "",
+    src: "/images/videos/3c754ef3-b76b-4b8f-a1ad-1c28a387c26e.MP4",
     thumb: `${IMG}/IMG_5036.JPG`,
     width: 1200, height: 1500,
     description: "A real-time recording of a charcoal portrait from blank paper to finished artwork.",
     year: "2024",
-    videoEmbed: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    videoSrc: "/images/videos/3c754ef3-b76b-4b8f-a1ad-1c28a387c26e.MP4"
   },
 ];
 

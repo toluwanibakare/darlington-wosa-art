@@ -11,6 +11,7 @@ import {
   Building2, 
   LayoutDashboard, 
   Palette,
+  Camera,
   ArrowRight,
   Check
 } from 'lucide-react';
@@ -71,6 +72,14 @@ const SERVICES_LIST = [
     description: 'Have a creative project that defies categorization? I take on selected custom design collaborations — from book illustrations and album art to product design and branded content — bringing an artist\'s sensibility to every medium.',
     suited: ['Book illustration', 'Album & branding art', 'Product design', 'Creative direction'],
     price: 'Varies by project',
+  },
+  {
+    icon: Camera,
+    title: 'Creative Events & Workshops',
+    tagline: 'Live art experiences that inspire and connect.',
+    description: 'From live portrait sessions at corporate events to hands-on art workshops for teams and communities, I bring the creative process directly to your audience. Guests watch portraits come to life in real time, or pick up a pencil and create alongside me. Every event is a memorable, interactive experience.',
+    suited: ['Corporate galas & launches', 'Team-building workshops', 'Private parties & receptions', 'Art exhibitions & pop-ups'],
+    price: 'Starts at ₦250,000',
   },
 ];
 
