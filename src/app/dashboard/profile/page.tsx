@@ -1,21 +1,22 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { Camera, Check, Loader2, MapPin, Calendar, Phone, Mail, User, Award } from 'lucide-react';
+import { Camera, Check, Loader2, User, Award } from 'lucide-react';
 import { useUser } from '@/lib/use-user';
+import { api } from '@/lib/api';
 
 export default function ProfilePage() {
-  const { user, loading } = useUser();
+  const { user, loading: userLoading, refreshUser } = useUser();
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   const [profile, setProfile] = useState({
-    fullName: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
+    fullName: '',
+    email: '',
+    phone: '',
     dateOfBirth: '',
     address: '',
     city: '',
@@ -23,21 +24,48 @@ export default function ProfilePage() {
     bio: '',
   });
 
-  if (loading) return null;
+  useEffect(() => {
+    if (user) {
+      setProfile({
+        fullName: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        dateOfBirth: user.date_of_birth || '',
+        address: user.address || '',
+        city: user.city || '',
+        country: user.country || '',
+        bio: user.bio || '',
+      });
+    }
+  }, [user]);
+
+  if (userLoading) return null;
 
   if (!user) {
     router.push('/login');
     return null;
   }
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    setTimeout(() => {
-      setIsSaving(false);
+    setSaved(false);
+    const { error } = await api.put('/profile', {
+      name: profile.fullName,
+      email: profile.email,
+      phone: profile.phone,
+      date_of_birth: profile.dateOfBirth,
+      address: profile.address,
+      city: profile.city,
+      country: profile.country,
+      bio: profile.bio,
+    });
+    setIsSaving(false);
+    if (!error) {
       setSaved(true);
+      refreshUser();
       setTimeout(() => setSaved(false), 3000);
-    }, 1000);
+    }
   };
 
   const inputClass = "w-full bg-transparent border-b border-brand-border pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans";
@@ -54,7 +82,6 @@ export default function ProfilePage() {
         <p className="font-sans text-sm text-brand-gray mb-10">Manage your personal information and preferences.</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* Avatar Section */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -68,18 +95,17 @@ export default function ProfilePage() {
                 </div>
               </div>
               <p className="font-display text-lg text-brand-black">{profile.fullName}</p>
-              <p className="font-sans text-xs text-brand-gray/60 mt-1">Member since 2024</p>
+              <p className="font-sans text-xs text-brand-gray/60 mt-1">{user.role || 'Member'}</p>
 
               <div className="mt-6 pt-6 border-t border-brand-border">
                 <div className="flex items-center justify-center gap-2 text-brand-gold">
                   <Award size={14} />
-                  <span className="font-sans text-[10px] tracking-[0.15em] uppercase">Referral Code: DWAF10382</span>
+                  <span className="font-sans text-[10px] tracking-[0.15em] uppercase">Referral Code: {user.referral_code}</span>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Profile Form */}
           <div className="lg:col-span-2">
             <motion.form
               onSubmit={handleSave}

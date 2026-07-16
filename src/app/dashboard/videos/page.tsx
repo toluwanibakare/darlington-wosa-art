@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Video,
@@ -10,9 +10,9 @@ import {
   Clock,
   Loader2,
   Film,
-  Award,
   DollarSign,
 } from 'lucide-react';
+import { api } from '@/lib/api';
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 20 },
@@ -20,18 +20,22 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] as const },
 });
 
-const VIDEO_STATS = [
-  { label: 'Submitted', value: '3', icon: Upload, color: 'text-brand-gold', bg: 'bg-brand-gold/5' },
-  { label: 'Approved', value: '2', icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-500/5' },
-  { label: 'Pending Review', value: '1', icon: Clock, color: 'text-amber-600', bg: 'bg-amber-500/5' },
-  { label: 'Total Earned', value: '₦3,500', icon: DollarSign, color: 'text-brand-gold', bg: 'bg-brand-gold/5' },
-];
+const formatCurrency = (amount: number) => `₦${amount.toLocaleString()}`;
 
-const SUBMISSIONS = [
-  { title: 'Unboxing - "The Visionary"', order: '#DWAF-2024-001', date: 'Mar 10, 2026', status: 'approved', reward: '₦2,000', type: 'Cashback' },
-  { title: 'Studio Tour & Testimonial', order: '#DWAF-2024-002', date: 'Feb 28, 2026', status: 'approved', reward: '₦1,500', type: 'Cashback' },
-  { title: 'Installation at Office Space', order: '#DWAF-2024-003', date: 'Mar 15, 2026', status: 'pending', reward: '—', type: 'Pending' },
-];
+const formatDate = (dateStr: string) => {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+};
+
+interface VideoSubmission {
+  id: number;
+  title: string;
+  order_id: string;
+  description: string;
+  status: string;
+  reward_amount: number;
+  created_at: string;
+}
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ElementType }> = {
   approved: { label: 'Approved', color: 'bg-green-500/10 text-green-600', icon: CheckCircle },
@@ -44,20 +48,59 @@ export default function VideoRewardsPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [form, setForm] = useState({ orderId: '', description: '' });
+  const [loading, setLoading] = useState(true);
+  const [videos, setVideos] = useState<VideoSubmission[]>([]);
+
+  const fetchVideos = async () => {
+    const res = await api.get<{ videos: VideoSubmission[] }>('/videos');
+    if (res.data) setVideos(res.data.videos || []);
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchVideos(); }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) setSelectedFile(file);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsUploading(true);
-    setTimeout(() => {
-      setIsUploading(false);
+
+    const res = await api.post('/videos', {
+      order_id: form.orderId,
+      description: form.description,
+    });
+
+    setIsUploading(false);
+    if (!res.error) {
       setIsSubmitted(true);
-    }, 2000);
+      fetchVideos();
+    }
   };
+
+  const submittedCount = videos.length;
+  const approvedCount = videos.filter((v) => v.status === 'approved').length;
+  const pendingCount = videos.filter((v) => v.status === 'pending').length;
+  const totalEarned = videos
+    .filter((v) => v.status === 'approved')
+    .reduce((sum, v) => sum + (v.reward_amount || 0), 0);
+
+  const VIDEO_STATS = [
+    { label: 'Submitted', value: String(submittedCount), icon: Upload, color: 'text-brand-gold', bg: 'bg-brand-gold/5' },
+    { label: 'Approved', value: String(approvedCount), icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-500/5' },
+    { label: 'Pending Review', value: String(pendingCount), icon: Clock, color: 'text-amber-600', bg: 'bg-amber-500/5' },
+    { label: 'Total Earned', value: formatCurrency(totalEarned), icon: DollarSign, color: 'text-brand-gold', bg: 'bg-brand-gold/5' },
+  ];
+
+  if (loading) {
+    return (
+      <div className="p-6 md:p-10 flex items-center justify-center min-h-[400px]">
+        <Loader2 size={24} className="animate-spin text-brand-gold" />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 md:p-10 max-w-[1000px]">
@@ -65,7 +108,6 @@ export default function VideoRewardsPage() {
         <h1 className="font-display text-3xl md:text-4xl text-brand-black mb-2">Video Rewards</h1>
         <p className="font-sans text-sm text-brand-gray mb-10">Submit videos and earn cashback rewards.</p>
 
-        {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
           {VIDEO_STATS.map((stat, i) => (
             <motion.div
@@ -83,7 +125,6 @@ export default function VideoRewardsPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          {/* Submission Form */}
           <motion.div {...fadeUp(0.25)} className="lg:col-span-3">
             <div className="p-6 md:p-8 border border-brand-border rounded-[8px] bg-brand-white/50">
               <h2 className="font-display text-lg text-brand-black mb-6">Submit a Video</h2>
@@ -110,7 +151,6 @@ export default function VideoRewardsPage() {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Upload Area */}
                   <div>
                     <label className="font-sans text-[11px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-3">
                       Video File
@@ -140,24 +180,19 @@ export default function VideoRewardsPage() {
                     </label>
                   </div>
 
-                  {/* Order Selection */}
                   <div>
                     <label className="font-sans text-[11px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-3">
                       Related Order
                     </label>
-                    <select
+                    <input
+                      type="text"
                       value={form.orderId}
                       onChange={(e) => setForm({ ...form, orderId: e.target.value })}
+                      placeholder="Enter order ID or number"
                       className="w-full bg-transparent border-b border-brand-border pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans"
-                    >
-                      <option value="">Select an order</option>
-                      <option value="#DWAF-2024-001">#DWAF-2024-001 - Charcoal Portrait</option>
-                      <option value="#DWAF-2024-002">#DWAF-2024-002 - Museum Frame</option>
-                      <option value="#DWAF-2024-003">#DWAF-2024-003 - Corporate Portrait</option>
-                    </select>
+                    />
                   </div>
 
-                  {/* Description */}
                   <div>
                     <label className="font-sans text-[11px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-3">
                       Short Description
@@ -190,17 +225,19 @@ export default function VideoRewardsPage() {
             </div>
           </motion.div>
 
-          {/* Submission History */}
           <motion.div {...fadeUp(0.3)} className="lg:col-span-2">
             <h2 className="font-display text-lg text-brand-black mb-6">Submission History</h2>
             <div className="space-y-3">
-              {SUBMISSIONS.map((sub, i) => {
+              {videos.length === 0 && (
+                <p className="font-sans text-sm text-brand-gray/50">No submissions yet.</p>
+              )}
+              {videos.map((sub, i) => {
                 const config = STATUS_CONFIG[sub.status] || STATUS_CONFIG.pending;
                 const StatusIcon = config.icon;
 
                 return (
                   <motion.div
-                    key={i}
+                    key={sub.id}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.35 + i * 0.06, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -211,8 +248,8 @@ export default function VideoRewardsPage() {
                         <Film size={14} className="text-brand-gold" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="font-sans text-sm text-brand-black truncate">{sub.title}</p>
-                        <p className="font-sans text-[10px] text-brand-gray/50 mt-0.5">{sub.order}</p>
+                        <p className="font-sans text-sm text-brand-black truncate">{sub.title || sub.description || 'Video Submission'}</p>
+                        <p className="font-sans text-[10px] text-brand-gray/50 mt-0.5">{sub.order_id}</p>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
@@ -222,9 +259,9 @@ export default function VideoRewardsPage() {
                           {config.label}
                         </span>
                       </div>
-                      <span className="font-display text-xs text-brand-gold">{sub.reward}</span>
+                      <span className="font-display text-xs text-brand-gold">{sub.reward_amount ? formatCurrency(sub.reward_amount) : '--'}</span>
                     </div>
-                    <p className="font-sans text-[10px] text-brand-gray/40 mt-2">{sub.date}</p>
+                    <p className="font-sans text-[10px] text-brand-gray/40 mt-2">{formatDate(sub.created_at)}</p>
                   </motion.div>
                 );
               })}
@@ -232,15 +269,14 @@ export default function VideoRewardsPage() {
           </motion.div>
         </div>
 
-        {/* Info Section */}
         <motion.div {...fadeUp(0.35)} className="mt-12 p-6 md:p-8 border border-brand-border rounded-[8px] bg-brand-white/50">
           <h2 className="font-display text-lg text-brand-black mb-6">Video Reward Guidelines</h2>
           <div className="flex flex-wrap justify-center gap-6">
             {[
-              { label: 'Feedback Videos', desc: 'Share your experience working with us', reward: 'Up to ₦1,000' },
-              { label: 'Unboxing Videos', desc: 'Showcase your artwork unboxing moment', reward: 'Up to ₦1,500' },
-              { label: 'Installation Videos', desc: 'Document your artwork installation', reward: 'Up to ₦2,000' },
-              { label: 'Testimonial Videos', desc: 'Record a short testimonial about your experience', reward: 'Up to ₦2,000' },
+              { label: 'Feedback Videos', desc: 'Share your experience working with us', reward: 'Up to N1,000' },
+              { label: 'Unboxing Videos', desc: 'Showcase your artwork unboxing moment', reward: 'Up to N1,500' },
+              { label: 'Installation Videos', desc: 'Document your artwork installation', reward: 'Up to N2,000' },
+              { label: 'Testimonial Videos', desc: 'Record a short testimonial about your experience', reward: 'Up to N2,000' },
             ].map((guide, i) => (
               <div key={i} className="p-4 border border-brand-border rounded-[6px] bg-brand-white/60 w-full md:w-[calc((100%-3rem)/3)]">
                 <p className="font-display text-sm text-brand-black mb-1">{guide.label}</p>

@@ -12,6 +12,10 @@ use App\Http\Controllers\Api\TestimonialController;
 use App\Http\Controllers\Api\VideoController;
 use App\Http\Controllers\Api\RewardController;
 use App\Http\Controllers\Api\ReferralController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\CouponController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -35,24 +39,45 @@ Route::post('/newsletter/unsubscribe', [NewsletterController::class, 'unsubscrib
 Route::get('/testimonials', [TestimonialController::class, 'index']);
 
 Route::get('/videos', [VideoController::class, 'index']);
+Route::post('/videos', [VideoController::class, 'store']);
 
 // Authenticated routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
 
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::put('/profile', [ProfileController::class, 'update']);
+
+    // Bookings
     Route::get('/bookings', [BookingController::class, 'index']);
     Route::post('/bookings', [BookingController::class, 'store']);
     Route::get('/bookings/{id}', [BookingController::class, 'show']);
     Route::patch('/bookings/{id}/cancel', [BookingController::class, 'cancel']);
 
+    // Orders
     Route::get('/orders', [OrderController::class, 'index']);
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders/{id}', [OrderController::class, 'show']);
 
+    // Rewards
     Route::get('/rewards', [RewardController::class, 'index']);
     Route::get('/rewards/total', [RewardController::class, 'total']);
 
-    Route::post('/referrals', [ReferralController::class, 'store']);
+    // Referrals
     Route::get('/referrals', [ReferralController::class, 'index']);
+    Route::post('/referrals', [ReferralController::class, 'store']);
+
+    // Transactions / Wallet
+    Route::get('/transactions', [TransactionController::class, 'index']);
+
+    // Notifications
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::patch('/notifications/{id}/read', [NotificationController::class, 'markRead']);
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead']);
+
+    // Coupons
+    Route::get('/coupons', [CouponController::class, 'index']);
 });

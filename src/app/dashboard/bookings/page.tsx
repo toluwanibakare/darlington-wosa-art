@@ -1,23 +1,98 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { BookOpen, Calendar, Clock, MapPin, User, Plus, ArrowRight, CheckCircle, XCircle } from 'lucide-react';
+import { BookOpen, Calendar, Clock, MapPin, User, Plus, ArrowRight, Loader2 } from 'lucide-react';
+import { api } from '@/lib/api';
 
-const MY_BOOKINGS = [
-  { id: 'BK-001', class: 'Private Art Class', date: 'Mar 25, 2026', time: '10:00 AM - 12:00 PM', instructor: 'Darlington Wosa', location: 'Online', status: 'Confirmed', price: '₦25,000' },
-  { id: 'BK-002', class: 'Beginner Workshop', date: 'Apr 02, 2026', time: '2:00 PM - 4:00 PM', instructor: 'Darlington Wosa', location: 'Studio, Rivers State', status: 'Confirmed', price: '₦15,000' },
-  { id: 'BK-003', class: 'Monthly Package (March)', date: 'Mar 01, 2026', time: 'Various', instructor: 'Darlington Wosa', location: 'Online', status: 'Completed', price: '₦80,000' },
-];
+interface BookingClass {
+  title?: string;
+  instructor?: string;
+  duration?: string;
+  price?: string | number;
+}
+
+interface Booking {
+  id: number;
+  booking_number: string;
+  status: string;
+  created_at: string;
+  class?: BookingClass;
+}
+
+interface BookingsResponse {
+  bookings: Booking[];
+}
+
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+}
+
+function formatPrice(price: string | number | undefined): string {
+  if (!price) return 'N/A';
+  const num = typeof price === 'string' ? parseFloat(price) : price;
+  return `\u20A6${num.toLocaleString('en-US')}`;
+}
 
 const STATUS_BADGES: Record<string, string> = {
-  'Confirmed': 'bg-green-500/10 text-green-600',
-  'Completed': 'bg-brand-border text-brand-gray',
-  'Cancelled': 'bg-red-500/10 text-red-600',
+  confirmed: 'bg-green-500/10 text-green-600',
+  completed: 'bg-brand-border text-brand-gray',
+  cancelled: 'bg-red-500/10 text-red-600',
+  pending: 'bg-amber-500/10 text-amber-600',
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  confirmed: 'Confirmed',
+  completed: 'Completed',
+  cancelled: 'Cancelled',
+  pending: 'Pending',
 };
 
 export default function BookingsPage() {
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [filter, setFilter] = useState('all');
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    api.get<BookingsResponse>('/bookings').then((res) => {
+      if (cancelled) return;
+      if (res.error) {
+        setError(res.error);
+      } else {
+        setBookings(res.data?.bookings ?? []);
+      }
+      setLoading(false);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  const statuses = ['all', ...new Set(bookings.map((b) => b.status))];
+
+  const filtered = filter === 'all'
+    ? bookings
+    : bookings.filter((b) => b.status === filter);
+
+  if (loading) {
+    return (
+      <div className="p-6 md:p-10 flex items-center justify-center min-h-[400px]">
+        <Loader2 size={24} className="animate-spin text-brand-gold" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 md:p-10">
+        <p className="font-sans text-sm text-red-600">{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 md:p-10">
       <motion.div
@@ -41,8 +116,24 @@ export default function BookingsPage() {
           </Link>
         </div>
 
+        <div className="flex flex-wrap gap-2 mb-8">
+          {statuses.map((s) => (
+            <button
+              key={s}
+              onClick={() => setFilter(s)}
+              className={`font-sans text-[10px] tracking-[0.15em] uppercase px-5 py-2.5 rounded-full border transition-all duration-500 cursor-pointer ${
+                filter === s
+                  ? 'bg-brand-black text-brand-white border-brand-black'
+                  : 'bg-transparent text-brand-gray border-brand-border hover:border-brand-gray/40 hover:text-brand-black'
+              }`}
+            >
+              {s === 'all' ? 'All' : STATUS_LABELS[s] || s}
+            </button>
+          ))}
+        </div>
+
         <div className="space-y-4">
-          {MY_BOOKINGS.map((booking, i) => (
+          {filtered.map((booking, i) => (
             <motion.div
               key={booking.id}
               initial={{ opacity: 0, y: 10 }}
@@ -54,47 +145,43 @@ export default function BookingsPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <BookOpen size={14} className="text-brand-gold/60" />
-                    <p className="font-display text-base text-brand-black">{booking.class}</p>
+                    <p className="font-display text-base text-brand-black">
+                      {booking.class?.title || 'General Booking'}
+                    </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-4 text-brand-gray/60">
                     <span className="flex items-center gap-1.5 font-sans text-[11px]">
                       <Calendar size={11} />
-                      {booking.date}
+                      {formatDate(booking.created_at)}
                     </span>
                     <span className="flex items-center gap-1.5 font-sans text-[11px]">
                       <Clock size={11} />
-                      {booking.time}
+                      {booking.class?.duration || 'N/A'}
                     </span>
                     <span className="flex items-center gap-1.5 font-sans text-[11px]">
                       <User size={11} />
-                      {booking.instructor}
+                      {booking.class?.instructor || 'Instructor'}
                     </span>
                     <span className="flex items-center gap-1.5 font-sans text-[11px]">
                       <MapPin size={11} />
-                      {booking.location}
+                      Ref: {booking.booking_number}
                     </span>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 flex-shrink-0">
                   <div className="text-right">
-                    <p className="font-display text-sm text-brand-black">{booking.price}</p>
+                    <p className="font-display text-sm text-brand-black">{formatPrice(booking.class?.price)}</p>
                     <span className={`inline-block mt-1 px-3 py-1 rounded-full font-sans text-[9px] tracking-[0.1em] uppercase ${STATUS_BADGES[booking.status] || 'bg-brand-border text-brand-gray'}`}>
-                      {booking.status}
+                      {STATUS_LABELS[booking.status] || booking.status}
                     </span>
                   </div>
-                  {booking.status === 'Confirmed' && (
-                    <button className="flex items-center gap-1 px-4 py-2 border border-red-200 rounded-[6px] font-sans text-[9px] tracking-[0.1em] uppercase text-red-500 hover:bg-red-50 transition-colors cursor-pointer">
-                      <XCircle size={11} />
-                      Cancel
-                    </button>
-                  )}
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {MY_BOOKINGS.length === 0 && (
+        {filtered.length === 0 && (
           <div className="text-center py-20">
             <BookOpen size={32} className="text-brand-gray/20 mx-auto mb-4" />
             <p className="font-sans text-sm text-brand-gray/50">No bookings yet.</p>

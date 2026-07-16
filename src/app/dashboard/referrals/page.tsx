@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Gift, Copy, Check, Users, TrendingUp, DollarSign, UserCheck, UserX, Share2, ExternalLink } from 'lucide-react';
+import { Gift, Copy, Check, Users, TrendingUp, DollarSign, UserCheck, UserX, Share2, ExternalLink, Loader2 } from 'lucide-react';
+import { api } from '@/lib/api';
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 20 },
@@ -10,28 +11,55 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] as const },
 });
 
-const REFERRAL_STATS = [
-  { label: 'Total Referrals', value: '8', icon: Users, color: 'text-brand-gold', bg: 'bg-brand-gold/5' },
-  { label: 'Successful', value: '5', icon: UserCheck, color: 'text-green-600', bg: 'bg-green-500/5' },
-  { label: 'Pending', value: '3', icon: UserX, color: 'text-amber-600', bg: 'bg-amber-500/5' },
-  { label: 'Total Earnings', value: '₦25,000', icon: TrendingUp, color: 'text-brand-gold', bg: 'bg-brand-gold/5' },
-];
+const formatCurrency = (amount: number) => `₦${amount.toLocaleString()}`;
 
-const REFERRAL_HISTORY = [
-  { name: 'Chioma Okeke', date: 'Mar 15, 2026', status: 'Successful', reward: '₦5,000', type: 'Cashback' },
-  { name: 'Emeka Nwachukwu', date: 'Mar 10, 2026', status: 'Successful', reward: '₦5,000', type: 'Cashback' },
-  { name: 'Amara Okafor', date: 'Feb 28, 2026', status: 'Successful', reward: '₦5,000', type: 'Cashback' },
-  { name: 'Tunde Balogun', date: 'Feb 20, 2026', status: 'Successful', reward: '₦5,000', type: 'Coupon' },
-  { name: 'Ngozi Eze', date: 'Feb 15, 2026', status: 'Successful', reward: '₦5,000', type: 'Cashback' },
-  { name: 'Funke Adeyemi', date: 'Mar 18, 2026', status: 'Pending', reward: '—', type: '—' },
-  { name: 'Chidi Obi', date: 'Mar 12, 2026', status: 'Pending', reward: '—', type: '—' },
-  { name: 'Sarah John', date: 'Mar 05, 2026', status: 'Pending', reward: '—', type: '—' },
-];
+const formatDate = (dateStr: string) => {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+};
+
+interface Referral {
+  id: number;
+  referrer_id: number;
+  referee_id: number;
+  code: string;
+  status: string;
+  reward_points: number;
+  created_at: string;
+  referee: { name: string; email: string };
+}
+
+interface ReferralsResponse {
+  referrals: Referral[];
+  stats: { total: number; successful: number; pending: number; earnings: number };
+  referral_code: string;
+  referral_link: string;
+}
+
+const STATUS_BADGE: Record<string, string> = {
+  successful: 'bg-green-500/10 text-green-600',
+  pending: 'bg-amber-500/10 text-amber-600',
+  rejected: 'bg-red-500/10 text-red-600',
+};
 
 export default function ReferralsPage() {
   const [copied, setCopied] = useState(false);
-  const referralCode = 'DWAF10382';
-  const referralLink = 'https://darlingtonwosa.art/ref/DWAF10382';
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<ReferralsResponse | null>(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await api.get<ReferralsResponse>('/referrals');
+      if (res.error) {
+        setError(res.error);
+      } else if (res.data) {
+        setData(res.data);
+      }
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -39,10 +67,30 @@ export default function ReferralsPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const STATUS_BADGE: Record<string, string> = {
-    Successful: 'bg-green-500/10 text-green-600',
-    Pending: 'bg-amber-500/10 text-amber-600',
-  };
+  if (loading) {
+    return (
+      <div className="p-6 md:p-10 flex items-center justify-center min-h-[400px]">
+        <Loader2 size={24} className="animate-spin text-brand-gold" />
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="p-6 md:p-10">
+        <p className="font-sans text-sm text-red-500">{error || 'Failed to load referrals.'}</p>
+      </div>
+    );
+  }
+
+  const { referrals, stats, referral_code, referral_link } = data;
+
+  const REFERRAL_STATS = [
+    { label: 'Total Referrals', value: String(stats.total), icon: Users, color: 'text-brand-gold', bg: 'bg-brand-gold/5' },
+    { label: 'Successful', value: String(stats.successful), icon: UserCheck, color: 'text-green-600', bg: 'bg-green-500/5' },
+    { label: 'Pending', value: String(stats.pending), icon: UserX, color: 'text-amber-600', bg: 'bg-amber-500/5' },
+    { label: 'Total Earnings', value: formatCurrency(stats.earnings), icon: TrendingUp, color: 'text-brand-gold', bg: 'bg-brand-gold/5' },
+  ];
 
   return (
     <div className="p-6 md:p-10">
@@ -60,9 +108,9 @@ export default function ReferralsPage() {
               <div>
                 <p className="font-display text-lg text-brand-black mb-2">Your Referral Code</p>
                 <div className="flex items-center gap-3 mb-1">
-                  <span className="font-display text-3xl md:text-4xl text-brand-gold tracking-wider">{referralCode}</span>
+                  <span className="font-display text-3xl md:text-4xl text-brand-gold tracking-wider">{referral_code}</span>
                   <button
-                    onClick={() => copyToClipboard(referralCode)}
+                    onClick={() => copyToClipboard(referral_code)}
                     className="flex items-center gap-1.5 px-4 py-2 border border-brand-border rounded-full hover:border-brand-gold/30 transition-all duration-300 text-brand-gray hover:text-brand-gold cursor-pointer"
                   >
                     {copied ? <Check size={13} /> : <Copy size={13} />}
@@ -74,7 +122,7 @@ export default function ReferralsPage() {
             </div>
             <div className="flex gap-3">
               <button
-                onClick={() => copyToClipboard(referralLink)}
+                onClick={() => copyToClipboard(referral_link)}
                 className="flex items-center gap-2 px-5 py-3 border border-brand-border rounded-full font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray hover:text-brand-gold hover:border-brand-gold/30 transition-all duration-300 cursor-pointer"
               >
                 <Share2 size={12} />
@@ -114,7 +162,7 @@ export default function ReferralsPage() {
               </div>
               <div>
                 <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/70 mb-1">Withdrawable Rewards</p>
-                <p className="font-display text-2xl text-brand-black">₦15,000</p>
+                <p className="font-display text-2xl text-brand-black">{formatCurrency(stats.earnings)}</p>
               </div>
             </div>
             <button className="flex items-center gap-2 px-6 py-3 bg-brand-black text-brand-white border border-brand-gold rounded-[6px] font-sans text-[10px] tracking-[0.2em] uppercase transition-all duration-500 hover:shadow-[0_0_30px_rgba(158,101,27,0.15)] group">
@@ -141,19 +189,26 @@ export default function ReferralsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {REFERRAL_HISTORY.map((ref, i) => (
+                  {referrals.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="px-6 py-10 text-center font-sans text-sm text-brand-gray/50">
+                        No referrals yet.
+                      </td>
+                    </tr>
+                  )}
+                  {referrals.map((ref, i) => (
                     <motion.tr
-                      key={i}
+                      key={ref.id}
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 + i * 0.04, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                       className="border-b border-brand-border/50 last:border-b-0 hover:bg-brand-white/80 transition-colors"
                     >
                       <td className="px-6 py-4">
-                        <span className="font-sans text-sm text-brand-black">{ref.name}</span>
+                        <span className="font-sans text-sm text-brand-black">{ref.referee?.name || ref.referee?.email || 'Unknown'}</span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="font-sans text-xs text-brand-gray/60">{ref.date}</span>
+                        <span className="font-sans text-xs text-brand-gray/60">{formatDate(ref.created_at)}</span>
                       </td>
                       <td className="px-6 py-4">
                         <span className={`inline-block px-3 py-1 rounded-full font-sans text-[9px] tracking-[0.1em] uppercase ${STATUS_BADGE[ref.status] || 'bg-brand-border text-brand-gray'}`}>
@@ -161,10 +216,10 @@ export default function ReferralsPage() {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="font-sans text-sm text-brand-black">{ref.reward}</span>
+                        <span className="font-sans text-sm text-brand-black">{formatCurrency(ref.reward_points)}</span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="font-sans text-xs text-brand-gray/60">{ref.type}</span>
+                        <span className="font-sans text-xs text-brand-gray/60">Points</span>
                       </td>
                     </motion.tr>
                   ))}

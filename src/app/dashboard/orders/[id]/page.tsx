@@ -3,20 +3,138 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowLeft, Download, Clock, CheckCircle, Package, Palette, Shield, Truck, Home } from 'lucide-react';
+import { ArrowLeft, Download, Clock, CheckCircle, Package, Palette, Shield, Truck, Home, Loader2 } from 'lucide-react';
+import { api } from '@/lib/api';
 
-const ORDER_TIMELINE = [
-  { label: 'Order Placed', date: 'Mar 12, 2026', time: '2:30 PM', completed: true, icon: Package },
-  { label: 'Payment Confirmed', date: 'Mar 12, 2026', time: '2:32 PM', completed: true, icon: CheckCircle },
-  { label: 'Design Review', date: 'Mar 14, 2026', time: '10:00 AM', completed: true, icon: Palette },
-  { label: 'Production Started', date: 'Mar 16, 2026', time: '—', completed: true, icon: Shield },
-  { label: 'Framing in Progress', date: '—', time: '—', completed: false, icon: Shield },
-  { label: 'Quality Check', date: '—', time: '—', completed: false, icon: Shield },
-  { label: 'Ready for Pickup / Shipment', date: '—', time: '—', completed: false, icon: Truck },
-  { label: 'Delivered', date: '—', time: '—', completed: false, icon: Home },
+interface OrderService {
+  title?: string;
+}
+
+interface Order {
+  id: number;
+  user_id: number;
+  service_id: number;
+  order_number: string;
+  description?: string;
+  amount: string | number;
+  status: string;
+  payment_method?: string;
+  paid_at?: string;
+  created_at: string;
+  updated_at: string;
+  service?: OrderService;
+}
+
+interface OrderResponse {
+  order: Order;
+}
+
+const STATUS_LABELS: Record<string, string> = {
+  pending: 'Pending',
+  confirmed: 'Confirmed',
+  processing: 'Processing',
+  design_review: 'Design Review',
+  in_production: 'In Production',
+  quality_check: 'Quality Check',
+  ready: 'Ready for Pickup',
+  delivered: 'Delivered',
+  cancelled: 'Cancelled',
+};
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: 'bg-amber-500/10 text-amber-600',
+  confirmed: 'bg-blue-500/10 text-blue-600',
+  processing: 'bg-blue-500/10 text-blue-600',
+  design_review: 'bg-purple-500/10 text-purple-600',
+  in_production: 'bg-blue-500/10 text-blue-600',
+  quality_check: 'bg-amber-500/10 text-amber-600',
+  ready: 'bg-green-500/10 text-green-600',
+  delivered: 'bg-green-500/10 text-green-600',
+  cancelled: 'bg-red-500/10 text-red-600',
+};
+
+const TIMELINE_STEPS = [
+  { label: 'Order Placed', key: 'placed', icon: Package },
+  { label: 'Payment Confirmed', key: 'confirmed', icon: CheckCircle },
+  { label: 'Design Review', key: 'design_review', icon: Palette },
+  { label: 'Production', key: 'in_production', icon: Shield },
+  { label: 'Quality Check', key: 'quality_check', icon: Shield },
+  { label: 'Ready for Pickup', key: 'ready', icon: Truck },
+  { label: 'Delivered', key: 'delivered', icon: Home },
 ];
 
-export default function OrderDetailPage() {
+const STATUS_PROGRESS: Record<string, number> = {
+  pending: 0,
+  confirmed: 1,
+  design_review: 2,
+  in_production: 3,
+  quality_check: 4,
+  ready: 5,
+  delivered: 6,
+};
+
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+}
+
+function formatDateTime(dateStr: string): { date: string; time: string } {
+  const d = new Date(dateStr);
+  const date = d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+  const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+  return { date, time };
+}
+
+function formatAmount(amount: string | number): string {
+  const num = typeof amount === 'string' ? parseFloat(amount) : amount;
+  return `NGN ${num.toLocaleString('en-US')}`;
+}
+
+export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = React.use(params);
+  const [order, setOrder] = React.useState<Order | null>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState('');
+
+  React.useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    api.get<OrderResponse>(`/orders/${id}`).then((res) => {
+      if (cancelled) return;
+      if (res.error) {
+        setError(res.error);
+      } else if (res.data?.order) {
+        setOrder(res.data.order);
+      }
+      setLoading(false);
+    });
+    return () => { cancelled = true; };
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="p-6 md:p-10 max-w-[1200px] flex items-center justify-center min-h-[400px]">
+        <Loader2 size={24} className="animate-spin text-brand-gold" />
+      </div>
+    );
+  }
+
+  if (error || !order) {
+    return (
+      <div className="p-6 md:p-10 max-w-[1200px]">
+        <p className="font-sans text-sm text-red-600">{error || 'Order not found'}</p>
+      </div>
+    );
+  }
+
+  const orderTitle = order.service?.title || order.description || `Order ${order.order_number}`;
+  const statusLabel = STATUS_LABELS[order.status] || order.status;
+  const statusColor = STATUS_COLORS[order.status] || 'bg-brand-border text-brand-gray';
+  const progressIndex = STATUS_PROGRESS[order.status] ?? -1;
+
+  const created = formatDateTime(order.created_at);
+  const updated = formatDateTime(order.updated_at);
+
   return (
     <div className="p-6 md:p-10 max-w-[1200px]">
       <motion.div
@@ -34,16 +152,16 @@ export default function OrderDetailPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
             <h1 className="font-display text-3xl md:text-4xl text-brand-black mb-2">
-              Charcoal Portrait - &ldquo;The Visionary&rdquo;
+              {orderTitle}
             </h1>
             <div className="flex flex-wrap items-center gap-4">
-              <span className="font-sans text-[10px] tracking-[0.1em] uppercase text-brand-gray/50">#DWAF-2024-001</span>
-              <span className="inline-block px-3 py-1 rounded-full bg-blue-500/10 text-blue-600 font-sans text-[9px] tracking-[0.1em] uppercase">
-                In Production
+              <span className="font-sans text-[10px] tracking-[0.1em] uppercase text-brand-gray/50">{order.order_number}</span>
+              <span className={`inline-block px-3 py-1 rounded-full font-sans text-[9px] tracking-[0.1em] uppercase ${statusColor}`}>
+                {statusLabel}
               </span>
               <span className="flex items-center gap-1.5 font-sans text-[10px] text-brand-gray/60">
                 <Clock size={10} />
-                Estimated completion: Apr 10, 2026
+                Placed {created.date}
               </span>
             </div>
           </div>
@@ -67,13 +185,16 @@ export default function OrderDetailPage() {
               <div className="absolute left-[19px] top-0 bottom-0 w-[1px] bg-brand-border" />
 
               <div className="space-y-0">
-                {ORDER_TIMELINE.map((step, i) => {
+                {TIMELINE_STEPS.map((step, i) => {
                   const Icon = step.icon;
+                  const completed = i <= progressIndex;
+                  const isCurrentStep = i === progressIndex;
+
                   return (
                     <div key={step.label} className="relative flex gap-6 pb-10 last:pb-0">
                       {/* Dot */}
                       <div className={`relative z-10 w-[38px] h-[38px] rounded-full flex items-center justify-center flex-shrink-0 ${
-                        step.completed
+                        completed
                           ? 'bg-brand-gold text-white'
                           : 'bg-brand-surface border border-brand-border text-brand-gray/40'
                       }`}>
@@ -82,15 +203,20 @@ export default function OrderDetailPage() {
 
                       {/* Content */}
                       <div className="pt-2">
-                        <p className={`font-display text-base ${step.completed ? 'text-brand-black' : 'text-brand-gray/50'}`}>
+                        <p className={`font-display text-base ${completed ? 'text-brand-black' : 'text-brand-gray/50'}`}>
                           {step.label}
                         </p>
-                        {step.completed && (
+                        {isCurrentStep && (
                           <p className="font-sans text-xs text-brand-gray/60 mt-1">
-                            {step.date} at {step.time}
+                            {updated.date} at {updated.time}
                           </p>
                         )}
-                        {!step.completed && (
+                        {step.key === 'placed' && (
+                          <p className="font-sans text-xs text-brand-gray/60 mt-1">
+                            {created.date} at {created.time}
+                          </p>
+                        )}
+                        {!completed && !isCurrentStep && step.key !== 'placed' && (
                           <p className="font-sans text-xs text-brand-gray/30 mt-1">Pending</p>
                         )}
                       </div>
@@ -112,13 +238,10 @@ export default function OrderDetailPage() {
               <h3 className="font-display text-base text-brand-black mb-5">Order Details</h3>
               <div className="space-y-4">
                 {[
-                  { label: 'Order ID', value: '#DWAF-2024-001' },
-                  { label: 'Type', value: 'Charcoal Portrait' },
-                  { label: 'Size', value: '24 x 36 inches' },
-                  { label: 'Medium', value: 'Charcoal on Paper' },
-                  { label: 'Framing', value: 'Museum-Grade Frame' },
-                  { label: 'Order Date', value: 'Mar 12, 2026' },
-                  { label: 'Total', value: '₦250,000' },
+                  { label: 'Order ID', value: order.order_number },
+                  { label: 'Type', value: order.service?.title || order.description || '--' },
+                  { label: 'Order Date', value: formatDate(order.created_at) },
+                  { label: 'Total', value: formatAmount(order.amount) },
                 ].map((detail) => (
                   <div key={detail.label} className="flex justify-between items-center">
                     <span className="font-sans text-[10px] tracking-[0.1em] uppercase text-brand-gray/70">{detail.label}</span>
@@ -129,17 +252,23 @@ export default function OrderDetailPage() {
             </div>
 
             {/* Payment info */}
-            <div className="p-6 border border-brand-border rounded-[8px] bg-brand-white/50">
-              <h3 className="font-display text-base text-brand-black mb-4">Payment</h3>
-              <div className="flex items-center justify-between mb-2">
-                <span className="font-sans text-[10px] tracking-[0.1em] uppercase text-green-600 flex items-center gap-1.5">
-                  <CheckCircle size={12} />
-                  Paid
-                </span>
-                <span className="font-display text-sm text-brand-black">₦250,000</span>
+            {order.paid_at && (
+              <div className="p-6 border border-brand-border rounded-[8px] bg-brand-white/50">
+                <h3 className="font-display text-base text-brand-black mb-4">Payment</h3>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-sans text-[10px] tracking-[0.1em] uppercase text-green-600 flex items-center gap-1.5">
+                    <CheckCircle size={12} />
+                    Paid
+                  </span>
+                  <span className="font-display text-sm text-brand-black">{formatAmount(order.amount)}</span>
+                </div>
+                {order.payment_method && (
+                  <p className="font-sans text-[10px] text-brand-gray/50">
+                    Paid via {order.payment_method} on {formatDate(order.paid_at)}
+                  </p>
+                )}
               </div>
-              <p className="font-sans text-[10px] text-brand-gray/50">Paid via Korapay on Mar 12, 2026</p>
-            </div>
+            )}
           </motion.div>
         </div>
       </motion.div>

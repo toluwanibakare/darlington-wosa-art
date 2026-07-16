@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { api } from './api';
 
-interface User {
+export interface User {
   id: number;
   name: string;
   email: string;
@@ -10,6 +11,13 @@ interface User {
   avatar: string | null;
   role: string;
   is_admin: boolean;
+  referral_code: string | null;
+  date_of_birth: string | null;
+  address: string | null;
+  city: string | null;
+  country: string | null;
+  bio: string | null;
+  wallet_balance: number | null;
 }
 
 export function useUser() {
@@ -32,11 +40,20 @@ export function useUser() {
     setLoading(false);
   }, []);
 
+  const refreshUser = useCallback(async () => {
+    const { data, error } = await api.get<{ user: User }>('/user');
+    if (data?.user) {
+      setUser(data.user);
+      localStorage.setItem('user', JSON.stringify(data.user));
+    }
+    return { data, error };
+  }, []);
+
   const logout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('auth_token');
     setUser(null);
   };
 
-  return { user, loading, logout };
+  return { user, loading, logout, refreshUser };
 }
