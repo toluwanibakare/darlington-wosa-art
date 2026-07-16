@@ -4,10 +4,10 @@ import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 const STATS = [
-  { label: 'Years Experience', value: '6+' },
-  { label: 'Projects Completed', value: '450+' },
-  { label: 'Happy Clients', value: '300+' },
-  { label: 'Corporate Projects', value: '25+' },
+  { label: 'Years Experience', value: '17+' },
+  { label: 'Projects Completed', value: '300+' },
+  { label: 'Happy Clients', value: '50+' },
+  { label: 'Artists Taught', value: '30+' },
 ];
 
 const CHARCOAL = '#1a1a1a';

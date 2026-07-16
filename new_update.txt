@@ -1,354 +1,60 @@
-# User Authentication & Customer Portal Specification
+1. Years of Experience
+I started drawing and creating art as a child in primary school. However, I began actively developing and refining my skills after secondary school in 2009, and I have been practicing professionally ever since.
 
-## Customer Authentication
+2. Number of Completed Projects
+I have completed over 300 art projects. Some notable works include creating charcoal portraits of all the past Vice Chancellors of the University of Port Harcourt from inception to 2015, painting a portrait of the current Governor of Akwa Ibom State, and producing artworks for several other prominent individuals.
 
-Create a complete customer authentication system.
+3. Number of Clients
+I have worked with over 50 clients, ranging from individuals to institutions and notable personalities.
 
-Features:
+4. Number of People Taught
+I have trained more than 30 artists and currently run a Telegram community where aspiring artists can learn, improve their skills, and grow creatively. Access to the community is available for a ₦5,000 membership fee.
 
-* Sign Up
-* Login
-* Forgot Password
-* Email Verification
-* Secure Password Reset
-* Remember Me
-* Social login (optional)
+5. Quote
+“Practice makes it easier, while making you better.”
 
-Every customer should have a personal dashboard after signing in.
+6. Achievements and Milestones
+• 2009: Began intentionally developing my artistic skills after secondary school.
+• 2022: Won a national online art competition. (Supporting images will be provided.)
+• Completed over 300 commissioned artworks.
+• Created a charcoal portrait collection of all the past Vice Chancellors of the University of Port Harcourt from inception to 2015.
+• Painted a portrait of the current Governor of Akwa Ibom State.
+• Successfully trained over 30 artists through mentorship and my Telegram learning community.
 
----
+7. Images of Frames
+Images of framed artworks will be provided.
 
-# Customer Profile
+8. Social Media
+TikTok: https://vm.tiktok.com/ZS9MKs8rJcjTj-X4Iea/
+Instagram: https://www.instagram.com/darlingtonwosa_art/
 
-Each customer profile should store:
 
-* Full Name
-* Email Address
-* Phone Number
-* Date of Birth
-* Delivery Address(es)
-* Profile Photo (optional)
-* Account Creation Date
-* Referral Code (generated automatically and unique)
-* Wallet/Coupon Balance
-* Reward Points (if applicable)
 
-The date of birth should be used to automatically send birthday wishes through SMS, WhatsApp, or email depending on the available notification service.
 
-The customer information should also be available for marketing campaigns, newsletters, promotions, product launches, discounts, and important announcements.
 
-Customers should be able to update their personal information from their dashboard.
+For the paint and sip event booking there are some questions or form they will fill when booking online
 
----
 
-# Customer Dashboard
+1. Wheres the venue
+2. Is it an indoor event or an outdoor event
+3. What day are you looking at?
+4. Whats your audience age group?
 
-After login, customers should see a modern dashboard containing:
+5. How many hours is the painting session planned to last?
+6. Who is responsible for providing the tables and chairs for the participants
+7. What is the backup plan in case of poor weather at the outdoor venue?
+8. Will there be direct access to water and electricity at the outdoor site?
+9. Will the you handle the refreshments, or are we expected to provide them?
+10. What size of canvas is expected for the session? The standard size is 10*12 or 12*16
+11. Are there any additional take-home items required beyond the standard canvas?
+12. How much time will I have at the venue to set up and pack up your materials?
 
-## Dashboard Overview
+All these questions are required to ensure clients get an accurate quote that covers all logistics—especially if its an outdoor setup
 
-* Welcome message
-* Current orders
-* Completed orders
-* Pending payments
-* Referral earnings
-* Coupon balance
-* Cashback balance
-* Recent activity
 
----
 
-# Booking System
 
-Customers should be able to book art classes directly from the website.
 
-Workflow:
+The corporate name of the brand is
+Darlington Wosa Art and Frames LTD
 
-The customer clicks the "Book a Class" button from the homepage or navigation.
-
-They are shown all available classes, for example:
-
-* Single Session
-* Monthly Package
-* Beginner Workshop
-* Group Session
-* Private Class
-
-Each class displays:
-
-* Description
-* Duration
-* Price
-* Available seats
-* Instructor
-* Location (if physical)
-
-The customer clicks "Book Now."
-
-A live availability calendar opens.
-
-Only available dates and time slots should be selectable.
-
-After selecting a slot, the customer fills in:
-
-* Name
-* Phone Number
-* Email
-* Notes (optional)
-
-The customer proceeds to payment using Korapay.
-
-Once payment is successful:
-
-* Booking is confirmed automatically.
-* The selected time slot becomes unavailable.
-* Customer receives a confirmation page.
-* Customer receives confirmation via email.
-* Customer receives confirmation via SMS or WhatsApp if available.
-* Customer can add the event directly to Google Calendar or Apple Calendar.
-* Automatic reminders should be sent before the scheduled class.
-
-Customers can also view all their booked classes inside their dashboard.
-
----
-
-# Referral System
-
-Every registered customer should automatically receive a unique referral code.
-
-Example:
-
-DWAF10382
-
-Customers can copy and share this code.
-
-During checkout or booking, new customers should have an optional Referral Code field.
-
-If the referral code is valid:
-
-* Link the new customer to the referrer.
-* Store the referral relationship permanently.
-
-Referral rewards should only be credited after successful payment.
-
-No reward should be given for unpaid or cancelled orders.
-
-The dashboard should display:
-
-* Referral Code
-* Number of referrals
-* Successful referrals
-* Pending referrals
-* Total referral earnings
-* Withdrawable rewards
-* Referral history
-
-Admin should be able to configure:
-
-* Reward amount
-* Percentage
-* Fixed bonus
-* Coupon reward
-* Cashback reward
-
----
-
-# Coupon & Reward System
-
-Create a flexible coupon engine.
-
-Coupons may be issued through:
-
-* Referral rewards
-* Birthday rewards
-* Promotional campaigns
-* Manual admin rewards
-* Loyalty campaigns
-
-Coupons may include:
-
-* Percentage discount
-* Fixed discount
-* Free delivery
-* Free consultation
-* Free frame upgrade
-* Free artwork gift
-
-Each coupon should have:
-
-* Expiry date
-* Usage limit
-* Applicable products/services
-* Status
-
-Customers should be able to apply coupons during checkout.
-
----
-
-# Cashback Wallet
-
-Every customer should have a reward wallet.
-
-Cashback can be earned through:
-
-* Successful referrals
-* Promotional campaigns
-* Video testimonials
-* Unboxing videos
-* Customer appreciation rewards
-
-Wallet balance should be visible inside the dashboard.
-
-Admin should choose whether cashback can be:
-
-* Withdrawn
-* Converted into coupons
-* Used for future purchases
-
----
-
-# Video Reward Program
-
-Customers can submit:
-
-* Feedback videos
-* Unboxing videos
-* Installation videos
-* Testimonial videos
-
-Submission process:
-
-Upload video
-
-Select related order
-
-Write a short description
-
-Submit
-
-Admin reviews the submission.
-
-If approved:
-
-* Reward customer with cashback
-* Reward customer with coupon
-* Reward customer with gift
-* Notify customer automatically
-
-Rejected submissions should include a reason.
-
----
-
-# Order Tracking
-
-Customers should always know the status of their order.
-
-Order timeline:
-
-Order Placed
-
-Payment Confirmed
-
-Design Review (if applicable)
-
-Production Started
-
-Framing in Progress
-
-Quality Check
-
-Ready for Pickup / Shipment
-
-Out for Delivery
-
-Delivered
-
-Completed
-
-Each status update should generate a notification.
-
-Customers should also see an estimated completion date.
-
----
-
-# Notifications
-
-Customers should receive notifications for:
-
-* Account creation
-* Booking confirmation
-* Payment confirmation
-* Order status updates
-* Coupon rewards
-* Referral rewards
-* Cashback rewards
-* Birthday wishes
-* Promotions
-* Newsletter announcements
-* Class reminders
-
-Notifications should support:
-
-* Email
-* SMS
-* WhatsApp (future integration)
-
----
-
-# Customer Order History
-
-Customers should be able to view:
-
-* Current orders
-* Previous orders
-* Invoice
-* Receipt
-* Payment history
-* Download invoice
-* Reorder previous artwork
-
----
-
-if we can leave admin for now just focus on the users part first. 
-
-# Admin Management
-
-The admin dashboard should include:
-
-Customer Management
-
-Order Management
-
-Booking Management
-
-Coupon Management
-
-Referral Management
-
-Reward Management
-
-Wallet Management
-
-Video Submission Approval
-
-Birthday Campaign Management
-
-Newsletter Management
-
-Push Notification Management
-
-Marketing Campaigns
-
-Analytics Dashboard
-
-Revenue Reports
-
-Referral Reports
-
-Booking Reports
-
-Customer Growth Reports
-
-Coupon Usage Reports
-
-The system should be modular, scalable, mobile responsive, and built with a clean, modern UI while maintaining secure authentication, role based permissions, and optimized database relationships.

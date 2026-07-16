@@ -63,10 +63,10 @@ export function FounderIntro() {
               className="space-y-5 text-brand-gray text-text-body"
             >
               <p>
-                True luxury lies in the details. As a self-taught portrait artist, custom framer, and art educator, I blend meticulous technical skill with an uncompromising commitment to premium presentation. My journey into fine art began in childhood, evolving through a lifelong dedication to the craft and a deep passion for hyper-realism.
+                My journey into art began in primary school, where I first discovered the joy of creating with my hands. After completing secondary school in 2009, I made a conscious decision to develop my skills intentionally, practicing daily and pushing the boundaries of what I could achieve with charcoal and pencil. What started as a childhood passion grew into a lifelong commitment to the craft.
               </p>
               <p>
-                Specializing primarily in hyper-realistic charcoal, alongside vibrant work in pastel and acrylic, my studio crafts timeless, priceless masterpieces for high-profile individuals and discerning collectors. These works are designed to honor leadership, celebrate milestones, and gift loved ones with a legacy that transcends generations. Every piece is handled with extreme attention to detail, paired with bespoke luxury framing solutions, and delivered with absolute reliability.
+                Today, I have completed over 300 art projects, including creating charcoal portraits of all the past Vice Chancellors of the University of Port Harcourt from inception to 2015, painting a portrait of the current Governor of Akwa Ibom State, and producing artworks for many other prominent individuals. My studio specializes in hyper-realistic charcoal, alongside work in pastel and acrylic, and I serve over 50 clients ranging from individuals to institutions and notable personalities.
               </p>
               <p>
                 Parallel to my studio practice, my mission is rooted in the belief that excellence is a learned discipline. As an active art educator and course creator, I provide the structured mentorship and devotion necessary for aspiring artists to scale up their skills. Driven by an unwavering pursuit of creativity and perfection, I don't just create art — I preserve moments, elevate spaces, and mentor the next generation of creative mastery.
@@ -82,7 +82,7 @@ export function FounderIntro() {
             >
               <Quote size={20} className="text-brand-gold/40 mb-3" />
               <p className="font-display text-lg md:text-xl text-brand-black italic leading-relaxed">
-                &ldquo;Art is not what you see, but what you make others see. Every stroke tells a story.&rdquo;
+                &ldquo;Practice makes it easier, while making you better.&rdquo;
               </p>
               <p className="font-sans text-sm text-brand-gray mt-3 tracking-wider uppercase">
                 — Darlington Wosa

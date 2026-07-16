@@ -87,7 +87,7 @@ const CLASSES = [
 
 const TIME_SLOTS = ['09:00 AM', '10:00 AM', '11:00 AM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'];
 
-const STEPS = ['Select Date & Time', 'Your Details', 'Confirmation'];
+const STEPS = ['Select Date & Time', 'Event Details', 'Your Details', 'Confirmation'];
 
 export default function ClassBookingPage() {
   const params = useParams();
@@ -99,6 +99,20 @@ export default function ClassBookingPage() {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [form, setForm] = useState({ name: '', phone: '', email: '', notes: '' });
+  const [eventForm, setEventForm] = useState({
+    venue: '',
+    isIndoor: '',
+    eventDate: '',
+    audienceAge: '',
+    sessionHours: '',
+    provideTablesChairs: '',
+    weatherBackup: '',
+    waterElectricity: '',
+    handleRefreshments: '',
+    canvasSize: '',
+    additionalItems: '',
+    setupTime: '',
+  });
 
   if (!classData) {
     return (
@@ -140,7 +154,7 @@ export default function ClassBookingPage() {
   const dateOptions = generateDateOptions();
 
   const handleContinue = () => {
-    if (step < 2) setStep(step + 1);
+    if (step < 3) setStep(step + 1);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -306,6 +320,43 @@ export default function ClassBookingPage() {
 
                 {step === 1 && (
                   <div>
+                    <h2 className="font-display text-xl text-brand-black mb-6">Event Details</h2>
+                    <p className="font-sans text-xs text-brand-gray/70 mb-8 leading-relaxed">
+                      Please answer these questions to help us provide an accurate quote and ensure all logistics are covered.
+                    </p>
+                    <div className="space-y-6">
+                      {[
+                        { key: 'venue', label: 'Where is the venue?', type: 'text' },
+                        { key: 'isIndoor', label: 'Is it an indoor or outdoor event?', type: 'text' },
+                        { key: 'eventDate', label: 'What date are you looking at?', type: 'text' },
+                        { key: 'audienceAge', label: "What is your audience's age group?", type: 'text' },
+                        { key: 'sessionHours', label: 'How many hours is the painting session planned to last?', type: 'text' },
+                        { key: 'provideTablesChairs', label: 'Who is responsible for providing tables and chairs?', type: 'text' },
+                        { key: 'weatherBackup', label: 'What is the backup plan in case of poor weather at the outdoor venue?', type: 'text' },
+                        { key: 'waterElectricity', label: 'Will there be direct access to water and electricity at the outdoor site?', type: 'text' },
+                        { key: 'handleRefreshments', label: 'Will you handle the refreshments, or are we expected to provide them?', type: 'text' },
+                        { key: 'canvasSize', label: 'What size of canvas is expected? (Standard: 10x12 or 12x16)', type: 'text' },
+                        { key: 'additionalItems', label: 'Are there any additional take-home items required beyond the standard canvas?', type: 'text' },
+                        { key: 'setupTime', label: 'How much time will you have at the venue to set up and pack up materials?', type: 'text' },
+                      ].map((q) => (
+                        <div key={q.key}>
+                          <label className="font-sans text-[11px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-3">{q.label}</label>
+                          <input
+                            type={q.type}
+                            value={(eventForm as any)[q.key]}
+                            onChange={(e) => setEventForm({ ...eventForm, [q.key]: e.target.value })}
+                            className="w-full bg-transparent border-b border-brand-border pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans"
+                            placeholder="Your answer"
+                            required
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {step === 2 && (
+                  <div>
                     <h2 className="font-display text-xl text-brand-black mb-6">Your Details</h2>
                     <div className="space-y-6">
                       <div>
@@ -352,7 +403,7 @@ export default function ClassBookingPage() {
                   </div>
                 )}
 
-                {step === 2 && (
+                {step === 3 && (
                   <div>
                     <h2 className="font-display text-xl text-brand-black mb-6">Confirm Your Booking</h2>
                     <div className="space-y-4 mb-8">
@@ -401,7 +452,7 @@ export default function ClassBookingPage() {
                 )}
 
                 {/* Navigation Buttons */}
-                {step < 2 && (
+                {step < 3 && (
                   <div className="flex gap-4 mt-8">
                     {step > 0 && (
                       <button
@@ -415,7 +466,8 @@ export default function ClassBookingPage() {
                       onClick={handleContinue}
                       disabled={
                         (step === 0 && (!selectedDate || !selectedTime)) ||
-                        (step === 1 && (!form.name || !form.phone || !form.email))
+                        (step === 1 && Object.values(eventForm).some(v => !v)) ||
+                        (step === 2 && (!form.name || !form.phone || !form.email))
                       }
                       className={`relative overflow-hidden px-8 py-4 bg-brand-black text-brand-white border border-brand-gold rounded-[6px] font-sans text-[11px] tracking-[0.2em] uppercase transition-all duration-500 hover:shadow-[0_0_30px_rgba(158,101,27,0.15)] cursor-pointer disabled:opacity-60 group ${step === 0 ? 'w-full' : 'flex-1'}`}
                     >

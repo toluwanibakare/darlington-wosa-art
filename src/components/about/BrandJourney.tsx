@@ -5,29 +5,29 @@ import { motion } from 'framer-motion';
 
 const MILESTONES = [
   {
-    year: '2018',
+    year: '2009',
     title: 'The Beginning',
-    description: 'Darlington Wosa Art & Frames was founded in Rivers State with a single sketchbook, a set of charcoal pencils, and an uncompromising vision.',
+    description: 'After completing secondary school, I began actively developing and refining my artistic skills with daily practice and unwavering dedication.',
   },
   {
-    year: '2020',
-    title: 'First Major Commission',
-    description: 'Completed a landmark corporate portrait series for a leading Nigerian firm, establishing a reputation for excellence in the corporate sector.',
+    year: '2018',
+    title: 'Studio Founded',
+    description: 'Darlington Wosa Art & Frames was established in Rivers State, Nigeria, offering premium portraiture and custom framing services.',
   },
   {
     year: '2022',
-    title: 'Museum-Grade Framing',
-    description: 'Launched the premium framing division, bringing conservation-grade materials and museum-standard techniques to the local market.',
+    title: 'National Recognition',
+    description: 'Won a national online art competition, gaining wider recognition for hyper-realistic charcoal portraiture and technical excellence.',
   },
   {
     year: '2024',
-    title: '450+ Projects Milestone',
-    description: 'Surpassed 450 completed projects with a client base spanning private collectors, interior designers, and multinational corporations.',
+    title: '300+ Projects Milestone',
+    description: 'Surpassed 300 completed projects including a portrait of the Governor of Akwa Ibom State and a complete collection of all past Vice Chancellors of the University of Port Harcourt.',
   },
   {
-    year: '2025',
-    title: 'ISO Certification',
-    description: 'Achieved ISO 9001, 14001, and 45001 certifications, cementing our commitment to quality, environmental responsibility, and workplace safety.',
+    year: '2026',
+    title: 'Mentorship & Community',
+    description: 'Successfully trained over 30 artists through mentorship programs and launched a thriving Telegram learning community for aspiring artists.',
   },
 ];
 
@@ -48,7 +48,7 @@ export function BrandJourney() {
             The Journey
           </span>
           <h2 className="font-display text-text-h2 text-brand-white leading-tight">
-            From Humble Strokes to <br />
+            From Primary School Strokes to <br />
             <span className="text-brand-gold italic">National Recognition</span>
           </h2>
         </motion.div>

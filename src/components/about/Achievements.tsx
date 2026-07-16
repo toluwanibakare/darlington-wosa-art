@@ -2,45 +2,29 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, BadgeCheck, Users as UsersIcon, Building2, Award as AwardIcon, Star } from 'lucide-react';
+import { Trophy, Users as UsersIcon, Award as AwardIcon, Star } from 'lucide-react';
 
 const ACHIEVEMENTS = [
   {
     icon: Trophy,
-    stat: '450+',
+    stat: '300+',
     label: 'Projects Completed',
   },
   {
     icon: UsersIcon,
-    stat: '300+',
-    label: 'Happy Clients',
-  },
-  {
-    icon: Building2,
-    stat: '25+',
-    label: 'Corporate Projects',
-  },
-  {
-    icon: BadgeCheck,
-    stat: 'ISO 9001',
-    label: 'Quality Management',
+    stat: '50+',
+    label: 'Clients Served',
   },
   {
     icon: AwardIcon,
-    stat: 'ISO 14001',
-    label: 'Environmental Standard',
+    stat: '30+',
+    label: 'Artists Trained',
   },
   {
     icon: Star,
-    stat: 'ISO 45001',
-    label: 'Health & Safety',
+    stat: '2009',
+    label: 'Year Started Professionally',
   },
-];
-
-const CERTIFICATIONS = [
-  { name: 'ISO 9001:2015', description: 'Quality Management Systems — ensuring consistent quality in every project.' },
-  { name: 'ISO 14001:2015', description: 'Environmental Management — commitment to sustainable studio practices.' },
-  { name: 'ISO 45001:2018', description: 'Occupational Health & Safety — maintaining a safe creative workspace.' },
 ];
 
 export function Achievements() {
@@ -60,8 +44,7 @@ export function Achievements() {
             Achievements
           </span>
           <h2 className="font-display text-text-h2 text-brand-white leading-tight">
-            Milestones & <br />
-            <span className="text-brand-gold italic">Certifications</span>
+            Milestones
           </h2>
         </motion.div>
 
@@ -89,35 +72,7 @@ export function Achievements() {
           ))}
         </div>
 
-        {/* Certifications Detail */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="border-t border-brand-white/5 pt-16">
-            <h3 className="font-display text-2xl text-brand-white text-center mb-12">
-              Certified Excellence
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {CERTIFICATIONS.map((cert) => (
-                <div
-                  key={cert.name}
-                  className="p-8 border border-brand-white/5 rounded-[8px] bg-brand-white/[0.02] hover:bg-brand-white/[0.04] transition-colors duration-500 text-center"
-                >
-                  <BadgeCheck size={28} className="text-brand-gold mx-auto mb-4" />
-                  <h4 className="font-display text-lg text-brand-white mb-3">
-                    {cert.name}
-                  </h4>
-                  <p className="font-sans text-sm text-brand-gray leading-relaxed">
-                    {cert.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
+
       </div>
     </section>
   );
