@@ -1,12 +1,13 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Bell, User, Search, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { NotificationsPanel } from './NotificationsPanel';
 import { useUser } from '@/lib/use-user';
+import { api } from '@/lib/api';
 
 interface DashboardHeaderProps {
   onToggleMenu: () => void;
@@ -14,11 +15,23 @@ interface DashboardHeaderProps {
 }
 
 export function DashboardHeader({ onToggleMenu, mobileOpen }: DashboardHeaderProps) {
-  const [scrolled, setScrolled] = React.useState(false);
-  const [notifOpen, setNotifOpen] = React.useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const { scrollY } = useScroll();
   const pathname = usePathname();
   const { user } = useUser();
+
+  const fetchUnreadCount = useCallback(async () => {
+    const { data } = await api.get<{ unread_count: number }>('/notifications/unread-count');
+    if (data) setUnreadCount(data.unread_count);
+  }, []);
+
+  useEffect(() => {
+    fetchUnreadCount();
+    const interval = setInterval(fetchUnreadCount, 30000);
+    return () => clearInterval(interval);
+  }, [fetchUnreadCount]);
 
   const pageTitle = (() => {
     if (pathname === '/dashboard') return 'Dashboard';
@@ -31,7 +44,7 @@ export function DashboardHeader({ onToggleMenu, mobileOpen }: DashboardHeaderPro
     setScrolled(latest > 20);
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (notifOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -51,7 +64,6 @@ export function DashboardHeader({ onToggleMenu, mobileOpen }: DashboardHeaderPro
         }`}
       >
         <div className="flex items-center justify-between h-20 px-4 md:px-8">
-          {/* Left: Menu toggle + Logo (mobile) */}
           <div className="flex items-center gap-3 lg:hidden">
             <button
               onClick={onToggleMenu}
@@ -63,7 +75,6 @@ export function DashboardHeader({ onToggleMenu, mobileOpen }: DashboardHeaderPro
             <span className="font-sans text-sm tracking-[0.05em] text-brand-black font-medium">{pageTitle}</span>
           </div>
 
-          {/* Search (desktop) */}
           <div className="hidden md:flex items-center gap-3 px-4 py-2 border border-brand-border rounded-full w-72 transition-colors focus-within:border-brand-gold/50">
             <Search size={14} className="text-brand-gray/50" />
             <input
@@ -73,16 +84,17 @@ export function DashboardHeader({ onToggleMenu, mobileOpen }: DashboardHeaderPro
             />
           </div>
 
-          {/* Right actions */}
           <div className="flex items-center gap-4 ml-auto">
             <button
-              onClick={() => setNotifOpen(true)}
+              onClick={() => { setNotifOpen(true); fetchUnreadCount(); }}
               className="relative w-9 h-9 rounded-full border border-brand-border flex items-center justify-center hover:border-brand-gold/50 transition-colors group cursor-pointer"
             >
               <Bell size={15} className="text-brand-gray group-hover:text-brand-gold transition-colors" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-brand-gold text-white text-[8px] flex items-center justify-center font-sans font-medium">
-                3
-              </span>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[16px] h-4 rounded-full bg-brand-gold text-white text-[8px] flex items-center justify-center font-sans font-medium px-1">
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
             </button>
 
             <Link
@@ -98,7 +110,12 @@ export function DashboardHeader({ onToggleMenu, mobileOpen }: DashboardHeaderPro
         </div>
       </motion.header>
 
-      <NotificationsPanel open={notifOpen} onClose={() => setNotifOpen(false)} unreadCount={3} />
+      <NotificationsPanel
+        open={notifOpen}
+        onClose={() => setNotifOpen(false)}
+        unreadCount={unreadCount}
+        onUnreadCountChange={setUnreadCount}
+      />
     </>
   );
 }

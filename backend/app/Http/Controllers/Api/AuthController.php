@@ -28,6 +28,12 @@ class AuthController extends Controller
             'is_admin' => false,
         ]);
 
+        $user->notifications()->create([
+            'title' => 'Welcome to Darlington Wosa',
+            'message' => 'Welcome aboard, ' . $user->name . '! Your dashboard lets you track orders, manage bookings, earn rewards through referrals, submit videos for cashback, and monitor your wallet. Start exploring to make the most of your art journey.',
+            'type' => 'welcome',
+        ]);
+
         $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
