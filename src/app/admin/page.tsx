@@ -17,11 +17,13 @@ interface DashboardStats {
 const formatNaira = (amount: number) =>
   `₦${amount.toLocaleString()}`;
 
+const easeAdmin = [0.16, 1, 0.3, 1] as const;
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.08, ease: [0.16, 1, 0.3, 1] },
+    transition: { staggerChildren: 0.08, ease: easeAdmin },
   },
 };
 
@@ -30,7 +32,7 @@ const cardVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.7, ease: easeAdmin },
   },
 };
 

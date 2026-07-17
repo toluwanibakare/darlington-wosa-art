@@ -1,11 +1,13 @@
-  27 |
-  28 | const apiAdmin = {
-> 29 |   get: async <T>(endpoint: string): Promise<T> => {
-     |                          ^
-  30 |     const token = localStorage.getItem('auth_token');
-  31 |     const res = await fetch(`http://127.0.0.1:8000/api/admin${endpoint}`, {
-  32 |       headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
-Parsing ecmascript source code failed
-    at <unknown> (./src/app/admin/orders/page.tsx:66:26)
-    at <unknown> (./src/app/admin/users/page.tsx:29:26)
+                    Type 'number[]' is not assignable to type 'Easing | Easing[] | undefined'.
+                      Type 'number[]' is not assignable to type 'EasingFunction | Easing[]'.
+                        Type 'number[]' is not assignable to type 'Easing[]'.
+                          Type 'number' is not assignable to type 'Easing'.
+  122 |       ) : stats ? (
+  123 |         <motion.div
+> 124 |           variants={containerVariants}
+      |           ^
+  125 |           initial="hidden"
+  126 |           animate="visible"
+  127 |           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+Next.js build worker exited with code: 1 and signal: null
 Error: Command "npm run build" exited with 1

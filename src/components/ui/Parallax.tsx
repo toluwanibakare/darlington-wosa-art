@@ -18,7 +18,7 @@ export function Parallax({
   className,
   as = 'div',
 }: ParallaxProps) {
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],

@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef } from 'react';
-import { motion, type HTMLMotionProps } from 'framer-motion';
+import { motion, type HTMLMotionProps, type Transition } from 'framer-motion';
 import {
   fadeUp,
   fadeDown,
@@ -15,7 +15,6 @@ import {
   springSmooth,
   springGentle,
   defaultViewport,
-  type Transition,
 } from '@/lib/animation';
 
 type RevealDirection = 'up' | 'down' | 'fade' | 'left' | 'right' | 'scale';
@@ -38,7 +37,7 @@ const transitionMap: Record<RevealAnimation, Transition> = {
   'spring-gentle': springGentle,
 };
 
-export const Reveal = forwardRef<HTMLElement, RevealProps>(
+export const Reveal = forwardRef<HTMLDivElement, RevealProps>(
   (
     {
       direction = 'up',
