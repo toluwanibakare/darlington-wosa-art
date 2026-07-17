@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Card } from '@/components/ui';
+import { Card, Reveal } from '@/components/ui';
 
 const PORTFOLIO_ITEMS = [
   {
@@ -46,33 +46,24 @@ export function Exhibition() {
       {/* Header */}
       <div className="max-w-[1800px] mx-auto w-full px-8 md:px-16 mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
         <div ref={ref} className="space-y-4">
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 1, ease: easeExpoOut }}
-            className="text-brand-gold uppercase tracking-widest text-sm font-sans"
-          >
-            The Exhibition
-          </motion.p>
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 1, ease: easeExpoOut, delay: 0.1 }}
-            className="font-display text-text-h2 text-brand-black leading-tight"
-          >
-            Featured Masterpieces
-          </motion.h2>
+          <Reveal>
+            <p className="text-brand-gold uppercase tracking-widest text-sm font-sans">
+              The Exhibition
+            </p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h2 className="font-display text-text-h2 text-brand-black leading-tight">
+              Featured Masterpieces
+            </h2>
+          </Reveal>
         </div>
         
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-          transition={{ duration: 1, ease: easeExpoOut, delay: 0.2 }}
+        <Reveal direction="right" delay={0.2}
         >
           <button className="text-brand-black border-b border-brand-gold pb-1 font-sans text-sm hover:text-brand-gold transition-colors duration-[400ms] cursor-pointer">
             View Complete Gallery
           </button>
-        </motion.div>
+        </Reveal>
       </div>
 
       {/* Horizontal Scroll Track */}

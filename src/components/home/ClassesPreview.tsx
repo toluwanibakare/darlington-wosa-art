@@ -1,9 +1,9 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { GraduationCap, BookOpen, ArrowRight, Users, Clock } from 'lucide-react';
+import { Reveal } from '@/components/ui';
 
 export function ClassesPreview() {
   return (
@@ -13,12 +13,7 @@ export function ClassesPreview() {
 
       <div className="max-w-[1400px] mx-auto">
         {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-16"
+        <Reveal className="max-w-3xl mb-16"
         >
           <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
             Art Education
@@ -30,16 +25,12 @@ export function ClassesPreview() {
           <p className="font-sans text-brand-gray text-text-body max-w-2xl leading-relaxed">
             Whether you prefer live mentorship or self-paced study, choose the path that fits your journey.
           </p>
-        </motion.div>
+        </Reveal>
 
         {/* Two columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Live Classes */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          <Reveal duration={0.8}
             className="group"
           >
             <div className="p-10 md:p-12 border border-brand-border rounded-[12px] bg-brand-white/50 hover:border-brand-gold/30 hover:shadow-[0_0_40px_rgba(158,101,27,0.06)] transition-all duration-500 h-full flex flex-col">
@@ -75,14 +66,10 @@ export function ClassesPreview() {
                 <ArrowRight size={13} />
               </Link>
             </div>
-          </motion.div>
+            </Reveal>
 
           {/* E-Book Courses */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          <Reveal duration={0.8} delay={0.1}
             className="group"
           >
             <div className="p-10 md:p-12 border border-brand-border rounded-[12px] bg-brand-white/50 hover:border-brand-gold/30 hover:shadow-[0_0_40px_rgba(158,101,27,0.06)] transition-all duration-500 h-full flex flex-col">
@@ -118,7 +105,7 @@ export function ClassesPreview() {
                 <ArrowRight size={13} />
               </Link>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>

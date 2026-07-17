@@ -1,8 +1,7 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui';
+import { Button, Reveal } from '@/components/ui';
 import { MapPin, Phone, Mail, Clock, ArrowRight } from 'lucide-react';
 
 const CONTACT_INFO = [
@@ -21,11 +20,7 @@ export function ContactCTA() {
       <div className="max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Left — CTA Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          <Reveal
           >
             <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
               Start Your Project
@@ -48,14 +43,10 @@ export function ContactCTA() {
                 View Portfolio
               </Button>
             </div>
-          </motion.div>
+          </Reveal>
 
           {/* Right — Contact Details */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          <Reveal delay={0.2}
             className="space-y-10"
           >
             <div className="p-8 md:p-10 border border-brand-border rounded-[8px] bg-brand-white/50">
@@ -87,7 +78,7 @@ export function ContactCTA() {
             <p className="font-sans text-xs text-brand-gray/60 text-center">
               Responses within 24 hours. Weekend inquiries answered on Monday.
             </p>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>

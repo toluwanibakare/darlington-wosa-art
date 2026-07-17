@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Gift, Users, TrendingUp, Award, ArrowRight } from 'lucide-react';
+import { Reveal } from '@/components/ui';
 
 const BENEFITS = [
   {
@@ -30,11 +31,7 @@ export function ReferralEarn() {
 
       <div className="max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          <Reveal
           >
             <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
               Earn With Us
@@ -50,12 +47,13 @@ export function ReferralEarn() {
 
             <div className="space-y-8">
               {BENEFITS.map((benefit, i) => (
-                <motion.div
+                <Reveal
                   key={benefit.title}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  direction="left"
+                  distance={20}
+                  duration={0.6}
+                  delay={i * 0.1}
+                  viewportMargin="0px"
                   className="flex items-start gap-5"
                 >
                   <div className="w-11 h-11 rounded-full border border-brand-gold/20 bg-brand-white flex items-center justify-center flex-shrink-0">
@@ -65,15 +63,15 @@ export function ReferralEarn() {
                     <h3 className="font-display text-lg text-brand-black mb-1.5">{benefit.title}</h3>
                     <p className="font-sans text-sm text-brand-gray leading-relaxed">{benefit.description}</p>
                   </div>
-                </motion.div>
+                </Reveal>
               ))}
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            <Reveal
+              delay={0.3}
+              duration={0.6}
+              distance={10}
+              viewportMargin="0px"
               className="mt-10"
             >
               <Link
@@ -86,14 +84,12 @@ export function ReferralEarn() {
                   <ArrowRight size={14} />
                 </span>
               </Link>
-            </motion.div>
-          </motion.div>
+            </Reveal>
+          </Reveal>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          <Reveal
+            direction="scale"
+            delay={0.2}
             className="relative"
           >
             <div className="p-10 md:p-14 border border-brand-gold/20 rounded-[12px] bg-brand-white/30 backdrop-blur-sm text-center">
@@ -121,7 +117,7 @@ export function ReferralEarn() {
                 Rewards are credited to your wallet once the referral completes their first order.
               </p>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>

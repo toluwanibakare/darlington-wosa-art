@@ -4,6 +4,9 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
+import { Reveal, Parallax } from '@/components/ui';
+
+const easeExpoOut = [0.16, 1, 0.3, 1] as const;
 
 export function ArtistJourney() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -11,10 +14,6 @@ export function ArtistJourney() {
     target: sectionRef,
     offset: ["start end", "end start"]
   });
-
-  // Parallax for the images
-  const yArtistImg = useTransform(scrollYProgress, [0, 1], [50, -50]);
-  const yHandsImg = useTransform(scrollYProgress, [0, 1], [-30, 80]);
 
   return (
     <section ref={sectionRef} className="relative w-full bg-brand-surface py-24 md:py-32 px-6 overflow-hidden border-t border-brand-black/5">
@@ -24,9 +23,8 @@ export function ArtistJourney() {
         <div className="relative h-[600px] md:h-[800px] w-full flex items-center justify-center">
           
           {/* Main Artist Image */}
-          <motion.div 
+          <Parallax speed={0.3} offset={[50, -50]}
             className="absolute left-0 top-10 w-[70%] h-[70%] overflow-hidden border border-brand-border bg-white shadow-[0_20px_60px_rgba(0,0,0,0.1)]"
-            style={{ y: yArtistImg }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
@@ -34,12 +32,11 @@ export function ArtistJourney() {
               alt="Darlington Wosa - Portrait Artist & Custom Framer" 
               className="w-full h-full object-cover"
             />
-          </motion.div>
+          </Parallax>
 
           {/* Overlapping Hands / Sketching Image */}
-          <motion.div 
+          <Parallax speed={0.2} offset={[-30, 80]}
             className="absolute right-0 bottom-10 w-[55%] h-[55%] overflow-hidden border border-brand-border bg-white shadow-[0_20px_60px_rgba(0,0,0,0.15)] z-10"
-            style={{ y: yHandsImg }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
@@ -47,17 +44,13 @@ export function ArtistJourney() {
               alt="Artist at work" 
               className="w-full h-full object-cover filter contrast-125 sepia-[0.2]"
             />
-          </motion.div>
+          </Parallax>
 
         </div>
 
         {/* Text Column */}
         <div className="flex flex-col justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          <Reveal
           >
             <span className="text-[11px] tracking-[0.2em] uppercase text-brand-gold font-sans block mb-6">
               The Artist's Journey
@@ -65,13 +58,10 @@ export function ArtistJourney() {
             <h2 className="font-display text-text-h2 text-brand-black leading-tight mb-8">
               The Hands Behind <br/> The Artwork
             </h2>
-          </motion.div>
+          </Reveal>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          <Reveal
+            delay={0.2}
             className="space-y-6 text-brand-gray text-text-body"
           >
             <p>
@@ -94,7 +84,7 @@ export function ArtistJourney() {
                 <span className="absolute -bottom-0.5 left-0 right-0 h-[1px] bg-brand-gold/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left ease-[var(--ease-expo-out)]" />
               </Link>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
 
       </div>

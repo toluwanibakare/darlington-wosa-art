@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useUser } from '@/lib/use-user';
 import { api } from '@/lib/api';
+import { fadeUpProps } from '@/lib/animation';
 
 interface Order {
   id: string;
@@ -207,15 +208,9 @@ export default function DashboardOverview() {
       return { ...item, icon };
     });
 
-  const fadeUp = (delay: number) => ({
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] as const },
-  });
-
   return (
     <div className="p-6 md:p-10">
-      <motion.div {...fadeUp(0)} className="mb-12">
+      <motion.div {...fadeUpProps(0)} className="mb-12">
         <h1 className="font-display text-3xl md:text-4xl text-brand-black mb-2">
           Welcome back, {user.name}
         </h1>
@@ -228,7 +223,7 @@ export default function DashboardOverview() {
         {STATS.map((stat, i) => (
           <motion.div
             key={stat.label}
-            {...fadeUp(0.1 + i * 0.05)}
+            {...fadeUpProps(0.1 + i * 0.05)}
             className="p-6 border border-brand-border rounded-[8px] bg-brand-white/50 hover:border-brand-gold/20 transition-all duration-500 group"
           >
             <div className={`w-10 h-10 rounded-full ${stat.bg} flex items-center justify-center mb-4`}>
@@ -242,7 +237,7 @@ export default function DashboardOverview() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-12">
         {FINANCIAL_STATS.map((stat, i) => (
-          <motion.div key={stat.label} {...fadeUp(0.3 + i * 0.05)}>
+          <motion.div key={stat.label} {...fadeUpProps(0.3 + i * 0.05)}>
             <Link
               href={stat.href}
               className="block p-5 border border-brand-border rounded-[8px] bg-brand-white/50 hover:border-brand-gold/20 hover:bg-brand-white/80 transition-all duration-500 group"
@@ -262,7 +257,7 @@ export default function DashboardOverview() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <motion.div {...fadeUp(0.4)} className="lg:col-span-2">
+        <motion.div {...fadeUpProps(0.4)} className="lg:col-span-2">
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-display text-xl text-brand-black">Recent Orders</h2>
             <Link href="/dashboard/orders" className="flex items-center gap-1 text-brand-gold font-sans text-[10px] tracking-[0.15em] uppercase hover:text-brand-gold-light transition-colors">
@@ -309,7 +304,7 @@ export default function DashboardOverview() {
         </motion.div>
 
         <div className="space-y-8">
-          <motion.div {...fadeUp(0.45)} className="p-6 border border-brand-border rounded-[8px] bg-brand-white/50">
+          <motion.div {...fadeUpProps(0.45)} className="p-6 border border-brand-border rounded-[8px] bg-brand-white/50">
             <div className="flex items-center justify-between mb-5">
               <h3 className="font-display text-base text-brand-black">Recent Activity</h3>
               <Activity size={16} className="text-brand-gold" />
@@ -334,7 +329,7 @@ export default function DashboardOverview() {
             </div>
           </motion.div>
 
-          <motion.div {...fadeUp(0.5)} className="p-6 border border-brand-border rounded-[8px] bg-brand-white/50">
+          <motion.div {...fadeUpProps(0.5)} className="p-6 border border-brand-border rounded-[8px] bg-brand-white/50">
             <div className="flex items-center justify-between mb-5">
               <h3 className="font-display text-base text-brand-black">Next Class</h3>
               <BookOpen size={16} className="text-brand-gold" />

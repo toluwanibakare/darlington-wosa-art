@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui';
+import { Button, Reveal } from '@/components/ui';
 import { Send, Check } from 'lucide-react';
 
 const SERVICE_OPTIONS = [
@@ -107,14 +107,14 @@ export function ContactForm() {
   }
 
   return (
-    <motion.form
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      onSubmit={handleSubmit}
+    <Reveal
+      distance={20}
+      duration={0.8}
+      viewportMargin="0px"
       className="p-8 md:p-12 border border-brand-border rounded-[8px] bg-brand-white/50 space-y-8"
     >
+      <form onSubmit={handleSubmit}
+      >
       {/* Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
@@ -181,6 +181,7 @@ export function ContactForm() {
           <Send size={14} className="ml-2 inline-block" />
         </Button>
       </div>
-    </motion.form>
+      </form>
+    </Reveal>
   );
 }

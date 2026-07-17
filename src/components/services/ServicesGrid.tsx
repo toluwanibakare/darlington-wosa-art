@@ -1,8 +1,7 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui';
+import { Button, Reveal } from '@/components/ui';
 import { 
   Pen, 
   Pencil, 
@@ -91,12 +90,9 @@ export function ServicesGrid() {
       <div className="max-w-[1400px] mx-auto">
         <div className="space-y-32 md:space-y-40">
           {SERVICES_LIST.map((service, i) => (
-            <motion.div
+            <Reveal
               key={service.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              distance={40}
               className={`grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-start ${
                 i % 2 === 1 ? 'lg:flex-row-reverse' : ''
               }`}
@@ -148,7 +144,7 @@ export function ServicesGrid() {
                   <ArrowRight size={12} className="ml-2 inline-block" />
                 </Button>
               </div>
-            </motion.div>
+            </Reveal>
           ))}
         </div>
       </div>

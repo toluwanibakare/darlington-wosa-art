@@ -1,8 +1,8 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Quote } from 'lucide-react';
+import { Reveal, StaggerList, StaggerItem } from '@/components/ui';
 
 const TESTIMONIALS = [
   {
@@ -33,12 +33,7 @@ export function Testimonials() {
       <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'var(--bg-noise)' }} />
 
       <div className="max-w-[1400px] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-20"
+        <Reveal className="max-w-3xl mb-20"
         >
           <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
             Testimonials
@@ -47,16 +42,12 @@ export function Testimonials() {
             What Clients <br />
             <span className="text-brand-gold italic">Say</span>
           </h2>
-        </motion.div>
+        </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <StaggerList className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {TESTIMONIALS.map((item, i) => (
-            <motion.div
+            <StaggerItem
               key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="relative p-8 md:p-10 border border-brand-white/5 rounded-[8px] bg-brand-white/[0.02] hover:bg-brand-white/[0.04] transition-colors duration-500"
             >
               <Quote size={24} className="text-brand-gold/30 mb-6" />
@@ -78,9 +69,9 @@ export function Testimonials() {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerList>
       </div>
     </section>
   );

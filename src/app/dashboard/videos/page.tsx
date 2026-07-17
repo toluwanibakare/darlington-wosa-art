@@ -13,12 +13,7 @@ import {
   DollarSign,
 } from 'lucide-react';
 import { api } from '@/lib/api';
-
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] as const },
-});
+import { fadeUpProps } from '@/lib/animation';
 
 const formatCurrency = (amount: number) => `₦${amount.toLocaleString()}`;
 
@@ -104,7 +99,7 @@ export default function VideoRewardsPage() {
 
   return (
     <div className="p-6 md:p-10 max-w-[1000px]">
-      <motion.div {...fadeUp(0)}>
+      <motion.div {...fadeUpProps(0)}>
         <h1 className="font-display text-3xl md:text-4xl text-brand-black mb-2">Video Rewards</h1>
         <p className="font-sans text-sm text-brand-gray mb-10">Submit videos and earn cashback rewards.</p>
 
@@ -112,7 +107,7 @@ export default function VideoRewardsPage() {
           {VIDEO_STATS.map((stat, i) => (
             <motion.div
               key={stat.label}
-              {...fadeUp(0.1 + i * 0.05)}
+              {...fadeUpProps(0.1 + i * 0.05)}
               className="p-6 border border-brand-border rounded-[8px] bg-brand-white/50 hover:border-brand-gold/20 transition-all duration-500 group"
             >
               <div className={`w-10 h-10 rounded-full ${stat.bg} flex items-center justify-center mb-4`}>
@@ -125,7 +120,7 @@ export default function VideoRewardsPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          <motion.div {...fadeUp(0.25)} className="lg:col-span-3">
+          <motion.div {...fadeUpProps(0.25)} className="lg:col-span-3">
             <div className="p-6 md:p-8 border border-brand-border rounded-[8px] bg-brand-white/50">
               <h2 className="font-display text-lg text-brand-black mb-6">Submit a Video</h2>
 
@@ -225,7 +220,7 @@ export default function VideoRewardsPage() {
             </div>
           </motion.div>
 
-          <motion.div {...fadeUp(0.3)} className="lg:col-span-2">
+          <motion.div {...fadeUpProps(0.3)} className="lg:col-span-2">
             <h2 className="font-display text-lg text-brand-black mb-6">Submission History</h2>
             <div className="space-y-3">
               {videos.length === 0 && (
@@ -269,7 +264,7 @@ export default function VideoRewardsPage() {
           </motion.div>
         </div>
 
-        <motion.div {...fadeUp(0.35)} className="mt-12 p-6 md:p-8 border border-brand-border rounded-[8px] bg-brand-white/50">
+        <motion.div {...fadeUpProps(0.35)} className="mt-12 p-6 md:p-8 border border-brand-border rounded-[8px] bg-brand-white/50">
           <h2 className="font-display text-lg text-brand-black mb-6">Video Reward Guidelines</h2>
           <div className="flex flex-wrap justify-center gap-6">
             {[

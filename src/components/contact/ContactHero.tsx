@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { Reveal } from '@/components/ui';
 
 export function ContactHero() {
   return (
@@ -10,11 +10,7 @@ export function ContactHero() {
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_bottom_left,transparent_40%,rgba(0,0,0,0.02)_100%)]" />
 
       <div className="max-w-[1400px] mx-auto w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-4xl"
+        <Reveal viewportOnce={false} className="max-w-4xl"
         >
           <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
             Get in Touch
@@ -28,7 +24,7 @@ export function ContactHero() {
             Tell me about your project, and I will respond within 24 hours with guidance, 
             options, and a custom quote tailored to your needs.
           </p>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

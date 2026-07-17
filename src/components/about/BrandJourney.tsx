@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { Reveal, StaggerList, StaggerItem } from '@/components/ui';
 
 const MILESTONES = [
   {
@@ -37,12 +37,7 @@ export function BrandJourney() {
       <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'var(--bg-noise)' }} />
 
       <div className="max-w-[1400px] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-20"
+        <Reveal className="max-w-3xl mb-20"
         >
           <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
             The Journey
@@ -51,19 +46,18 @@ export function BrandJourney() {
             From Primary School Strokes to <br />
             <span className="text-brand-gold italic">National Recognition</span>
           </h2>
-        </motion.div>
+        </Reveal>
 
         <div className="relative">
           {/* Timeline Line */}
           <div className="absolute left-[19px] md:left-1/2 top-0 bottom-0 w-[1px] bg-brand-white/10 -translate-x-1/2" />
 
           {MILESTONES.map((item, i) => (
-            <motion.div
+            <Reveal
               key={item.year}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              delay={i * 0.1}
+              duration={0.8}
+              viewportMargin="-80px"
               className={`relative flex flex-col md:flex-row items-start gap-8 md:gap-12 pb-16 md:pb-20 ${
                 i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
               }`}
@@ -86,7 +80,7 @@ export function BrandJourney() {
 
               {/* Spacer for the other side */}
               <div className="hidden md:block md:w-[calc(50%-3rem)]" />
-            </motion.div>
+            </Reveal>
           ))}
         </div>
       </div>

@@ -1,15 +1,14 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { 
-  Palette, 
-  Frame, 
-  Building2, 
+import {
+  Palette,
+  Frame,
+  Building2,
   Camera,
   ArrowRight
 } from 'lucide-react';
-import { Button } from '@/components/ui';
+import { Button, Reveal, StaggerList, StaggerItem } from '@/components/ui';
 
 const SERVICES = [
   {
@@ -44,12 +43,7 @@ export function Services() {
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20" style={{ backgroundImage: 'var(--bg-noise)' }} />
 
       <div className="max-w-[1400px] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-20"
+        <Reveal className="max-w-3xl mb-20"
         >
           <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
             What I Offer
@@ -63,16 +57,15 @@ export function Services() {
             every service is delivered with the same obsessive attention to detail 
             that defines my work.
           </p>
-        </motion.div>
+        </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
           {SERVICES.map((service, i) => (
-            <motion.div
+            <Reveal
               key={service.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              delay={i * 0.1}
+              duration={0.8}
+              viewportMargin="-50px"
               className="group"
             >
               <div className="flex items-start gap-6">
@@ -96,28 +89,24 @@ export function Services() {
                   </ul>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
+              </Reveal>
+            ))}
+          </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        <Reveal
+          delay={0.3}
+          viewportMargin="0px"
           className="mt-16 text-center"
         >
           <Button variant="secondary">
             View All Services
             <ArrowRight size={14} className="ml-2 inline-block" />
           </Button>
-        </motion.div>
+        </Reveal>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        <Reveal
+          delay={0.4}
+          viewportMargin="0px"
           className="mt-20 pt-16 border-t border-brand-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
         >
           <div>
@@ -132,7 +121,7 @@ export function Services() {
             Book a Consultation
             <ArrowRight size={14} className="ml-2 inline-block" />
           </Button>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Reveal, StaggerList, StaggerItem } from '@/components/ui';
 
 const STATS = [
   { label: 'Years Experience', value: '17+' },
@@ -14,7 +15,6 @@ const CHARCOAL = '#1a1a1a';
 
 export function BrandIntro() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
@@ -140,24 +140,20 @@ export function BrandIntro() {
       
       <div className="max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          <Reveal
+            direction="up"
+            distance={40}
             className="lg:col-span-7"
           >
             <h2 className="font-display text-[clamp(1.8rem,4vw,3.2rem)] md:text-[2.8rem] lg:text-[3.5rem] text-brand-black leading-[1.15] tracking-tight mb-8">
               I create custom portraits, fine artworks, and premium framing solutions that preserve memories and transform spaces.
             </h2>
-          </motion.div>
+          </Reveal>
 
-          <motion.div
-            ref={containerRef}
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          <Reveal
+            direction="scale"
+            distance={5}
+            delay={0.2}
             className="lg:col-span-5 relative w-full overflow-hidden border border-brand-border bg-brand-surface shadow-[0_20px_60px_rgba(0,0,0,0.12)]"
             style={{ minHeight: 'clamp(280px, 50vw, 480px)' }}
           >
@@ -177,25 +173,21 @@ export function BrandIntro() {
                 </span>
               </div>
             )}
-          </motion.div>
+          </Reveal>
         </div>
 
-        <motion.div 
+        <Reveal
+          direction="scale"
+          distance={100}
+          duration={1.2}
+          viewportMargin="0px"
           className="w-full h-[1px] bg-brand-black/10 my-16 md:my-24"
-          initial={{ scaleX: 0, opacity: 0 }}
-          whileInView={{ scaleX: 1, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 justify-items-center">
+        <StaggerList speed="fast" className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 justify-items-center">
           {STATS.map((stat, i) => (
-            <motion.div
+            <StaggerItem
               key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="text-center"
             >
               <span className="font-display text-4xl md:text-5xl lg:text-6xl text-brand-gold mb-3 block">
@@ -204,9 +196,9 @@ export function BrandIntro() {
               <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gray/80">
                 {stat.label}
               </span>
-            </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerList>
       </div>
     </section>
   );

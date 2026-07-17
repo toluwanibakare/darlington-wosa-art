@@ -1,8 +1,8 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Trophy, Users as UsersIcon, Award as AwardIcon, Star } from 'lucide-react';
+import { Reveal, StaggerList, StaggerItem } from '@/components/ui';
 
 const ACHIEVEMENTS = [
   {
@@ -33,12 +33,7 @@ export function Achievements() {
       <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'var(--bg-noise)' }} />
 
       <div className="max-w-[1400px] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-20"
+        <Reveal className="max-w-3xl mb-20"
         >
           <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
             Achievements
@@ -46,17 +41,13 @@ export function Achievements() {
           <h2 className="font-display text-text-h2 text-brand-white leading-tight">
             Milestones
           </h2>
-        </motion.div>
+        </Reveal>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-24">
+        <StaggerList className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-24" speed="fast">
           {ACHIEVEMENTS.map((item, i) => (
-            <motion.div
+            <StaggerItem
               key={item.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
               className="text-center"
             >
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full border border-brand-gold/20 bg-brand-gold/[0.04] mb-4">
@@ -68,11 +59,9 @@ export function Achievements() {
               <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/70">
                 {item.label}
               </p>
-            </motion.div>
+            </StaggerItem>
           ))}
-        </div>
-
-
+        </StaggerList>
       </div>
     </section>
   );

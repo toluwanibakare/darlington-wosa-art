@@ -1,8 +1,7 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui';
+import { Button, Reveal } from '@/components/ui';
 import { ArrowRight, Clock } from 'lucide-react';
 
 export function PromoBanner() {
@@ -14,11 +13,7 @@ export function PromoBanner() {
       <div className="max-w-[1400px] mx-auto relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          <Reveal direction="left"
           >
             <div className="flex items-center gap-2 mb-6">
               <Clock size={14} className="text-brand-gold" />
@@ -44,14 +39,10 @@ export function PromoBanner() {
                 Learn More
               </Button>
             </div>
-          </motion.div>
+          </Reveal>
 
           {/* Right - Stats/Trust signals */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          <Reveal direction="right" delay={0.15}
             className="grid grid-cols-2 gap-6"
           >
             {[
@@ -72,7 +63,7 @@ export function PromoBanner() {
                 </p>
               </div>
             ))}
-          </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>

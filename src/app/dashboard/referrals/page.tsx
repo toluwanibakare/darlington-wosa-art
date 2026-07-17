@@ -4,12 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Gift, Copy, Check, Users, TrendingUp, DollarSign, UserCheck, UserX, Share2, ExternalLink, Loader2 } from 'lucide-react';
 import { api } from '@/lib/api';
-
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] as const },
-});
+import { fadeUpProps } from '@/lib/animation';
 
 const formatCurrency = (amount: number) => `₦${amount.toLocaleString()}`;
 
@@ -94,7 +89,7 @@ export default function ReferralsPage() {
 
   return (
     <div className="p-6 md:p-10">
-      <motion.div {...fadeUp(0)}>
+      <motion.div {...fadeUpProps(0)}>
         <h1 className="font-display text-3xl md:text-4xl text-brand-black mb-2">Referrals</h1>
         <p className="font-sans text-sm text-brand-gray mb-10">Refer friends and earn rewards on every successful purchase.</p>
 
@@ -141,7 +136,7 @@ export default function ReferralsPage() {
           {REFERRAL_STATS.map((stat, i) => (
             <motion.div
               key={stat.label}
-              {...fadeUp(0.1 + i * 0.05)}
+              {...fadeUpProps(0.1 + i * 0.05)}
               className="p-6 border border-brand-border rounded-[8px] bg-brand-white/50 hover:border-brand-gold/20 transition-all duration-500 group"
             >
               <div className={`w-10 h-10 rounded-full ${stat.bg} flex items-center justify-center mb-4`}>
@@ -154,7 +149,7 @@ export default function ReferralsPage() {
         </div>
 
         {/* Withdrawable Balance Card */}
-        <motion.div {...fadeUp(0.3)} className="p-6 md:p-8 border border-brand-border rounded-[8px] bg-brand-white/50 mb-12">
+        <motion.div {...fadeUpProps(0.3)} className="p-6 md:p-8 border border-brand-border rounded-[8px] bg-brand-white/50 mb-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
@@ -174,7 +169,7 @@ export default function ReferralsPage() {
         </motion.div>
 
         {/* Referral History */}
-        <motion.div {...fadeUp(0.35)}>
+        <motion.div {...fadeUpProps(0.35)}>
           <h2 className="font-display text-xl text-brand-black mb-6">Referral History</h2>
           <div className="border border-brand-border rounded-[8px] bg-brand-white/50 overflow-hidden">
             <div className="overflow-x-auto">

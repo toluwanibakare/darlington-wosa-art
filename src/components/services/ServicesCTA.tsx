@@ -1,8 +1,7 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui';
+import { Button, Reveal } from '@/components/ui';
 import { ArrowRight } from 'lucide-react';
 
 export function ServicesCTA() {
@@ -11,11 +10,7 @@ export function ServicesCTA() {
       <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'var(--bg-noise)' }} />
 
       <div className="max-w-[900px] mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        <Reveal
         >
           <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
             Not Sure Where to Start?
@@ -38,7 +33,7 @@ export function ServicesCTA() {
               View Portfolio
             </Button>
           </div>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Reveal } from '@/components/ui';
 import { Plus, Minus } from 'lucide-react';
 
 const FAQS = [
@@ -95,12 +96,7 @@ export function ContactFAQ() {
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20" style={{ backgroundImage: 'var(--bg-noise)' }} />
 
       <div className="max-w-[900px] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
+        <Reveal className="mb-16"
         >
           <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
             FAQs
@@ -109,13 +105,12 @@ export function ContactFAQ() {
             Commonly Asked <br />
             <span className="text-brand-gold italic">Questions</span>
           </h2>
-        </motion.div>
+        </Reveal>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        <Reveal
+          distance={20}
+          duration={0.8}
+          viewportMargin="0px"
         >
           {FAQS.map((faq, i) => (
             <FAQItem
@@ -126,7 +121,7 @@ export function ContactFAQ() {
               onToggle={() => toggle(i)}
             />
           ))}
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   );

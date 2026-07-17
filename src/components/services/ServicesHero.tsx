@@ -2,6 +2,7 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { Reveal } from '@/components/ui';
 
 export function ServicesHero() {
   const ref = useRef<HTMLElement>(null);
@@ -14,11 +15,7 @@ export function ServicesHero() {
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top_right,transparent_40%,rgba(0,0,0,0.02)_100%)]" />
 
       <motion.div style={{ y }} className="max-w-[1400px] mx-auto w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-4xl"
+        <Reveal viewportOnce={false} className="max-w-4xl"
         >
           <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
             What I Do
@@ -33,7 +30,7 @@ export function ServicesHero() {
             Whether you need a single portrait or a complete corporate art solution, I bring the 
             same dedication to every project.
           </p>
-        </motion.div>
+        </Reveal>
       </motion.div>
     </section>
   );

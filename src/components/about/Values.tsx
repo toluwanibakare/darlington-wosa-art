@@ -1,8 +1,8 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Gem, Shield, Heart, Leaf, Award, Users } from 'lucide-react';
+import { Reveal, StaggerList, StaggerItem } from '@/components/ui';
 
 const VALUES = [
   {
@@ -43,12 +43,7 @@ export function Values() {
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20" style={{ backgroundImage: 'var(--bg-noise)' }} />
 
       <div className="max-w-[1400px] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mb-20"
+        <Reveal className="max-w-3xl mb-20"
         >
           <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
             Our Values
@@ -57,16 +52,12 @@ export function Values() {
             The Principles That <br />
             <span className="text-brand-gold italic">Guide Us</span>
           </h2>
-        </motion.div>
+        </Reveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
+        <StaggerList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16" speed="fast">
           {VALUES.map((value, i) => (
-            <motion.div
+            <StaggerItem
               key={value.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
               className="group"
             >
               <div className="w-12 h-12 rounded-full border border-brand-gold/30 bg-brand-white flex items-center justify-center mb-6 group-hover:border-brand-gold/70 transition-colors duration-500">
@@ -78,9 +69,9 @@ export function Values() {
               <p className="font-sans text-sm text-brand-gray leading-relaxed">
                 {value.description}
               </p>
-            </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerList>
       </div>
     </section>
   );

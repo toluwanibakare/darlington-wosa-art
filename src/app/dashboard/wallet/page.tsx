@@ -31,11 +31,7 @@ function formatDate(dateStr: string): string {
   return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
 }
 
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] as const },
-});
+import { fadeUpProps } from '@/lib/animation';
 
 export default function WalletPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -93,7 +89,7 @@ export default function WalletPage() {
 
   return (
     <div className="p-6 md:p-10">
-      <motion.div {...fadeUp(0)}>
+      <motion.div {...fadeUpProps(0)}>
         <h1 className="font-display text-3xl md:text-4xl text-brand-black mb-2">Wallet</h1>
         <p className="font-sans text-sm text-brand-gray mb-10">Manage your wallet, cashback, and transaction history.</p>
 
@@ -101,7 +97,7 @@ export default function WalletPage() {
           {BALANCE_CARDS.map((card, i) => (
             <motion.div
               key={card.label}
-              {...fadeUp(0.1 + i * 0.05)}
+              {...fadeUpProps(0.1 + i * 0.05)}
               className="p-6 border border-brand-border rounded-[8px] bg-brand-white/50 hover:border-brand-gold/20 transition-all duration-500 group"
             >
               <div className={`w-10 h-10 rounded-full ${card.bg} flex items-center justify-center mb-4`}>
@@ -113,7 +109,7 @@ export default function WalletPage() {
           ))}
         </div>
 
-        <motion.div {...fadeUp(0.25)} className="p-6 md:p-8 border border-brand-border rounded-[8px] bg-brand-white/50 mb-12">
+        <motion.div {...fadeUpProps(0.25)} className="p-6 md:p-8 border border-brand-border rounded-[8px] bg-brand-white/50 mb-12">
           <h2 className="font-display text-lg text-brand-black mb-6">How to Earn Cashback</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
@@ -134,7 +130,7 @@ export default function WalletPage() {
           </div>
         </motion.div>
 
-        <motion.div {...fadeUp(0.3)}>
+        <motion.div {...fadeUpProps(0.3)}>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <h2 className="font-display text-xl text-brand-black">Transaction History</h2>
             <div className="flex gap-2">
