@@ -16,6 +16,21 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\CouponController;
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
+use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
+use App\Http\Controllers\Admin\ClassController as AdminClassController;
+use App\Http\Controllers\Admin\BookingController as AdminBookingController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
+use App\Http\Controllers\Admin\CouponController as AdminCouponController;
+use App\Http\Controllers\Admin\MessageController as AdminMessageController;
+use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
+use App\Http\Controllers\Admin\VideoController as AdminVideoController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
+use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -80,4 +95,93 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Coupons
     Route::get('/coupons', [CouponController::class, 'index']);
+});
+
+// Admin routes
+Route::prefix('admin')->group(function () {
+    Route::post('/login', [AdminAuthController::class, 'login']);
+
+    Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+        Route::get('/me', [AdminAuthController::class, 'me']);
+        Route::post('/logout', [AdminAuthController::class, 'logout']);
+
+        // Dashboard
+        Route::get('/dashboard/stats', [AdminDashboardController::class, 'stats']);
+
+        // Users
+        Route::get('/users', [AdminUserController::class, 'index']);
+        Route::get('/users/{id}', [AdminUserController::class, 'show']);
+        Route::put('/users/{id}', [AdminUserController::class, 'update']);
+        Route::delete('/users/{id}', [AdminUserController::class, 'destroy']);
+
+        // Services
+        Route::get('/services', [AdminServiceController::class, 'index']);
+        Route::post('/services', [AdminServiceController::class, 'store']);
+        Route::get('/services/{id}', [AdminServiceController::class, 'show']);
+        Route::put('/services/{id}', [AdminServiceController::class, 'update']);
+        Route::delete('/services/{id}', [AdminServiceController::class, 'destroy']);
+
+        // Portfolio
+        Route::get('/portfolio', [AdminPortfolioController::class, 'index']);
+        Route::post('/portfolio', [AdminPortfolioController::class, 'store']);
+        Route::get('/portfolio/{id}', [AdminPortfolioController::class, 'show']);
+        Route::put('/portfolio/{id}', [AdminPortfolioController::class, 'update']);
+        Route::delete('/portfolio/{id}', [AdminPortfolioController::class, 'destroy']);
+
+        // Classes
+        Route::get('/classes', [AdminClassController::class, 'index']);
+        Route::post('/classes', [AdminClassController::class, 'store']);
+        Route::get('/classes/{id}', [AdminClassController::class, 'show']);
+        Route::put('/classes/{id}', [AdminClassController::class, 'update']);
+        Route::delete('/classes/{id}', [AdminClassController::class, 'destroy']);
+
+        // Bookings
+        Route::get('/bookings', [AdminBookingController::class, 'index']);
+        Route::get('/bookings/{id}', [AdminBookingController::class, 'show']);
+        Route::put('/bookings/{id}', [AdminBookingController::class, 'update']);
+        Route::delete('/bookings/{id}', [AdminBookingController::class, 'destroy']);
+
+        // Orders
+        Route::get('/orders', [AdminOrderController::class, 'index']);
+        Route::get('/orders/{id}', [AdminOrderController::class, 'show']);
+        Route::put('/orders/{id}', [AdminOrderController::class, 'update']);
+        Route::delete('/orders/{id}', [AdminOrderController::class, 'destroy']);
+
+        // Newsletter
+        Route::get('/newsletter/subscribers', [AdminNewsletterController::class, 'subscribers']);
+        Route::post('/newsletter/send', [AdminNewsletterController::class, 'send']);
+        Route::delete('/newsletter/subscribers/{id}', [AdminNewsletterController::class, 'destroy']);
+
+        // Coupons / Promotions
+        Route::get('/coupons', [AdminCouponController::class, 'index']);
+        Route::post('/coupons', [AdminCouponController::class, 'store']);
+        Route::get('/coupons/{id}', [AdminCouponController::class, 'show']);
+        Route::put('/coupons/{id}', [AdminCouponController::class, 'update']);
+        Route::delete('/coupons/{id}', [AdminCouponController::class, 'destroy']);
+
+        // Messages
+        Route::get('/messages', [AdminMessageController::class, 'index']);
+        Route::get('/messages/{id}', [AdminMessageController::class, 'show']);
+        Route::delete('/messages/{id}', [AdminMessageController::class, 'destroy']);
+
+        // Testimonials
+        Route::get('/testimonials', [AdminTestimonialController::class, 'index']);
+        Route::post('/testimonials', [AdminTestimonialController::class, 'store']);
+        Route::get('/testimonials/{id}', [AdminTestimonialController::class, 'show']);
+        Route::put('/testimonials/{id}', [AdminTestimonialController::class, 'update']);
+        Route::delete('/testimonials/{id}', [AdminTestimonialController::class, 'destroy']);
+
+        // Videos
+        Route::get('/videos', [AdminVideoController::class, 'index']);
+        Route::put('/videos/{id}', [AdminVideoController::class, 'update']);
+        Route::delete('/videos/{id}', [AdminVideoController::class, 'destroy']);
+
+        // Settings / Referral config
+        Route::get('/settings', [AdminSettingController::class, 'index']);
+        Route::put('/settings', [AdminSettingController::class, 'update']);
+
+        // Broadcast Notifications
+        Route::post('/notifications/send-all', [AdminNotificationController::class, 'sendToAll']);
+        Route::post('/notifications/send-user', [AdminNotificationController::class, 'sendToUser']);
+    });
 });

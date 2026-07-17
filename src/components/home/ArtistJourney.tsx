@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 
 export function ArtistJourney() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -9,8 +11,6 @@ export function ArtistJourney() {
     target: sectionRef,
     offset: ["start end", "end start"]
   });
-
-  const [expanded, setExpanded] = useState(false);
 
   // Parallax for the images
   const yArtistImg = useTransform(scrollYProgress, [0, 1], [50, -50]);
@@ -77,31 +77,22 @@ export function ArtistJourney() {
             <p>
               True luxury lies in the details. As a self-taught portrait artist, custom framer, and art educator, I blend meticulous technical skill with an uncompromising commitment to premium presentation. My journey into fine art began in childhood, evolving through a lifelong dedication to the craft and a deep passion for hyper-realism.
             </p>
-            {!expanded && (
-              <p className="text-brand-gold/50 font-sans text-sm tracking-wide italic">... continued</p>
-            )}
-            <motion.div
-              initial={false}
-              animate={{ height: expanded ? 'auto' : 0, opacity: expanded ? 1 : 0 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="overflow-hidden space-y-6"
-            >
-              <p>
-                Specializing primarily in hyper-realistic charcoal, alongside vibrant work in pastel and acrylic, my studio crafts timeless, priceless masterpieces for high-profile individuals and discerning collectors. These works are designed to honor leadership, celebrate milestones, and gift loved ones with a legacy that transcends generations. Every piece is handled with extreme attention to detail, paired with bespoke luxury framing solutions, and delivered with absolute reliability.
-              </p>
-              <p>
-                Parallel to my studio practice, my mission is rooted in the belief that excellence is a learned discipline. As an active art educator and course creator, I provide the structured mentorship and devotion necessary for aspiring artists to scale up their skills. Driven by an unwavering pursuit of creativity and perfection, I don't just create art — I preserve moments, elevate spaces, and mentor the next generation of creative mastery.
-              </p>
-            </motion.div>
+            <p>
+              Specializing primarily in hyper-realistic charcoal, alongside vibrant work in pastel and acrylic, my studio crafts timeless, priceless masterpieces for high-profile individuals and discerning collectors. These works are designed to honor leadership, celebrate milestones, and gift loved ones with a legacy that transcends generations. Every piece is handled with extreme attention to detail, paired with bespoke luxury framing solutions, and delivered with absolute reliability.
+            </p>
+            <p>
+              Parallel to my studio practice, my mission is rooted in the belief that excellence is a learned discipline. As an active art educator and course creator, I provide the structured mentorship and devotion necessary for aspiring artists to scale up their skills. Driven by an unwavering pursuit of creativity and perfection, I don't just create art — I preserve moments, elevate spaces, and mentor the next generation of creative mastery.
+            </p>
 
             <div className="pt-4">
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold hover:text-brand-gold-light transition-colors duration-300 relative pb-1 group cursor-pointer"
+              <Link
+                href="/about"
+                className="inline-flex items-center gap-2 font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold hover:text-brand-gold-light transition-colors duration-300 relative pb-1 group"
               >
-                {expanded ? 'Show Less' : 'Read More'}
+                Read More
+                <ArrowUpRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 <span className="absolute -bottom-0.5 left-0 right-0 h-[1px] bg-brand-gold/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left ease-[var(--ease-expo-out)]" />
-              </button>
+              </Link>
             </div>
           </motion.div>
         </div>

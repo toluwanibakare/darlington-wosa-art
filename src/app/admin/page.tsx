@@ -1,0 +1,166 @@
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Users, ShoppingBag, Calendar, MessageSquare } from 'lucide-react';
+
+interface DashboardStats {
+  users: number;
+  orders: number;
+  revenue: number;
+  bookings: number;
+  unread_messages: number;
+  subscribers: number;
+  classes: number;
+}
+
+const formatNaira = (amount: number) =>
+  `₦${amount.toLocaleString()}`;
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+const statCards = [
+  {
+    key: 'users',
+    label: 'Total Users',
+    icon: Users,
+    value: (s: DashboardStats) => s.users.toLocaleString(),
+  },
+  {
+    key: 'orders',
+    label: 'Total Orders',
+    icon: ShoppingBag,
+    value: (s: DashboardStats) => s.orders.toLocaleString(),
+    extra: (s: DashboardStats) => (
+      <span className="font-sans text-[11px] text-brand-gold">
+        Revenue: {formatNaira(s.revenue)}
+      </span>
+    ),
+  },
+  {
+    key: 'bookings',
+    label: 'Total Bookings',
+    icon: Calendar,
+    value: (s: DashboardStats) => s.bookings.toLocaleString(),
+  },
+  {
+    key: 'messages',
+    label: 'Unread Messages',
+    icon: MessageSquare,
+    value: (s: DashboardStats) => s.unread_messages.toLocaleString(),
+    extra: (s: DashboardStats) => (
+      <span className="font-sans text-[11px] text-brand-gold">
+        {s.subscribers} Subscribers
+      </span>
+    ),
+  },
+];
+
+export default function AdminDashboard() {
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const token = localStorage.getItem('auth_token');
+        const res = await fetch('http://127.0.0.1:8000/api/admin/dashboard/stats', {
+          headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+        });
+        if (!res.ok) return;
+        const data: DashboardStats = await res.json();
+        setStats(data);
+      } catch {
+        // silently fail
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  return (
+    <div className="p-6 md:p-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="mb-10"
+      >
+        <h1 className="font-display text-3xl md:text-4xl text-brand-black">
+          Admin Dashboard
+        </h1>
+        <p className="font-sans text-sm text-brand-gray mt-2">
+          Overview of your platform
+        </p>
+      </motion.div>
+
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {[...Array(4)].map((_, i) => (
+            <div
+              key={i}
+              className="h-[140px] rounded-[8px] bg-brand-border/30 animate-pulse"
+            />
+          ))}
+        </div>
+      ) : stats ? (
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+        >
+          {statCards.map((card) => {
+            const Icon = card.icon;
+            return (
+              <motion.div
+                key={card.key}
+                variants={cardVariants}
+                className="relative overflow-hidden rounded-[8px] border border-brand-border bg-brand-white/60 p-6 transition-all duration-500 hover:shadow-[0_8px_32px_rgba(158,101,27,0.08)] hover:border-brand-gold/30 group"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-10 h-10 rounded-full bg-brand-gold/10 flex items-center justify-center group-hover:bg-brand-gold/20 transition-colors duration-300">
+                    <Icon size={18} className="text-brand-gold" />
+                  </div>
+                </div>
+                <p className="font-display text-3xl text-brand-black tracking-tight">
+                  {card.value(stats)}
+                </p>
+                <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-brand-gray/70 mt-1">
+                  {card.label}
+                </p>
+                {card.extra && (
+                  <div className="mt-2 pt-2 border-t border-brand-border/50">
+                    {card.extra(stats)}
+                  </div>
+                )}
+              </motion.div>
+            );
+          })}
+        </motion.div>
+      ) : (
+        <div className="text-center py-20">
+          <p className="font-sans text-sm text-brand-gray">
+            Unable to load dashboard data.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
