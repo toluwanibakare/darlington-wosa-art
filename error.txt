@@ -1,13 +1,25 @@
-                    Type 'number[]' is not assignable to type 'Easing | Easing[] | undefined'.
-                      Type 'number[]' is not assignable to type 'EasingFunction | Easing[]'.
-                        Type 'number[]' is not assignable to type 'Easing[]'.
-                          Type 'number' is not assignable to type 'Easing'.
-  122 |       ) : stats ? (
-  123 |         <motion.div
-> 124 |           variants={containerVariants}
-      |           ^
-  125 |           initial="hidden"
-  126 |           animate="visible"
-  127 |           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+
+./src/components/ui/StaggerList.tsx:58:34
+21:21:40.508 
+Type error: Property 'transition' does not exist on type 'Variant'.
+21:21:40.508 
+  Property 'transition' does not exist on type 'TargetResolver'.
+21:21:40.508 
+21:21:40.508 
+  56 |           ...container.visible,
+21:21:40.508 
+  57 |           transition: {
+21:21:40.508 
+> 58 |             ...container.visible.transition,
+21:21:40.508 
+     |                                  ^
+21:21:40.508 
+  59 |             delayChildren: delay,
+21:21:40.508 
+  60 |           },
+21:21:40.508 
+  61 |         },
+21:21:40.546 
 Next.js build worker exited with code: 1 and signal: null
+21:21:40.596 
 Error: Command "npm run build" exited with 1

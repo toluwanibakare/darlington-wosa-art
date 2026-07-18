@@ -50,20 +50,12 @@ export function StaggerList({
 
   return (
     <motion.div
-      variants={{
-        ...container,
-        visible: {
-          ...container.visible,
-          transition: {
-            ...container.visible.transition,
-            delayChildren: delay,
-          },
-        },
-      }}
+      variants={container}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-60px' }}
       className={className}
+      transition={{ delayChildren: delay }}
     >
       {children}
     </motion.div>
