@@ -103,12 +103,19 @@ export const staggerContainerFast: Variants = {
   },
 };
 
+const staggerTransition: Transition = {
+  type: 'spring',
+  stiffness: 100,
+  damping: 25,
+  mass: 0.6,
+};
+
 export const staggerItem: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: easeExpoOut },
+    transition: staggerTransition,
   },
 };
 
@@ -117,7 +124,7 @@ export const staggerItemLeft: Variants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.7, ease: easeExpoOut },
+    transition: staggerTransition,
   },
 };
 
@@ -126,7 +133,7 @@ export const staggerItemRight: Variants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.7, ease: easeExpoOut },
+    transition: staggerTransition,
   },
 };
 
@@ -135,24 +142,26 @@ export const staggerItemScale: Variants = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.7, ease: easeExpoOut },
+    transition: staggerTransition,
   },
 };
 
 export const pageTransitionVariants: Variants = {
-  initial: { opacity: 0, y: 12 },
+  initial: { opacity: 0, y: 8 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -12 },
+  exit: { opacity: 0, y: -8 },
 };
 
 export const pageTransition: Transition = {
-  duration: 0.5,
-  ease: easeExpoOut,
+  type: 'spring',
+  stiffness: 200,
+  damping: 30,
+  mass: 0.6,
 };
 
 export const defaultViewport: UseInViewOptions = {
   once: true,
-  margin: '-80px',
+  margin: '-40px',
 };
 
 export const viewportLazy: UseInViewOptions = {

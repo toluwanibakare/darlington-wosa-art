@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Reveal } from '@/components/ui';
 import { 
   Pen, 
@@ -14,6 +14,7 @@ import {
   ArrowRight,
   Check
 } from 'lucide-react';
+import { FrameGuideModal } from './FrameGuideModal';
 
 const SERVICES_LIST = [
   {
@@ -83,6 +84,8 @@ const SERVICES_LIST = [
 ];
 
 export function ServicesGrid() {
+  const [frameGuideOpen, setFrameGuideOpen] = useState(false);
+
   return (
     <section className="relative w-full bg-brand-surface py-24 md:py-32 px-6 overflow-hidden border-t border-brand-border">
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20" style={{ backgroundImage: 'var(--bg-noise)' }} />
@@ -139,15 +142,29 @@ export function ServicesGrid() {
                   </div>
                 </div>
 
-                <Button variant="secondary" className="text-xs">
-                  Inquire About This Service
-                  <ArrowRight size={12} className="ml-2 inline-block" />
-                </Button>
+                <div className="flex flex-wrap gap-3">
+                  <Button variant="secondary" className="text-xs">
+                    Inquire About This Service
+                    <ArrowRight size={12} className="ml-2 inline-block" />
+                  </Button>
+
+                  {service.icon === Frame && (
+                    <Button
+                      variant="text"
+                      className="text-xs"
+                      onClick={() => setFrameGuideOpen(true)}
+                    >
+                      View Frame Guide
+                    </Button>
+                  )}
+                </div>
               </div>
             </Reveal>
           ))}
         </div>
       </div>
+
+      <FrameGuideModal open={frameGuideOpen} onClose={() => setFrameGuideOpen(false)} />
     </section>
   );
 }

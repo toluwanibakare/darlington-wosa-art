@@ -12,12 +12,12 @@ export function ServicesCTA() {
       <div className="max-w-[900px] mx-auto text-center">
         <Reveal
         >
-          <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
+          <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold-light block mb-6">
             Not Sure Where to Start?
           </span>
           <h2 className="font-display text-text-h2 text-brand-white leading-tight mb-8">
             Let&apos;s Find the Perfect Service <br />
-            <span className="text-brand-gold italic">For Your Vision</span>
+            <span className="text-brand-gold-light italic">For Your Vision</span>
           </h2>
           <p className="font-sans text-brand-gray text-text-body max-w-xl mx-auto mb-12 leading-relaxed">
             Every project begins with a conversation. Tell me about what you have in mind, 

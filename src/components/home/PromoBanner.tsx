@@ -16,14 +16,14 @@ export function PromoBanner() {
           <Reveal direction="left"
           >
             <div className="flex items-center gap-2 mb-6">
-              <Clock size={14} className="text-brand-gold" />
-              <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-brand-gold">
+              <Clock size={14} className="text-brand-gold-light" />
+              <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-brand-gold-light">
                 Limited Offer
               </span>
             </div>
             <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-brand-white leading-tight mb-6">
               Free Consultation on <br />
-              <span className="text-brand-gold italic">Your First Commission</span>
+              <span className="text-brand-gold-light italic">Your First Commission</span>
             </h2>
             <p className="font-sans text-brand-gray text-sm md:text-base max-w-lg leading-relaxed mb-8">
               Not sure which medium or size is right for your space? Book a complimentary 
@@ -55,7 +55,7 @@ export function PromoBanner() {
                 key={item.label}
                 className="p-6 md:p-8 border border-brand-white/5 rounded-[8px] bg-brand-white/[0.02] text-center"
               >
-                <p className="font-display text-3xl md:text-4xl text-brand-gold mb-2">
+                <p className="font-display text-3xl md:text-4xl text-brand-gold-light mb-2">
                   {item.stat}
                 </p>
                 <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/70">

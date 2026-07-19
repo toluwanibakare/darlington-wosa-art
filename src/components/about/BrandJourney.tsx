@@ -39,12 +39,12 @@ export function BrandJourney() {
       <div className="max-w-[1400px] mx-auto">
         <Reveal className="max-w-3xl mb-20"
         >
-          <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
+          <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold-light block mb-6">
             The Journey
           </span>
           <h2 className="font-display text-text-h2 text-brand-white leading-tight">
             From Primary School Strokes to <br />
-            <span className="text-brand-gold italic">National Recognition</span>
+            <span className="text-brand-gold-light italic">National Recognition</span>
           </h2>
         </Reveal>
 

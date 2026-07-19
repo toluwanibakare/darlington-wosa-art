@@ -1,25 +1,10 @@
 
-./src/components/ui/StaggerList.tsx:58:34
-21:21:40.508 
-Type error: Property 'transition' does not exist on type 'Variant'.
-21:21:40.508 
-  Property 'transition' does not exist on type 'TargetResolver'.
-21:21:40.508 
-21:21:40.508 
-  56 |           ...container.visible,
-21:21:40.508 
-  57 |           transition: {
-21:21:40.508 
-> 58 |             ...container.visible.transition,
-21:21:40.508 
-     |                                  ^
-21:21:40.508 
-  59 |             delayChildren: delay,
-21:21:40.508 
-  60 |           },
-21:21:40.508 
-  61 |         },
-21:21:40.546 
-Next.js build worker exited with code: 1 and signal: null
-21:21:40.596 
-Error: Command "npm run build" exited with 1
+-----
+FATAL: An unexpected Turbopack error occurred. A panic log has been written to C:\Users\DELL\AppData\Local\Temp\next-panic-293165161b0d1e429ad99d1d33b69d8f.log.
+
+To help make Turbopack better, report this error by clicking here: https://bugs.nextjs.org/search?category=turbopack-error-report&title=Turbopack%20Error%3A%20Failed%20to%20write%20app%20endpoint%20%2Fpage&body=Turbopack%20version%3A%20%60411c455d%60%0ANext.js%20version%3A%20%600.0.0%60%0A%0AError%20message%3A%0A%60%60%60%0AFailed%20to%20write%20app%20endpoint%20%2Fpage%0A%0ACaused%20by%3A%0A-%20%5Bproject%5D%2Fsrc%2Fapp%2Fglobals.css%20%5Bapp-client%5D%20%28css%29%0A-%20failed%20to%20receive%20message%0A-%20reading%20packet%20length%0A-%20timeout%20while%20receiving%20message%20from%20process%0A-%20deadline%20has%20elapsed%0A%0ADebug%20info%3A%0A-%20Execution%20of%20get_written_endpoint_with_issues_operation%20failed%0A-%20Execution%20of%20endpoint_write_to_disk%20failed%0A-%20Execution%20of%20%3CAppEndpoint%20as%20Endpoint%3E%3A%3Aoutput%20failed%0A-%20Failed%20to%20write%20app%20endpoint%20%2Fpage%0A-%20Execution%20of%20%2Aall_asset_paths%20failed%0A-%20Execution%20of%20%2AAppEndpointOutput%3A%3Aoutput_assets%20failed%0A-%20Execution%20of%20AppEndpoint%3A%3Aoutput%20failed%0A-%20Execution%20of%20AppProject%3A%3Aapp_module_graphs%20failed%0A-%20Execution%20of%20%2A%3CAppEndpoint%20as%20Endpoint%3E%3A%3Aadditional_entries%20failed%0A-%20Execution%20of%20ModuleGraph%3A%3Afrom_graphs%20failed%0A-%20Execution%20of%20ModuleGraph%3A%3Acreate%20failed%0A-%20Execution%20of%20SingleModuleGraph%3A%3Anew_with_entries_visited_intern%20failed%0A-%20%5Bproject%5D%2Fsrc%2Fapp%2Fglobals.css%20%5Bapp-client%5D%20%28css%29%0A-%20Execution%20of%20primary_chunkable_referenced_modules%20failed%0A-%20Execution%20of%20%3CCssModule%20as%20Module%3E%3A%3Areferences%20failed%0A-%20Execution%20of%20parse_css%20failed%0A-%20Execution%20of%20%3CPostCssTransformedAsset%20as%20Asset%3E%3A%3Acontent%20failed%0A-%20Execution%20of%20PostCssTransformedAsset%3A%3Aprocess%20failed%0A-%20Execution%20of%20evaluate_webpack_loader%20failed%0A-%20failed%20to%20receive%20message%0A-%20reading%20packet%20length%0A-%20timeout%20while%20receiving%20message%20from%20process%0A-%20deadline%20has%20elapsed%0A%60%60%60&labels=Turbopack,Turbopack%20Panic%20Backtrace
+-----
+
+○ Compiling /_error ...
+ GET / 500 in 62s (next.js: 61s, application-code: 957ms)
+[browser] Uncaught Error: An unexpected Turbopack error occurred. Please see the output of `next dev` for more details.

@@ -1,12 +1,15 @@
 import React from 'react';
 import Image from 'next/image';
 
+type LogoVariant = 'default' | 'object';
+
 interface LogoProps {
   className?: string;
-  height?: number; // Target height in pixels for the rendered logo
-  scale?: number;  // Scale factor (default to 1.0 since new logo is pre-cropped)
-  offsetX?: number; // Horizontal adjustment in percentage
-  offsetY?: number; // Vertical adjustment in percentage
+  height?: number;
+  scale?: number;
+  offsetX?: number;
+  offsetY?: number;
+  variant?: LogoVariant;
 }
 
 export function Logo({
@@ -15,8 +18,40 @@ export function Logo({
   scale = 1.0,
   offsetX = 0,
   offsetY = 0,
+  variant = 'default',
 }: LogoProps) {
-  // We compute a width that matches the proportions, e.g., a landscape logo.
+  if (variant === 'object') {
+    const size = height;
+    return (
+      <div className={`relative flex items-center select-none ${className}`}>
+        <div
+          className="relative overflow-hidden rounded-full bg-brand-black flex items-center justify-center"
+          style={{
+            width: `${size}px`,
+            height: `${size}px`,
+          }}
+        >
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            style={{
+              transform: `scale(${scale}) translate(${offsetX}%, ${offsetY}%)`,
+              transformOrigin: 'center center',
+            }}
+          >
+            <Image
+              src="/object_logo.png"
+              alt="Darlington Wosa Art & Frames"
+              fill
+              sizes={`${size}px`}
+              className="object-contain p-[15%]"
+              priority
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const width = height * 3.5;
 
   return (

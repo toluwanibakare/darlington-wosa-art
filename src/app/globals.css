@@ -2,8 +2,8 @@
 
 @theme {
   /* Colors - Warm Unbleached Paper Theme */
-  --color-brand-gold: #9E651B; /* Deeper gold to contrast on light paper */
-  --color-brand-gold-light: #B37D22;
+  --color-brand-gold: #804D15; /* Darker gold for accessible contrast on light backgrounds */
+  --color-brand-gold-light: #9E651B; /* Brighter gold for dark backgrounds */
   --color-brand-black: #111111; /* Absolute crisp ink */
   --color-brand-surface: #F5F2EB; /* Warm, natural unbleached paper */
   --color-brand-white: #FFFFFF; /* Pure white for raised cards/highlights */
@@ -23,9 +23,6 @@
   /* Custom Animation Curves */
   --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-expo-in-out: cubic-bezier(0.76, 0, 0.24, 1);
-
-  /* Inline SVG Noise Texture for the "Canvas" feel */
-  --bg-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
 
   /* Marquee animation */
   --animate-marquee: marquee 40s linear infinite;
@@ -70,6 +67,7 @@
 :root {
   --background: #000000;
   --foreground: #ffffff;
+  --bg-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
 }
 
 html {

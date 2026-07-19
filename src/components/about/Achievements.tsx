@@ -35,7 +35,7 @@ export function Achievements() {
       <div className="max-w-[1400px] mx-auto">
         <Reveal className="max-w-3xl mb-20"
         >
-          <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
+          <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold-light block mb-6">
             Achievements
           </span>
           <h2 className="font-display text-text-h2 text-brand-white leading-tight">
@@ -51,7 +51,7 @@ export function Achievements() {
               className="text-center"
             >
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full border border-brand-gold/20 bg-brand-gold/[0.04] mb-4">
-                <item.icon size={18} className="text-brand-gold" />
+                <item.icon size={18} className="text-brand-gold-light" />
               </div>
               <p className="font-display text-3xl md:text-4xl text-brand-white mb-2">
                 {item.stat}

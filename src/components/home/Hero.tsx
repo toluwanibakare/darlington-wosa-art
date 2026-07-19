@@ -9,13 +9,17 @@ import { motion, useScroll, useTransform } from 'framer-motion';
    ───────────────────────────────────────────── */
 
 const ARTWORK_IMAGES = [
-  { src: '/images/projects/IMG_5028.JPG', alt: 'Charcoal portrait study' },
-  { src: '/images/projects/IMG_5030.JPG', alt: 'Graphite realism drawing' },
-  { src: '/images/projects/IMG_5032.JPG', alt: 'Commission portrait piece' },
-  { src: '/images/projects/IMG_5033.JPG', alt: 'Fine art pencil work' },
-  { src: '/images/projects/IMG_5035.JPG', alt: 'Portraiture in progress' },
-  { src: '/images/projects/IMG_5036.JPG', alt: 'Artist portfolio piece' },
-  { src: '/images/projects/IMG_5037.JPG', alt: 'Studio artwork collection' },
+  { src: '/images/hero/2627ca99-b97b-4af7-be8d-16c5fc7229f8.jpeg', alt: 'Charcoal portrait study' },
+  { src: '/images/hero/3d68e73b-f68c-4721-b0ec-92be7760006f.jpeg', alt: 'Graphite realism drawing' },
+  { src: '/images/hero/601b5547-6a1e-41fd-a757-8fae98b6d6c1.jpg', alt: 'Commission portrait piece' },
+  { src: '/images/hero/77094057-60c8-4fc4-8f70-45a3385eea11.jpeg', alt: 'Fine art pencil work' },
+  { src: '/images/hero/7e2b52b5-5eec-4b45-a8a1-770b61de56b4.jpeg', alt: 'Portraiture in progress' },
+  { src: '/images/hero/IMG_5028.JPG', alt: 'Artist portfolio piece' },
+  { src: '/images/hero/IMG_5029.JPG', alt: 'Studio artwork collection' },
+  { src: '/images/hero/IMG_5030.JPG', alt: 'Charcoal portrait work' },
+  { src: '/images/hero/IMG_5032.JPG', alt: 'Graphite drawing study' },
+  { src: '/images/hero/IMG_5033.JPG', alt: 'Fine art commission' },
+  { src: '/images/hero/IMG_5035.JPG', alt: 'Portrait in charcoal' },
 ];
 
 /* ─────────────────────────────────────────────
@@ -145,17 +149,18 @@ export function Hero() {
   return (
     <section className="relative min-h-screen bg-brand-surface w-full flex flex-col items-center justify-center overflow-hidden pt-28">
 
-      {/* Background Charcoal Art Drawing */}
+      {/* Background Logo Watermark */}
       <div 
-        className="absolute inset-0 pointer-events-none opacity-[0.28] filter contrast-130 brightness-110 saturate-50"
-        style={{
-          backgroundImage: 'url("/charcoal_hero_bg.png")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center 35%',
-          transform: 'scaleX(1.12)', // Stretches the width by 12%
-          transformOrigin: 'center center',
-        }}
-      />
+        className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.06]"
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img 
+          src="/object_logo.png" 
+          alt="" 
+          className="w-[60%] max-w-[600px] h-auto object-contain"
+          aria-hidden="true"
+        />
+      </div>
 
       {/* Canvas grain texture */}
       <div

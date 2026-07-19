@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Button } from '@/components/ui';
+import { FrameGuideModal } from '@/components/services/FrameGuideModal';
 
 export function FramingProcess() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-20%" });
+  const [guideOpen, setGuideOpen] = useState(false);
 
   // Custom expo-out easing from our Animation Bible
   const easeExpoOut = [0.16, 1, 0.3, 1] as const;
@@ -42,7 +44,7 @@ export function FramingProcess() {
             Every masterpiece deserves a stage. I meticulously cut, assemble, and finish my frames by hand using premium woods and anti-reflective museum glass to preserve your art for generations.
           </p>
           <div className="pt-4">
-            <Button variant="secondary">Explore Frames</Button>
+            <Button variant="secondary" onClick={() => setGuideOpen(true)}>Explore Frames</Button>
           </div>
         </div>
 
@@ -93,6 +95,8 @@ export function FramingProcess() {
         </div>
 
       </div>
+
+      <FrameGuideModal open={guideOpen} onClose={() => setGuideOpen(false)} />
     </section>
   );
 }

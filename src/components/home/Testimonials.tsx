@@ -35,12 +35,12 @@ export function Testimonials() {
       <div className="max-w-[1400px] mx-auto">
         <Reveal className="max-w-3xl mb-20"
         >
-          <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold block mb-6">
+          <span className="font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold-light block mb-6">
             Testimonials
           </span>
           <h2 className="font-display text-text-h2 text-brand-white leading-tight">
             What Clients <br />
-            <span className="text-brand-gold italic">Say</span>
+            <span className="text-brand-gold-light italic">Say</span>
           </h2>
         </Reveal>
 
@@ -56,7 +56,7 @@ export function Testimonials() {
               </blockquote>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-brand-gold/20 flex items-center justify-center">
-                  <span className="font-sans text-sm font-medium text-brand-gold">
+                  <span className="font-sans text-sm font-medium text-brand-gold-light">
                     {item.author.charAt(0)}
                   </span>
                 </div>

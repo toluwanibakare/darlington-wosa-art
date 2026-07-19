@@ -41,10 +41,10 @@ export const Reveal = forwardRef<HTMLDivElement, RevealProps>(
   (
     {
       direction = 'up',
-      distance = 30,
+      distance = 24,
       delay = 0,
       duration,
-      animation = 'tween',
+      animation = 'spring-smooth',
       viewportMargin,
       viewportOnce = true,
       as = 'div',
