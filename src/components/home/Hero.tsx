@@ -149,15 +149,16 @@ export function Hero() {
   return (
     <section className="relative min-h-screen bg-brand-surface w-full flex flex-col items-center justify-center overflow-hidden pt-28">
 
-      {/* Background Logo Watermark */}
+      {/* Background Logo Watermark with gold tint */}
       <div 
-        className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.06]"
+        className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-[0.08]"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img 
           src="/object_logo.png" 
           alt="" 
           className="w-[60%] max-w-[600px] h-auto object-contain"
+          style={{ filter: 'sepia(1) saturate(4) hue-rotate(-10deg) brightness(0.85)' }}
           aria-hidden="true"
         />
       </div>

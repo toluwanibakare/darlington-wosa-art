@@ -74,14 +74,27 @@ export function Exhibition() {
           .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         `}} />
         
-        <div className="flex gap-8 overflow-x-auto snap-x snap-mandatory pb-12 no-scrollbar">
+        {/* Scroll indicator fade on right edge */}
+        <div className="pointer-events-none absolute right-0 top-0 bottom-12 w-16 bg-gradient-to-l from-brand-surface/80 to-transparent z-10 md:hidden" />
+
+        {/* Scroll hint arrow - only visible on mobile */}
+        <div className="md:hidden flex justify-end pr-2 mb-4 -mt-2">
+          <div className="flex items-center gap-1 text-[10px] uppercase tracking-[0.2em] text-brand-gray/40 font-sans">
+            <span>Swipe</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="animate-pulse">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </div>
+        </div>
+
+        <div className="flex gap-6 md:gap-8 overflow-x-auto snap-x snap-mandatory pb-12 no-scrollbar">
           {PORTFOLIO_ITEMS.map((item, index) => (
             <motion.div 
               key={item.id}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
               transition={{ duration: 1.2, ease: easeExpoOut, delay: 0.2 + (index * 0.1) }}
-              className="min-w-[85vw] md:min-w-[400px] lg:min-w-[450px] snap-center shrink-0"
+              className="min-w-[70vw] md:min-w-[400px] lg:min-w-[450px] snap-center shrink-0"
             >
               <Card 
                 title={item.title}
