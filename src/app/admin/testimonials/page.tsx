@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
   Star, Plus, X, Loader2, Trash2, ChevronLeft, ChevronRight, Quote,
-  Check, AlertCircle,
+  Check, AlertCircle, ThumbsUp, ThumbsDown, MessageSquare,
 } from 'lucide-react';
 
 interface Testimonial {
@@ -16,6 +16,8 @@ interface Testimonial {
   image: string;
   is_featured: boolean;
   is_active: boolean;
+  status: string;
+  admin_reply: string | null;
   created_at: string;
 }
 
@@ -35,6 +37,8 @@ interface FormData {
   image: string;
   is_featured: boolean;
   is_active: boolean;
+  status: string;
+  admin_reply: string;
 }
 
 const api = {
@@ -76,6 +80,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 const defaultForm: FormData = {
   name: '', role: '', content: '', rating: 5, image: '', is_featured: false, is_active: true,
+  status: 'pending', admin_reply: '',
 };
 
 export default function AdminTestimonialsPage() {
@@ -89,15 +94,19 @@ export default function AdminTestimonialsPage() {
   const [form, setForm] = useState<FormData>(defaultForm);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState<number | null>(null);
+  const [statusFilter, setStatusFilter] = useState('');
+  const [replyingId, setReplyingId] = useState<number | null>(null);
+  const [replyText, setReplyText] = useState('');
 
   const fetchTestimonials = useCallback(async () => {
     setLoading(true);
-    const json: PaginatedResponse = await api.get(`/testimonials?page=${page}`);
+    const qs = statusFilter ? `?status=${statusFilter}` : '';
+    const json: PaginatedResponse = await api.get(`/testimonials${qs ? qs + '&' : '?'}page=${page}`);
     setTestimonials(json.data);
     setLastPage(json.last_page);
     setTotal(json.total);
     setLoading(false);
-  }, [page]);
+  }, [page, statusFilter]);
 
   useEffect(() => {
     fetchTestimonials();
@@ -119,6 +128,8 @@ export default function AdminTestimonialsPage() {
       image: t.image || '',
       is_featured: t.is_featured,
       is_active: t.is_active,
+      status: t.status,
+      admin_reply: t.admin_reply || '',
     });
     setModalOpen(true);
   };
@@ -137,9 +148,7 @@ export default function AdminTestimonialsPage() {
         setTotal((t) => t + 1);
       }
       setModalOpen(false);
-    } finally {
-      setSaving(false);
-    }
+    } finally { setSaving(false); }
   };
 
   const handleDelete = async (id: number) => {
@@ -148,6 +157,25 @@ export default function AdminTestimonialsPage() {
     setTestimonials((prev) => prev.filter((t) => t.id !== id));
     setTotal((t) => t - 1);
     setDeleting(null);
+  };
+
+  const handleApprove = async (id: number) => {
+    const json: { data: Testimonial } = await api.post(`/testimonials/${id}/approve`, {});
+    setTestimonials((prev) => prev.map((t) => (t.id === id ? json.data : t)));
+  };
+
+  const handleReject = async (id: number) => {
+    const reason = prompt('Rejection reason (optional):');
+    const json: { data: Testimonial } = await api.post(`/testimonials/${id}/reject`, { reason: reason || '' });
+    setTestimonials((prev) => prev.map((t) => (t.id === id ? json.data : t)));
+  };
+
+  const handleReply = async (id: number) => {
+    if (!replyText.trim()) return;
+    const json: { data: Testimonial } = await api.put(`/testimonials/${id}`, { admin_reply: replyText.trim() });
+    setTestimonials((prev) => prev.map((t) => (t.id === id ? json.data : t)));
+    setReplyingId(null);
+    setReplyText('');
   };
 
   const renderStars = (rating: number) => (
@@ -161,6 +189,12 @@ export default function AdminTestimonialsPage() {
       ))}
     </div>
   );
+
+  const statusColor: Record<string, string> = {
+    pending: 'bg-amber-100 text-amber-700',
+    approved: 'bg-green-100 text-green-700',
+    rejected: 'bg-red-100 text-red-700',
+  };
 
   return (
     <div className="px-4 md:px-8 py-8">
@@ -179,13 +213,25 @@ export default function AdminTestimonialsPage() {
               <p className="font-sans text-xs text-brand-gray">{total} testimonials</p>
             </div>
           </div>
-          <button
-            onClick={openAdd}
-            className="flex items-center gap-2 px-5 py-2.5 bg-brand-black text-brand-white border border-brand-gold rounded-[6px] font-sans text-[10px] tracking-[0.15em] uppercase hover:shadow-[0_0_20px_rgba(158,101,27,0.15)] transition-all cursor-pointer"
-          >
-            <Plus size={14} />
-            Add Testimonial
-          </button>
+          <div className="flex items-center gap-3">
+            <select
+              value={statusFilter}
+              onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
+              className="bg-transparent border border-brand-border rounded-[6px] px-4 py-2.5 text-xs text-brand-black focus:outline-none focus:border-brand-gold font-sans"
+            >
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <button
+              onClick={openAdd}
+              className="flex items-center gap-2 px-5 py-2.5 bg-brand-black text-brand-white border border-brand-gold rounded-[6px] font-sans text-[10px] tracking-[0.15em] uppercase hover:shadow-[0_0_20px_rgba(158,101,27,0.15)] transition-all cursor-pointer"
+            >
+              <Plus size={14} />
+              Add Testimonial
+            </button>
+          </div>
         </div>
 
         {loading ? (
@@ -249,12 +295,73 @@ export default function AdminTestimonialsPage() {
                   </div>
                 </div>
 
+                <div className="flex items-center gap-2 mb-3">
+                  {renderStars(t.rating)}
+                  <span className={`ml-auto px-2 py-0.5 rounded-full font-sans text-[9px] uppercase ${statusColor[t.status] || 'bg-brand-border text-brand-gray'}`}>
+                    {t.status}
+                  </span>
+                </div>
+
                 <p className="font-sans text-sm text-brand-gray leading-relaxed line-clamp-4 mb-4">
                   {t.content}
                 </p>
 
-                <div className="flex items-center justify-between">
-                  {renderStars(t.rating)}
+                {t.admin_reply && (
+                  <div className="mb-4 p-3 bg-brand-gold/5 border border-brand-border rounded-[6px]">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <MessageSquare size={11} className="text-brand-gold" />
+                      <span className="font-sans text-[10px] tracking-[0.1em] uppercase text-brand-gold">Admin Reply</span>
+                    </div>
+                    <p className="font-sans text-xs text-brand-gray">{t.admin_reply}</p>
+                  </div>
+                )}
+
+                {t.status === 'pending' && (
+                  <div className="flex items-center gap-2 pt-3 border-t border-brand-border/50">
+                    <button
+                      onClick={() => handleApprove(t.id)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] bg-green-100 text-green-700 hover:bg-green-200 font-sans text-[10px] uppercase tracking-[0.1em] transition-all cursor-pointer"
+                    >
+                      <ThumbsUp size={11} /> Approve
+                    </button>
+                    <button
+                      onClick={() => handleReject(t.id)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] bg-red-100 text-red-700 hover:bg-red-200 font-sans text-[10px] uppercase tracking-[0.1em] transition-all cursor-pointer"
+                    >
+                      <ThumbsDown size={11} /> Reject
+                    </button>
+                    <button
+                      onClick={() => { setReplyingId(t.id); setReplyText(t.admin_reply || ''); }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] bg-brand-gold/10 text-brand-gold hover:bg-brand-gold/20 font-sans text-[10px] uppercase tracking-[0.1em] transition-all cursor-pointer ml-auto"
+                    >
+                      <MessageSquare size={11} /> Reply
+                    </button>
+                  </div>
+                )}
+
+                {replyingId === t.id && (
+                  <div className="mt-3 space-y-2 pt-3 border-t border-brand-border/50">
+                    <textarea
+                      value={replyText}
+                      onChange={(e) => setReplyText(e.target.value)}
+                      rows={2}
+                      className="w-full bg-transparent border border-brand-border rounded-[6px] px-3 py-2 text-sm text-brand-black focus:outline-none focus:border-brand-gold font-sans resize-none"
+                      placeholder="Write your reply..."
+                    />
+                    <div className="flex justify-end gap-2">
+                      <button
+                        onClick={() => { setReplyingId(null); setReplyText(''); }}
+                        className="px-3 py-1.5 rounded-[4px] border border-brand-border font-sans text-[10px] uppercase tracking-[0.1em] text-brand-gray hover:text-brand-black transition-all cursor-pointer"
+                      >Cancel</button>
+                      <button
+                        onClick={() => handleReply(t.id)}
+                        className="px-3 py-1.5 rounded-[4px] bg-brand-gold text-brand-white font-sans text-[10px] uppercase tracking-[0.1em] hover:shadow-[0_0_15px_rgba(158,101,27,0.2)] transition-all cursor-pointer"
+                      >Send</button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between pt-3 border-t border-brand-border/50">
                   <div className="flex items-center gap-2">
                     {t.is_featured && (
                       <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-gold/10 text-brand-gold font-sans text-[9px] tracking-[0.1em] uppercase">
@@ -262,12 +369,12 @@ export default function AdminTestimonialsPage() {
                         Featured
                       </span>
                     )}
-                    <span className={`px-2 py-0.5 rounded-full font-sans text-[9px] tracking-[0.1em] uppercase ${
-                      t.is_active ? 'bg-green-100 text-green-700' : 'bg-brand-border text-brand-gray'
-                    }`}>
-                      {t.is_active ? 'Active' : 'Inactive'}
-                    </span>
                   </div>
+                  <span className={`px-2 py-0.5 rounded-full font-sans text-[9px] tracking-[0.1em] uppercase ${
+                    t.is_active ? 'bg-green-100 text-green-700' : 'bg-brand-border text-brand-gray'
+                  }`}>
+                    {t.is_active ? 'Active' : 'Inactive'}
+                  </span>
                 </div>
               </motion.div>
             ))}
@@ -372,6 +479,31 @@ export default function AdminTestimonialsPage() {
                     onChange={(e) => setForm((f) => ({ ...f, image: e.target.value }))}
                     className="w-full bg-transparent border border-brand-border rounded-[6px] px-4 py-2.5 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans"
                     placeholder="https://..."
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-2">Status</label>
+                  <select
+                    value={form.status}
+                    onChange={(e) => setForm((f) => ({ ...f, status: e.target.value }))}
+                    className="w-full bg-transparent border border-brand-border rounded-[6px] px-4 py-2.5 text-sm text-brand-black focus:outline-none focus:border-brand-gold font-sans"
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-2">Admin Reply</label>
+                  <input
+                    type="text"
+                    value={form.admin_reply}
+                    onChange={(e) => setForm((f) => ({ ...f, admin_reply: e.target.value }))}
+                    className="w-full bg-transparent border border-brand-border rounded-[6px] px-4 py-2.5 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans"
+                    placeholder="Reply to testimonial"
                   />
                 </div>
               </div>

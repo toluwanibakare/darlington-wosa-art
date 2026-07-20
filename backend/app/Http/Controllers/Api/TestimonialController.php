@@ -10,7 +10,8 @@ class TestimonialController extends Controller
 {
     public function index()
     {
-        $testimonials = Testimonial::where('is_active', true)
+        $testimonials = Testimonial::approved()
+            ->where('is_active', true)
             ->latest()
             ->get()
             ->map(function ($t) {
@@ -54,6 +55,7 @@ class TestimonialController extends Controller
         $testimonial->quote = $validated['quote'];
         $testimonial->rating = $validated['rating'];
         $testimonial->is_active = false;
+        $testimonial->status = 'pending';
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('testimonials', 'public');
@@ -77,7 +79,7 @@ class TestimonialController extends Controller
 
     public function stats()
     {
-        $stats = Testimonial::where('is_active', true)
+        $stats = Testimonial::approved()->where('is_active', true)
             ->selectRaw('COALESCE(AVG(rating), 0) as average_rating')
             ->selectRaw('COUNT(*) as total_reviews')
             ->selectRaw('SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) as five_star')

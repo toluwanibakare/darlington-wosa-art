@@ -46,4 +46,9 @@ AGENTS.md
 .tmp/
 credentials.json
 token.json
+error.txt
+
+# Backend vendors (too large for git)
+/vendor
+backend/vendor.zip
 

@@ -9,7 +9,7 @@ class Testimonial extends Model
 {
     protected $fillable = [
         'name', 'role', 'company', 'quote', 'avatar', 'image', 'rating',
-        'is_active', 'user_id',
+        'is_active', 'status', 'admin_reply', 'user_id',
     ];
 
     protected function casts(): array
@@ -18,6 +18,16 @@ class Testimonial extends Model
             'rating' => 'integer',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
     }
 
     public function user(): BelongsTo

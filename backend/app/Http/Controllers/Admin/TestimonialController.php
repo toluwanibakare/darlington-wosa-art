@@ -10,8 +10,13 @@ class TestimonialController extends Controller
 {
     public function index(Request $request)
     {
-        $testimonials = Testimonial::orderBy('created_at', 'desc')
-            ->paginate(20);
+        $query = Testimonial::orderBy('created_at', 'desc');
+
+        if ($status = $request->get('status')) {
+            $query->where('status', $status);
+        }
+
+        $testimonials = $query->paginate(20);
 
         return response()->json($testimonials);
     }
@@ -26,6 +31,8 @@ class TestimonialController extends Controller
             'avatar' => 'nullable|string|max:500',
             'rating' => 'nullable|integer|min:1|max:5',
             'is_active' => 'sometimes|boolean',
+            'status' => 'sometimes|in:pending,approved,rejected',
+            'admin_reply' => 'nullable|string',
         ]);
 
         $testimonial = Testimonial::create($validated);
@@ -55,12 +62,41 @@ class TestimonialController extends Controller
             'avatar' => 'nullable|string|max:500',
             'rating' => 'nullable|integer|min:1|max:5',
             'is_active' => 'sometimes|boolean',
+            'status' => 'sometimes|in:pending,approved,rejected',
+            'admin_reply' => 'nullable|string',
         ]);
 
         $testimonial->update($validated);
 
         return response()->json([
             'message' => 'Testimonial updated successfully.',
+            'testimonial' => $testimonial,
+        ]);
+    }
+
+    public function approve($id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+        $testimonial->update(['status' => 'approved', 'is_active' => true]);
+
+        return response()->json([
+            'message' => 'Testimonial approved.',
+            'testimonial' => $testimonial,
+        ]);
+    }
+
+    public function reject(Request $request, $id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+        $validated = $request->validate(['admin_reply' => 'nullable|string']);
+        $testimonial->update([
+            'status' => 'rejected',
+            'is_active' => false,
+            'admin_reply' => $validated['admin_reply'] ?? null,
+        ]);
+
+        return response()->json([
+            'message' => 'Testimonial rejected.',
             'testimonial' => $testimonial,
         ]);
     }

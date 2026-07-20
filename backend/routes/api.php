@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\CouponController;
 use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\NegotiationController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -75,6 +76,11 @@ Route::delete('/shop/cart/{id}', [CartController::class, 'remove']);
 Route::delete('/shop/cart', [CartController::class, 'clear']);
 
 Route::post('/shop/negotiate', [NegotiationController::class, 'store']);
+
+// Payments (Korapay)
+Route::post('/payments/initialize', [PaymentController::class, 'initialize']);
+Route::post('/payments/verify', [PaymentController::class, 'verify']);
+Route::post('/payments/webhook', [PaymentController::class, 'webhook']);
 
 // Authenticated routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -189,6 +195,8 @@ Route::prefix('admin')->group(function () {
         Route::post('/testimonials', [AdminTestimonialController::class, 'store']);
         Route::get('/testimonials/{id}', [AdminTestimonialController::class, 'show']);
         Route::put('/testimonials/{id}', [AdminTestimonialController::class, 'update']);
+        Route::post('/testimonials/{id}/approve', [AdminTestimonialController::class, 'approve']);
+        Route::post('/testimonials/{id}/reject', [AdminTestimonialController::class, 'reject']);
         Route::delete('/testimonials/{id}', [AdminTestimonialController::class, 'destroy']);
 
         // Videos
@@ -221,5 +229,13 @@ Route::prefix('admin')->group(function () {
         // Broadcast Notifications
         Route::post('/notifications/send-all', [AdminNotificationController::class, 'sendToAll']);
         Route::post('/notifications/send-user', [AdminNotificationController::class, 'sendToUser']);
+
+        // Referrals
+        Route::get('/referrals', [AdminReferralController::class, 'index']);
+
+        // Rewards
+        Route::get('/rewards', [AdminRewardController::class, 'index']);
+        Route::post('/rewards', [AdminRewardController::class, 'store']);
+        Route::delete('/rewards/{id}', [AdminRewardController::class, 'destroy']);
     });
 });

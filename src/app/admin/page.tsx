@@ -2,16 +2,23 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Users, ShoppingBag, Calendar, MessageSquare } from 'lucide-react';
+import { Users, ShoppingBag, Calendar, MessageSquare, BookOpen, Mail } from 'lucide-react';
 
 interface DashboardStats {
-  users: number;
-  orders: number;
-  revenue: number;
-  bookings: number;
+  total_users: number;
+  total_orders: number;
+  total_revenue: number;
+  total_bookings: number;
   unread_messages: number;
-  subscribers: number;
-  classes: number;
+  total_subscribers: number;
+  total_classes: number;
+  // aliases for frontend
+  users?: number;
+  orders?: number;
+  revenue?: number;
+  bookings?: number;
+  subscribers?: number;
+  classes?: number;
 }
 
 const formatNaira = (amount: number) =>
@@ -86,8 +93,16 @@ export default function AdminDashboard() {
           headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
         });
         if (!res.ok) return;
-        const data: DashboardStats = await res.json();
-        setStats(data);
+        const raw = await res.json();
+        setStats({
+          users: raw.total_users ?? raw.users ?? 0,
+          orders: raw.total_orders ?? raw.orders ?? 0,
+          revenue: raw.total_revenue ?? raw.revenue ?? 0,
+          bookings: raw.total_bookings ?? raw.bookings ?? 0,
+          unread_messages: raw.unread_messages ?? 0,
+          subscribers: raw.total_subscribers ?? raw.subscribers ?? 0,
+          classes: raw.total_classes ?? raw.classes ?? 0,
+        });
       } catch {
         // silently fail
       } finally {

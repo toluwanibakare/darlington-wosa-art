@@ -7,13 +7,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Users, ShoppingBag, Palette, Image as ImageIcon,
   BookOpen, Calendar, Mail, Ticket, MessageSquare, Star,
-  Video, Settings, LogOut, Menu, X, ChevronRight,
+  Video, Settings, LogOut, Menu, X, ChevronRight, Package, Layers, Gift, GitFork,
 } from 'lucide-react';
 
 const NAV_ITEMS = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { label: 'Users', href: '/admin/users', icon: Users },
   { label: 'Orders', href: '/admin/orders', icon: ShoppingBag },
+  { label: 'Shop Items', href: '/admin/shop/items', icon: Package },
+  { label: 'Shop Categories', href: '/admin/shop/categories', icon: Layers },
   { label: 'Services', href: '/admin/services', icon: Palette },
   { label: 'Portfolio', href: '/admin/portfolio', icon: ImageIcon },
   { label: 'Classes', href: '/admin/classes', icon: BookOpen },
@@ -22,6 +24,8 @@ const NAV_ITEMS = [
   { label: 'Promotions', href: '/admin/promotions', icon: Ticket },
   { label: 'Messages', href: '/admin/messages', icon: MessageSquare },
   { label: 'Testimonials', href: '/admin/testimonials', icon: Star },
+  { label: 'Referrals', href: '/admin/referrals', icon: GitFork },
+  { label: 'Rewards', href: '/admin/rewards', icon: Gift },
   { label: 'Videos', href: '/admin/videos', icon: Video },
   { label: 'Settings', href: '/admin/settings', icon: Settings },
 ];
