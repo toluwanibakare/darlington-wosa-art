@@ -57,13 +57,13 @@ export const api = {
   get: <T>(endpoint: string) => request<T>(endpoint),
 
   post: <T>(endpoint: string, body: unknown) =>
-    request<T>(endpoint, { method: 'POST', body: JSON.stringify(body) }),
+    request<T>(endpoint, { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' } }),
 
   put: <T>(endpoint: string, body: unknown) =>
-    request<T>(endpoint, { method: 'PUT', body: JSON.stringify(body) }),
+    request<T>(endpoint, { method: 'PUT', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' } }),
 
   patch: <T>(endpoint: string, body: unknown) =>
-    request<T>(endpoint, { method: 'PATCH', body: JSON.stringify(body) }),
+    request<T>(endpoint, { method: 'PATCH', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' } }),
 
   delete: <T>(endpoint: string) =>
     request<T>(endpoint, { method: 'DELETE' }),
