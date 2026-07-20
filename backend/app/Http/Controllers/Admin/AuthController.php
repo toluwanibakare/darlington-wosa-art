@@ -13,11 +13,11 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validated = $request->validate([
-            'email' => 'required|string|email',
+            'name' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $validated['email'])
+        $user = User::where('name', $validated['name'])
             ->where('is_admin', true)
             ->first();
 

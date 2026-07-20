@@ -8,7 +8,7 @@ import { Lock, LogIn, Loader2, Eye, EyeOff, AlertCircle } from 'lucide-react';
 export default function AdminLoginPage() {
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
   const router = useRouter();
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ export default function AdminLoginPage() {
       const res = await fetch(`${API_BASE}/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, password }),
       });
 
       const json = await res.json();
@@ -71,13 +71,13 @@ export default function AdminLoginPage() {
 
           <div className="space-y-6">
             <div>
-              <label className="font-sans text-[11px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-3">Email</label>
+              <label className="font-sans text-[11px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-3">Username</label>
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="w-full bg-transparent border-b border-brand-border pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans"
-                placeholder="admin@example.com"
+                placeholder="Enter username"
                 required
               />
             </div>
