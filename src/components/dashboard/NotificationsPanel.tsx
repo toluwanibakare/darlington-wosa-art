@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Bell, X, ShoppingBag, BookOpen, Wallet, Gift,
   Video, Star, Megaphone, CheckCircle, Clock, CheckCheck,
-  Sparkles,
 } from 'lucide-react';
 import { api } from '@/lib/api';
 
@@ -27,7 +26,7 @@ const TYPE_ICON_MAP: Record<string, typeof Bell> = {
   referral: Gift,
   promo: Megaphone,
   video: Video,
-  welcome: Sparkles,
+  welcome: Bell,
   info: Bell,
 };
 
@@ -58,6 +57,7 @@ export function NotificationsPanel({ open, onClose, unreadCount: _unreadCount, o
   const [filter, setFilter] = useState('all');
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(false);
+  const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const fetchNotifications = useCallback(async () => {
     setLoading(true);
@@ -187,7 +187,10 @@ export function NotificationsPanel({ open, onClose, unreadCount: _unreadCount, o
                       key={n.id}
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      onClick={() => markAsRead(n.id)}
+                      onClick={() => {
+                        setExpandedId(expandedId === n.id ? null : n.id);
+                        markAsRead(n.id);
+                      }}
                       className={`p-4 border rounded-[8px] transition-all duration-300 cursor-pointer ${
                         n.is_read
                           ? 'border-brand-border bg-brand-white/30 hover:bg-brand-white/50'
@@ -205,7 +208,7 @@ export function NotificationsPanel({ open, onClose, unreadCount: _unreadCount, o
                             </p>
                             {!n.is_read && <span className="w-1.5 h-1.5 rounded-full bg-brand-gold flex-shrink-0" />}
                           </div>
-                          <p className="font-sans text-[11px] text-brand-gray/60 leading-relaxed line-clamp-2">{n.message}</p>
+                          <p className={`font-sans text-[11px] text-brand-gray/60 leading-relaxed ${expandedId === n.id ? '' : 'line-clamp-2'}`}>{n.message}</p>
                           <p className="font-sans text-[9px] text-brand-gray/30 mt-1.5">{timeAgo(n.created_at)}</p>
                         </div>
                       </div>

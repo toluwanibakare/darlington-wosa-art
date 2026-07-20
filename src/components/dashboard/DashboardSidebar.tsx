@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -15,8 +16,11 @@ import {
   LogOut,
   ChevronLeft,
   Home,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { useUser } from '@/lib/use-user';
+import { useTheme } from '@/components/providers';
 
 const NAV_ITEMS = [
   { label: 'Overview', href: '/dashboard', icon: LayoutDashboard },
@@ -37,6 +41,7 @@ export function DashboardSidebar({ mobileOpen, onClose }: DashboardSidebarProps)
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useUser();
+  const { theme, setTheme } = useTheme();
 
   const handleLogout = () => {
     logout();
@@ -68,12 +73,15 @@ export function DashboardSidebar({ mobileOpen, onClose }: DashboardSidebarProps)
           {/* Logo & Brand */}
           <div className="pt-6 pb-5 border-b border-brand-border px-6">
             <Link href="/" className="flex items-center gap-4 transition-opacity duration-300 hover:opacity-80">
-              <img
-                src="/logo.png"
-                alt="Darlington Wosa"
-                className="object-contain flex-shrink-0"
-                style={{ width: '72px', height: '72px' }}
-              />
+              <div className="relative flex-shrink-0" style={{ width: '72px', height: '72px' }}>
+                <Image
+                  src={theme === 'dark' ? '/logo_white.png' : '/logo.png'}
+                  alt="Darlington Wosa"
+                  fill
+                  sizes="72px"
+                  className="object-contain"
+                />
+              </div>
               <div>
                 <p className="font-display text-base text-brand-black leading-tight">Darlington Wosa</p>
                 <p className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/50">Art & Frames</p>
@@ -117,8 +125,21 @@ export function DashboardSidebar({ mobileOpen, onClose }: DashboardSidebarProps)
             })}
           </nav>
 
+          {/* Theme Toggle */}
+          <div className="pt-2 pb-2 border-t border-brand-border px-3">
+            <button
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="flex items-center rounded-[8px] text-brand-gray hover:text-brand-gold hover:bg-brand-border/30 transition-all duration-300 cursor-pointer w-full gap-3 px-4 py-2.5"
+            >
+              {theme === 'dark' ? <Sun size={16} className="flex-shrink-0" /> : <Moon size={16} className="flex-shrink-0" />}
+              <span className="font-sans text-[11px] tracking-[0.1em] uppercase">
+                {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              </span>
+            </button>
+          </div>
+
           {/* Sign out */}
-          <div className="mt-auto pt-4 border-t border-brand-border px-3">
+          <div className="pt-2 pb-4 border-t border-brand-border px-3">
             <button
               onClick={handleLogout}
               className="flex items-center rounded-[8px] text-brand-gray hover:text-brand-gold hover:bg-brand-border/30 transition-all duration-300 cursor-pointer w-full gap-3 px-4 py-2.5"

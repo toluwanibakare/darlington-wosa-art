@@ -64,24 +64,24 @@ export function DashboardHeader({ onToggleMenu, mobileOpen }: DashboardHeaderPro
         }`}
       >
         <div className="flex items-center justify-between h-20 px-4 md:px-8">
-          <div className="flex items-center gap-3 lg:hidden">
+          <div className="flex items-center gap-3">
             <button
               onClick={onToggleMenu}
-              className="w-9 h-9 rounded-full border border-brand-border flex items-center justify-center hover:border-brand-gold/50 transition-colors cursor-pointer"
+              className="w-9 h-9 rounded-full border border-brand-border flex items-center justify-center hover:border-brand-gold/50 transition-colors cursor-pointer lg:hidden"
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             >
               {mobileOpen ? <X size={16} className="text-brand-black" /> : <Menu size={16} className="text-brand-black" />}
             </button>
             <span className="font-sans text-sm tracking-[0.05em] text-brand-black font-medium">{pageTitle}</span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-3 px-4 py-2 border border-brand-border rounded-full w-72 transition-colors focus-within:border-brand-gold/50">
-            <Search size={14} className="text-brand-gray/50" />
-            <input
-              type="text"
-              placeholder="Search orders, bookings..."
-              className="bg-transparent text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none font-sans w-full"
-            />
+            <span className="hidden md:block w-px h-6 bg-brand-border mx-2" />
+            <div className="hidden md:flex items-center gap-3 px-4 py-2 border border-brand-border rounded-full w-64 transition-colors focus-within:border-brand-gold/50">
+              <Search size={14} className="text-brand-gray/50" />
+              <input
+                type="text"
+                placeholder="Search orders, bookings..."
+                className="bg-transparent text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none font-sans w-full"
+              />
+            </div>
           </div>
 
           <div className="flex items-center gap-4 ml-auto">

@@ -18,6 +18,8 @@ import {
   Ticket,
   DollarSign,
   Activity,
+  UserCheck,
+  X,
 } from 'lucide-react';
 import { useUser } from '@/lib/use-user';
 import { api } from '@/lib/api';
@@ -89,6 +91,10 @@ export default function DashboardOverview() {
   const router = useRouter();
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [dashboardLoading, setDashboardLoading] = useState(true);
+  const [profileBannerDismissed, setProfileBannerDismissed] = useState(false);
+
+  const profileComplete = !!(user?.name && user?.email && (user as Record<string, unknown>)?.phone);
+  const showProfileBanner = !profileComplete && !profileBannerDismissed;
 
   useEffect(() => {
     if (!user) {
@@ -210,7 +216,7 @@ export default function DashboardOverview() {
 
   return (
     <div className="p-6 md:p-10">
-      <motion.div {...fadeUpProps(0)} className="mb-12">
+      <motion.div {...fadeUpProps(0)} className="mb-8">
         <h1 className="font-display text-3xl md:text-4xl text-brand-black mb-2">
           Welcome back, {user.name}
         </h1>
@@ -218,6 +224,38 @@ export default function DashboardOverview() {
           Here&apos;s what&apos;s happening with your account today.
         </p>
       </motion.div>
+
+      {showProfileBanner && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8 p-5 border border-brand-gold/30 rounded-[8px] bg-brand-gold/5 flex items-start gap-4"
+        >
+          <div className="w-9 h-9 rounded-full bg-brand-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <UserCheck size={16} className="text-brand-gold" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-sans text-sm text-brand-black font-medium">Complete Your Profile</p>
+            <p className="font-sans text-[12px] text-brand-gray/70 mt-1 leading-relaxed">
+              Your profile is incomplete. Add your phone number and other details to get the most out of your experience, including order updates and booking confirmations.
+            </p>
+            <Link
+              href="/dashboard/profile"
+              className="inline-flex items-center gap-1.5 mt-3 font-sans text-[11px] tracking-[0.15em] uppercase text-brand-gold hover:text-brand-gold-light transition-colors"
+            >
+              Go to Profile
+              <ArrowRight size={11} />
+            </Link>
+          </div>
+          <button
+            onClick={() => setProfileBannerDismissed(true)}
+            className="w-7 h-7 rounded-full flex items-center justify-center text-brand-gray/40 hover:text-brand-gray hover:bg-brand-border/30 transition-all cursor-pointer flex-shrink-0"
+            aria-label="Dismiss"
+          >
+            <X size={14} />
+          </button>
+        </motion.div>
+      )}
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
         {STATS.map((stat, i) => (
