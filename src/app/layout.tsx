@@ -66,6 +66,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${cinzel.variable} ${montserrat.variable} ${pinyonScript.variable} antialiased h-full`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{
+          __html: `(function(){try{var t=localStorage.getItem('theme')||'dark';if(t==='dark')document.documentElement.classList.add('dark')}catch(e){document.documentElement.classList.add('dark')}})()`
+        }} />
+      </head>
       <body className="bg-brand-surface text-brand-black min-h-full flex flex-col font-sans">
         <ThemeProvider>
           <LoadingScreen />
