@@ -86,7 +86,7 @@ export function Header() {
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center justify-center gap-8 lg:gap-12 flex-1 mt-0.5">
+        <nav className="hidden md:flex items-center justify-center gap-6 lg:gap-10 flex-1 mt-0.5">
           {!isAuthPage && navItems.map((item) => {
             const isActive = isActiveCheck(item.href);
             return (
@@ -95,7 +95,7 @@ export function Header() {
               href={item.href}
               className={`font-sans tracking-[0.15em] uppercase font-semibold transition-all duration-300 relative pb-1 ${
                 isActive ? 'text-brand-gold' : 'text-brand-black/60 hover:text-brand-black'
-              } ${scrolled ? 'text-xs' : 'text-sm'}`}
+              } ${scrolled ? 'text-[10px] sm:text-[11px]' : 'text-[11px] sm:text-xs'}`}
             >
               {item.label}
               {isActive && (

@@ -32,7 +32,7 @@ function ShopContent() {
     <>
       <ShopHero />
 
-      <section className="relative w-full px-6 pb-32">
+      <section className="relative w-full px-6 pb-32 bg-brand-surface text-brand-black">
         <div className="max-w-[1400px] mx-auto">
           {categories.length > 0 && (
             <Reveal className="flex flex-wrap items-center gap-3 mb-12">

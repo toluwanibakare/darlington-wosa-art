@@ -5,7 +5,7 @@ import { Reveal } from '@/components/ui';
 
 export function ReviewsHero() {
   return (
-    <section className="relative w-full min-h-[50vh] flex items-center justify-center px-6 pt-32 pb-20 overflow-hidden">
+    <section className="relative w-full min-h-[50vh] flex items-center justify-center px-6 pt-32 pb-20 overflow-hidden bg-brand-surface text-brand-black">
       <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'var(--bg-noise)' }} />
       <div className="max-w-[1400px] mx-auto w-full">
         <Reveal className="text-center max-w-3xl mx-auto">

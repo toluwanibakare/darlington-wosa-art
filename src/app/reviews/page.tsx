@@ -50,7 +50,7 @@ export default function ReviewsPage() {
     <>
       <ReviewsHero />
 
-      <section className="relative w-full px-6 pb-20">
+      <section className="relative w-full px-6 pb-20 bg-brand-surface text-brand-black">
         <div className="max-w-[1400px] mx-auto">
           <Reveal className="mb-20 p-8 md:p-12 rounded-[12px] border border-brand-border bg-brand-white">
             <ReviewsStats stats={stats} />
