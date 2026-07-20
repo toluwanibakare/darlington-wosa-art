@@ -1,1 +1,2 @@
-https://dyslexic-pelvis-sequester.ngrok-free.dev
+Backend: api.darlingtonwosa.art
+Frontend: darlingtonwosa.art
