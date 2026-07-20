@@ -7,6 +7,7 @@ import { Button, Logo } from '@/components/ui';
 import { MapPin, Phone, Mail, ArrowUpRight, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { api } from '@/lib/api';
 
+
 const QUICK_LINKS = [
   { label: 'About', href: '/about' },
   { label: 'Portfolio', href: '/portfolio' },
