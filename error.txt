@@ -1,2 +1,11 @@
-Backend: api.darlingtonwosa.art
-Frontend: darlingtonwosa.art
+./src/app/admin/page.tsx:51:35
+Type error: 's.users' is possibly 'undefined'.
+  49 |     label: 'Total Users',
+  50 |     icon: Users,
+> 51 |     value: (s: DashboardStats) => s.users.toLocaleString(),
+     |                                   ^
+  52 |   },
+  53 |   {
+  54 |     key: 'orders',
+Next.js build worker exited with code: 1 and signal: null
+Error: Command "npm run build" exited with 1

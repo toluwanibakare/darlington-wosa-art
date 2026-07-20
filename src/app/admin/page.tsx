@@ -48,16 +48,16 @@ const statCards = [
     key: 'users',
     label: 'Total Users',
     icon: Users,
-    value: (s: DashboardStats) => s.users.toLocaleString(),
+    value: (s: DashboardStats) => (s.users ?? 0).toLocaleString(),
   },
   {
     key: 'orders',
     label: 'Total Orders',
     icon: ShoppingBag,
-    value: (s: DashboardStats) => s.orders.toLocaleString(),
+    value: (s: DashboardStats) => (s.orders ?? 0).toLocaleString(),
     extra: (s: DashboardStats) => (
       <span className="font-sans text-[11px] text-brand-gold">
-        Revenue: {formatNaira(s.revenue)}
+        Revenue: {formatNaira(s.revenue ?? 0)}
       </span>
     ),
   },
@@ -65,7 +65,7 @@ const statCards = [
     key: 'bookings',
     label: 'Total Bookings',
     icon: Calendar,
-    value: (s: DashboardStats) => s.bookings.toLocaleString(),
+    value: (s: DashboardStats) => (s.bookings ?? 0).toLocaleString(),
   },
   {
     key: 'messages',
@@ -74,7 +74,7 @@ const statCards = [
     value: (s: DashboardStats) => s.unread_messages.toLocaleString(),
     extra: (s: DashboardStats) => (
       <span className="font-sans text-[11px] text-brand-gold">
-        {s.subscribers} Subscribers
+        {s.subscribers ?? 0} Subscribers
       </span>
     ),
   },
@@ -95,6 +95,7 @@ export default function AdminDashboard() {
         if (!res.ok) return;
         const raw = await res.json();
         setStats({
+          ...raw,
           users: raw.total_users ?? raw.users ?? 0,
           orders: raw.total_orders ?? raw.orders ?? 0,
           revenue: raw.total_revenue ?? raw.revenue ?? 0,
