@@ -16,6 +16,9 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\CouponController;
+use App\Http\Controllers\Api\ShopController;
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\NegotiationController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -30,6 +33,9 @@ use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\Admin\VideoController as AdminVideoController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
+use App\Http\Controllers\Admin\ShopCategoryController as AdminShopCategoryController;
+use App\Http\Controllers\Admin\ShopItemController as AdminShopItemController;
+use App\Http\Controllers\Admin\NegotiationController as AdminNegotiationController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +63,18 @@ Route::post('/testimonials', [TestimonialController::class, 'store']);
 
 Route::get('/videos', [VideoController::class, 'index']);
 Route::post('/videos', [VideoController::class, 'store']);
+
+Route::get('/shop/categories', [ShopController::class, 'categories']);
+Route::get('/shop/items', [ShopController::class, 'items']);
+Route::get('/shop/items/{id}', [ShopController::class, 'show']);
+
+Route::post('/shop/cart/add', [CartController::class, 'add']);
+Route::get('/shop/cart', [CartController::class, 'index']);
+Route::patch('/shop/cart/{id}', [CartController::class, 'update']);
+Route::delete('/shop/cart/{id}', [CartController::class, 'remove']);
+Route::delete('/shop/cart', [CartController::class, 'clear']);
+
+Route::post('/shop/negotiate', [NegotiationController::class, 'store']);
 
 // Authenticated routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -177,6 +195,24 @@ Route::prefix('admin')->group(function () {
         Route::get('/videos', [AdminVideoController::class, 'index']);
         Route::put('/videos/{id}', [AdminVideoController::class, 'update']);
         Route::delete('/videos/{id}', [AdminVideoController::class, 'destroy']);
+
+        // Shop Categories
+        Route::get('/shop/categories', [AdminShopCategoryController::class, 'index']);
+        Route::post('/shop/categories', [AdminShopCategoryController::class, 'store']);
+        Route::get('/shop/categories/{id}', [AdminShopCategoryController::class, 'show']);
+        Route::post('/shop/categories/{id}', [AdminShopCategoryController::class, 'update']);
+        Route::delete('/shop/categories/{id}', [AdminShopCategoryController::class, 'destroy']);
+
+        // Shop Items
+        Route::get('/shop/items', [AdminShopItemController::class, 'index']);
+        Route::post('/shop/items', [AdminShopItemController::class, 'store']);
+        Route::get('/shop/items/{id}', [AdminShopItemController::class, 'show']);
+        Route::post('/shop/items/{id}', [AdminShopItemController::class, 'update']);
+        Route::delete('/shop/items/{id}', [AdminShopItemController::class, 'destroy']);
+
+        // Negotiations
+        Route::get('/shop/negotiations', [AdminNegotiationController::class, 'index']);
+        Route::put('/shop/negotiations/{id}', [AdminNegotiationController::class, 'respond']);
 
         // Settings / Referral config
         Route::get('/settings', [AdminSettingController::class, 'index']);

@@ -52,6 +52,7 @@ export const metadata: Metadata = {
 };
 
 import { ThemeProvider } from "@/components/providers";
+import { CartProvider } from "@/components/shop";
 import { HeaderWrapper } from "@/components/layout/HeaderWrapper";
 import { Footer } from "@/components/layout/Footer";
 import { CharcoalDust } from "@/components/effects/CharcoalDust";
@@ -73,15 +74,17 @@ export default function RootLayout({
       </head>
       <body className="bg-brand-surface text-brand-black min-h-full flex flex-col font-sans">
         <ThemeProvider>
-          <LoadingScreen />
-          <CharcoalDust />
-          <HeaderWrapper />
-          <main className="flex-1 flex flex-col w-full overflow-x-hidden">
-            {children}
-          </main>
-          <Footer />
-          <ScrollToTop />
-          <StarPaintDust />
+          <CartProvider>
+            <LoadingScreen />
+            <CharcoalDust />
+            <HeaderWrapper />
+            <main className="flex-1 flex flex-col w-full overflow-x-hidden">
+              {children}
+            </main>
+            <Footer />
+            <ScrollToTop />
+            <StarPaintDust />
+          </CartProvider>
         </ThemeProvider>
       </body>
     </html>
