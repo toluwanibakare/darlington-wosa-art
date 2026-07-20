@@ -62,7 +62,7 @@ const formatDate = (dateStr: string) => {
   return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.darlingtonwosa.art';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 const apiAdmin = {
   get: async <T extends unknown>(endpoint: string): Promise<T> => {

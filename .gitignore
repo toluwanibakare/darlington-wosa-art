@@ -48,9 +48,7 @@ credentials.json
 token.json
 error.txt
 
-# Backend (removed - using live API only)
-backend/
-
 # Backend vendors (too large for git)
 /vendor
+backend/vendor.zip
 
