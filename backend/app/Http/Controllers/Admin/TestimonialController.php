@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\TestimonialStatusEmail;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class TestimonialController extends Controller
 {
@@ -79,6 +81,19 @@ class TestimonialController extends Controller
         $testimonial = Testimonial::findOrFail($id);
         $testimonial->update(['status' => 'approved', 'is_active' => true]);
 
+        if ($testimonial->user) {
+            try {
+                Mail::to($testimonial->user->email)->send(new TestimonialStatusEmail($testimonial));
+            } catch (\Exception $e) {
+                report($e);
+            }
+            $testimonial->user->notifications()->create([
+                'title' => 'Testimonial Approved',
+                'message' => 'Your testimonial has been approved and is now visible on our website.',
+                'type' => 'testimonial',
+            ]);
+        }
+
         return response()->json([
             'message' => 'Testimonial approved.',
             'testimonial' => $testimonial,
@@ -94,6 +109,21 @@ class TestimonialController extends Controller
             'is_active' => false,
             'admin_reply' => $validated['admin_reply'] ?? null,
         ]);
+
+        if ($testimonial->user) {
+            try {
+                Mail::to($testimonial->user->email)->send(new TestimonialStatusEmail($testimonial));
+            } catch (\Exception $e) {
+                report($e);
+            }
+            $testimonial->user->notifications()->create([
+                'title' => 'Testimonial Update',
+                'message' => $validated['admin_reply']
+                    ? 'Your testimonial has been reviewed. Admin response: ' . $validated['admin_reply']
+                    : 'Your testimonial has been reviewed.',
+                'type' => 'testimonial',
+            ]);
+        }
 
         return response()->json([
             'message' => 'Testimonial rejected.',

@@ -82,6 +82,10 @@ Route::post('/payments/initialize', [PaymentController::class, 'initialize']);
 Route::post('/payments/verify', [PaymentController::class, 'verify']);
 Route::post('/payments/webhook', [PaymentController::class, 'webhook']);
 
+// OTP Verification
+Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->middleware('auth:sanctum');
+Route::post('/resend-otp', [AuthController::class, 'resendOtp'])->middleware('auth:sanctum');
+
 // Authenticated routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
