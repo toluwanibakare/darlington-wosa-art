@@ -16,7 +16,7 @@ export function NegotiationModal({ item, open, onClose }: { item: ShopItem; open
     e.preventDefault();
     if (!price || Number(price) <= 0) return;
     setStatus('loading');
-    const { data, error } = await api.post('/shop/negotiate', {
+    const { data, error } = await api.post<{ message: string }>('/shop/negotiate', {
       shop_item_id: item.id,
       offered_price: Number(price),
       message,
