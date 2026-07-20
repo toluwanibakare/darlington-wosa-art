@@ -2,18 +2,14 @@
 
 import React from 'react';
 
-/* ─────────────────────────────────────────────
-   Charcoal Dust — Realistic Grain Effect
-   
-   Uses an SVG fractal noise filter to create a 
-   hyper-realistic "powdery charcoal" texture that 
-   jitters subtly like analog film grain.
-   ───────────────────────────────────────────── */
-
 export function CharcoalDust() {
   return (
     <div
-      className="fixed inset-0 z-[1] pointer-events-none opacity-[0.08] mix-blend-multiply overflow-hidden"
+      className="fixed inset-0 z-[1] pointer-events-none overflow-hidden"
+      style={{
+        opacity: 'var(--grain-opacity, 0.08)',
+        mixBlendMode: 'var(--grain-mode)' as any,
+      }}
       aria-hidden="true"
     >
       <div 

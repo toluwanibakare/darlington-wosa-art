@@ -1,14 +1,16 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Colors - Warm Unbleached Paper Theme */
-  --color-brand-gold: #804D15; /* Darker gold for accessible contrast on light backgrounds */
-  --color-brand-gold-light: #9E651B; /* Brighter gold for dark backgrounds */
-  --color-brand-black: #111111; /* Absolute crisp ink */
-  --color-brand-surface: #F5F2EB; /* Warm, natural unbleached paper */
-  --color-brand-white: #FFFFFF; /* Pure white for raised cards/highlights */
-  --color-brand-gray: #5C5C5C; /* Medium-dark for readable secondary text */
-  --color-brand-border: #E5E0D8; /* Organic paper border color */
+  --color-brand-gold: #804D15;
+  --color-brand-gold-light: #9E651B;
+  --color-brand-black: #111111;
+  --color-brand-surface: #F5F2EB;
+  --color-brand-white: #FFFFFF;
+  --color-brand-gray: #5C5C5C;
+  --color-brand-border: #E5E0D8;
   
   /* Fonts - Artistic and luxurious */
   --font-sans: var(--font-sans), sans-serif;
@@ -26,6 +28,26 @@
 
   /* Marquee animation */
   --animate-marquee: marquee 40s linear infinite;
+}
+
+/* ─────────────────────────────────────────────
+   Dark Mode Overrides
+   ───────────────────────────────────────────── */
+.dark {
+  --color-brand-gold: #9E651B;
+  --color-brand-gold-light: #C9963F;
+  --color-brand-black: #F5F2EB;
+  --color-brand-surface: #0D0D0D;
+  --color-brand-white: #1A1A1A;
+  --color-brand-gray: #A0A0A0;
+  --color-brand-border: #2A2A2A;
+  --bg-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+  --grain-mode: screen;
+  --grain-opacity: 0.1;
+}
+
+.dark ::selection {
+  background: rgba(158, 101, 27, 0.4);
 }
 
 /* Infinite marquee keyframes */
@@ -68,10 +90,16 @@
   --background: #000000;
   --foreground: #ffffff;
   --bg-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+  --grain-mode: multiply;
+  --grain-opacity: 0.08;
 }
 
 html {
   cursor: url("/figma-cursor.svg") 1 1, auto;
+}
+
+html.dark {
+  cursor: url("/figma-cursor-white.svg") 1 1, auto;
 }
 
 a, button, [role="button"], input[type="submit"], input[type="button"], select, label, summary, .cursor-pointer {
@@ -83,9 +111,14 @@ a, button, [role="button"], input[type="submit"], input[type="button"], select, 
   cursor: url("/figma-cursor-white.svg") 1 1, auto;
 }
 
+html.dark .bg-brand-black,
+html.dark .bg-black {
+  cursor: url("/figma-cursor.svg") 1 1, auto;
+}
+
 /* Hide custom cursor on touch devices */
 @media (hover: none) and (pointer: coarse) {
-  html, .bg-brand-black, .bg-black {
+  html, html.dark, .bg-brand-black, .bg-black {
     cursor: auto;
   }
 }
@@ -110,12 +143,21 @@ p {
 ::-webkit-scrollbar-track {
   background: #000000; 
 }
+html.dark ::-webkit-scrollbar-track {
+  background: #1A1A1A; 
+}
 ::-webkit-scrollbar-thumb {
   background: #1a1a1a; 
   border-radius: 4px;
 }
+html.dark ::-webkit-scrollbar-thumb {
+  background: #333333; 
+}
 ::-webkit-scrollbar-thumb:hover {
   background: #333333; 
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #555555; 
 }
 
 /* Reduced motion: collapse scroll-linked sections, disable transforms */
@@ -134,4 +176,8 @@ p {
 :focus-visible {
   outline: 2px solid #9E651B;
   outline-offset: 2px;
+}
+
+.dark :focus-visible {
+  outline-color: #C9963F;
 }

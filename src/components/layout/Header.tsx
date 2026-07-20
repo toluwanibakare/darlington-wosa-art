@@ -8,6 +8,7 @@ import { Logo } from '@/components/ui';
 import { User, LayoutDashboard, UserCircle, Gift, LogOut } from 'lucide-react';
 import { useUser } from '@/lib/use-user';
 import { api } from '@/lib/api';
+import { ThemeToggle } from '@/components/providers';
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -130,6 +131,8 @@ export function Header() {
               )}
               Get in Touch
             </Link>
+
+            <ThemeToggle />
 
             <span className="inline-block h-4 w-[1px] bg-brand-border" />
 
@@ -255,6 +258,13 @@ export function Header() {
               </div>
 
               <div className="mt-8 pt-6 border-t border-brand-border space-y-3">
+                <div className="flex items-center justify-between px-1">
+                  <span className="text-[10px] tracking-[0.15em] uppercase text-brand-gray font-sans">Appearance</span>
+                  <ThemeToggle />
+                </div>
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-brand-border space-y-3">
                 {!user ? (
                   <>
                     <Link
