@@ -93,7 +93,7 @@ export default function DashboardOverview() {
   const [dashboardLoading, setDashboardLoading] = useState(true);
   const [profileBannerDismissed, setProfileBannerDismissed] = useState(false);
 
-  const profileComplete = !!(user?.name && user?.email && (user as Record<string, unknown>)?.phone);
+  const profileComplete = !!(user?.name && user?.email && user?.phone);
   const showProfileBanner = !profileComplete && !profileBannerDismissed;
 
   useEffect(() => {
