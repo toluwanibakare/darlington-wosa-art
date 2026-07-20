@@ -62,10 +62,16 @@ export function ShopItemCard({ item }: { item: ShopItem }) {
           {item.category && (
             <span className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gold">{item.category.name}</span>
           )}
-          <h3 className="font-display text-lg text-brand-black mt-1 mb-2">{item.name}</h3>
+          <h3 className="font-display text-lg text-brand-black mt-1">{item.name}</h3>
+
+          {item.width && item.height && (
+            <p className="font-sans text-[11px] text-brand-gray mt-1 tracking-wide">
+              {item.width} x {item.height} inches
+            </p>
+          )}
 
           {item.price !== null && !item.is_sold && (
-            <p className="font-sans text-xl text-brand-gold font-semibold mb-3">
+            <p className="font-sans text-xl text-brand-gold font-semibold mt-2 mb-3">
               &#8358;{Number(item.price).toLocaleString()}
             </p>
           )}

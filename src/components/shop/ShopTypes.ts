@@ -13,6 +13,8 @@ export interface ShopItem {
   slug: string;
   description: string | null;
   price: number | null;
+  width: number | null;
+  height: number | null;
   is_negotiable: boolean;
   images: string[];
   category: { id: number; name: string; slug: string } | null;
@@ -29,5 +31,7 @@ export interface CartItem {
     is_negotiable: boolean;
     images: string[];
     category: string | null;
+    width: number | null;
+    height: number | null;
   } | null;
 }

@@ -51,7 +51,13 @@ export function NegotiationModal({ item, open, onClose }: { item: ShopItem; open
             </button>
 
             <h3 className="font-display text-2xl text-brand-black mb-1">Make an Offer</h3>
-            <p className="font-sans text-sm text-brand-gray mb-6">{item.name}</p>
+            <p className="font-sans text-sm text-brand-gray">{item.name}</p>
+            {item.width && item.height && (
+              <p className="font-sans text-[11px] text-brand-gray/70 mt-0.5">
+                {item.width} x {item.height} inches
+              </p>
+            )}
+            <div className="mb-6" />
 
             {status === 'success' ? (
               <p className="font-sans text-brand-gold">{result}</p>

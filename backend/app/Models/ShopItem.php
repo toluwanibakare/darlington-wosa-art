@@ -9,6 +9,7 @@ class ShopItem extends Model
 {
     protected $fillable = [
         'category_id', 'name', 'slug', 'description', 'price',
+        'width', 'height',
         'is_negotiable', 'images', 'is_active', 'is_sold', 'sort_order',
     ];
 
@@ -16,6 +17,8 @@ class ShopItem extends Model
     {
         return [
             'price' => 'decimal:2',
+            'width' => 'decimal:2',
+            'height' => 'decimal:2',
             'is_negotiable' => 'boolean',
             'is_active' => 'boolean',
             'is_sold' => 'boolean',

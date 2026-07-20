@@ -81,8 +81,8 @@ export function Header() {
         {/* Desktop Logo */}
         <div className={`flex-1 flex justify-start ${mobileMenuOpen ? 'max-md:invisible max-md:pointer-events-none' : ''}`}>
           <Link href="/" className="transition-transform duration-300 hover:scale-105 active:scale-95 flex items-center shrink-0">
-            <Logo height={56} className="hidden md:block origin-left transition-transform duration-300" />
-            <Logo height={44} className="md:hidden origin-left transition-transform duration-300 ml-4" />
+            <Logo height={60} className="hidden md:block origin-left transition-transform duration-300" />
+            <Logo height={48} className="md:hidden origin-left transition-transform duration-300 ml-4" />
           </Link>
         </div>
 

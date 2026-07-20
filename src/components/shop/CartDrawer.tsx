@@ -67,6 +67,11 @@ export function CartDrawer() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-sans text-sm text-brand-black font-medium truncate">{ci.item?.name}</p>
+                        {ci.item?.width && ci.item?.height && (
+                          <p className="font-sans text-[10px] text-brand-gray tracking-wide mt-0.5">
+                            {ci.item.width} x {ci.item.height} in
+                          </p>
+                        )}
                         {ci.item?.price !== null && (
                           <p className="font-sans text-xs text-brand-gold mt-1">
                             &#8358;{Number(ci.item?.price || 0).toLocaleString()}

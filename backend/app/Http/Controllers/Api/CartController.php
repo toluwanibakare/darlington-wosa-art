@@ -29,6 +29,8 @@ class CartController extends Controller
                     'id' => $ci->shopItem->id,
                     'name' => $ci->shopItem->name,
                     'price' => $ci->shopItem->price,
+                    'width' => $ci->shopItem->width,
+                    'height' => $ci->shopItem->height,
                     'is_negotiable' => $ci->shopItem->is_negotiable,
                     'images' => $ci->shopItem->images ? array_map(fn ($img) => url('storage/' . $img), $ci->shopItem->images) : [],
                     'category' => $ci->shopItem->category ? $ci->shopItem->category->name : null,
