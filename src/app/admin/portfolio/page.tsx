@@ -31,17 +31,19 @@ interface PaginatedResponse {
 
 const CATEGORIES = ['All', 'Charcoal Portraits', 'Pencil Drawings', 'Mixed Media', 'Corporate', 'Creative Events'];
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+
 const apiAdmin = {
   get: async (endpoint: string) => {
     const token = localStorage.getItem('auth_token');
-    const res = await fetch(`http://127.0.0.1:8000/api/admin${endpoint}`, {
+    const res = await fetch(`${API_BASE}/admin${endpoint}`, {
       headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' },
     });
     return res.json();
   },
   post: async (endpoint: string, body: unknown) => {
     const token = localStorage.getItem('auth_token');
-    const res = await fetch(`http://127.0.0.1:8000/api/admin${endpoint}`, {
+    const res = await fetch(`${API_BASE}/admin${endpoint}`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(body),
@@ -50,7 +52,7 @@ const apiAdmin = {
   },
   put: async (endpoint: string, body: unknown) => {
     const token = localStorage.getItem('auth_token');
-    const res = await fetch(`http://127.0.0.1:8000/api/admin${endpoint}`, {
+    const res = await fetch(`${API_BASE}/admin${endpoint}`, {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(body),
@@ -59,7 +61,7 @@ const apiAdmin = {
   },
   delete: async (endpoint: string) => {
     const token = localStorage.getItem('auth_token');
-    await fetch(`http://127.0.0.1:8000/api/admin${endpoint}`, {
+    await fetch(`${API_BASE}/admin${endpoint}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' },
     });

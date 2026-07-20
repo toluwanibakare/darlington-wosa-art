@@ -74,6 +74,7 @@ const statCards = [
 ];
 
 export default function AdminDashboard() {
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -81,7 +82,7 @@ export default function AdminDashboard() {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem('auth_token');
-        const res = await fetch('http://127.0.0.1:8000/api/admin/dashboard/stats', {
+        const res = await fetch(`${API_BASE}/admin/dashboard/stats`, {
           headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
         });
         if (!res.ok) return;

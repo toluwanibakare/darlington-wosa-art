@@ -33,14 +33,14 @@ interface PaginatedResponse {
 const api = {
   get: async (endpoint: string) => {
     const token = localStorage.getItem('auth_token');
-    const res = await fetch(`http://127.0.0.1:8000/api/admin${endpoint}`, {
+    const res = await fetch(`${API_BASE}/admin${endpoint}`, {
       headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' },
     });
     return res.json();
   },
   put: async (endpoint: string, body: unknown) => {
     const token = localStorage.getItem('auth_token');
-    const res = await fetch(`http://127.0.0.1:8000/api/admin${endpoint}`, {
+    const res = await fetch(`${API_BASE}/admin${endpoint}`, {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(body),
@@ -49,7 +49,7 @@ const api = {
   },
   delete: async (endpoint: string) => {
     const token = localStorage.getItem('auth_token');
-    await fetch(`http://127.0.0.1:8000/api/admin${endpoint}`, {
+    await fetch(`${API_BASE}/admin${endpoint}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' },
     });
@@ -61,6 +61,8 @@ const STATUS_COLORS: Record<string, string> = {
   rejected: 'bg-red-100 text-red-700',
   pending: 'bg-amber-100 text-amber-700',
 };
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 export default function AdminVideosPage() {
   const [videos, setVideos] = useState<VideoSubmission[]>([]);

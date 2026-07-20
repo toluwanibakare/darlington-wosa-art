@@ -18,14 +18,14 @@ interface SettingEntry {
 const api = {
   get: async (endpoint: string) => {
     const token = localStorage.getItem('auth_token');
-    const res = await fetch(`http://127.0.0.1:8000/api/admin${endpoint}`, {
+    const res = await fetch(`${API_BASE}/admin${endpoint}`, {
       headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' },
     });
     return res.json();
   },
   put: async (endpoint: string, body: unknown) => {
     const token = localStorage.getItem('auth_token');
-    const res = await fetch(`http://127.0.0.1:8000/api/admin${endpoint}`, {
+    const res = await fetch(`${API_BASE}/admin${endpoint}`, {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(body),
@@ -33,6 +33,8 @@ const api = {
     return res.json();
   },
 };
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<SettingsMap>({});

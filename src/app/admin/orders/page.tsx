@@ -62,17 +62,19 @@ const formatDate = (dateStr: string) => {
   return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 };
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+
 const apiAdmin = {
   get: async <T extends unknown>(endpoint: string): Promise<T> => {
     const token = localStorage.getItem('auth_token');
-    const res = await fetch(`http://127.0.0.1:8000/api/admin${endpoint}`, {
+    const res = await fetch(`${API_BASE}/admin${endpoint}`, {
       headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
     });
     return res.json();
   },
   put: async <T extends unknown>(endpoint: string, body: unknown): Promise<T> => {
     const token = localStorage.getItem('auth_token');
-    const res = await fetch(`http://127.0.0.1:8000/api/admin${endpoint}`, {
+    const res = await fetch(`${API_BASE}/admin${endpoint}`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
