@@ -112,7 +112,7 @@ export function ReviewForm() {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your name"
                   readOnly={!!user}
-                  className="w-full bg-transparent border-b border-brand-border py-2 text-brand-white font-sans text-sm focus:outline-none focus:border-brand-gold transition-colors"
+                  className="w-full bg-transparent border-b border-brand-border py-2 text-brand-black font-sans text-sm focus:outline-none focus:border-brand-gold transition-colors"
                 />
               </div>
               <div>
@@ -124,7 +124,7 @@ export function ReviewForm() {
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                   placeholder="e.g. Art Collector, Lagos"
-                  className="w-full bg-transparent border-b border-brand-border py-2 text-brand-white font-sans text-sm focus:outline-none focus:border-brand-gold transition-colors"
+                  className="w-full bg-transparent border-b border-brand-border py-2 text-brand-black font-sans text-sm focus:outline-none focus:border-brand-gold transition-colors"
                 />
               </div>
             </div>
@@ -140,7 +140,7 @@ export function ReviewForm() {
               placeholder="Share your experience..."
               rows={4}
               required
-              className="w-full bg-transparent border border-brand-border rounded-[6px] p-4 text-brand-white font-sans text-sm focus:outline-none focus:border-brand-gold transition-colors resize-none"
+              className="w-full bg-transparent border border-brand-border rounded-[6px] p-4 text-brand-black font-sans text-sm focus:outline-none focus:border-brand-gold transition-colors resize-none"
             />
           </div>
 

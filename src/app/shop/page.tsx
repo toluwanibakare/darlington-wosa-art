@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { ShopHero, ShopItemCard, CartDrawer, CartFloatingButton, CartProvider } from '@/components/shop';
+import { ShopHero, ShopItemCard } from '@/components/shop';
 import { Reveal, StaggerList, StaggerItem } from '@/components/ui';
 import { api } from '@/lib/api';
 import { Loader2 } from 'lucide-react';
@@ -80,16 +80,10 @@ function ShopContent() {
         </div>
       </section>
 
-      <CartFloatingButton />
-      <CartDrawer />
     </>
   );
 }
 
 export default function ShopPage() {
-  return (
-    <CartProvider>
-      <ShopContent />
-    </CartProvider>
-  );
+  return <ShopContent />;
 }

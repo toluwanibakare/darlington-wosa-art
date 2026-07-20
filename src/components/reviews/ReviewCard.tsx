@@ -15,7 +15,7 @@ interface ReviewCardProps {
 
 export function ReviewCard({ name, role, quote, rating, image }: ReviewCardProps) {
   return (
-    <div className="relative p-8 md:p-10 border border-brand-white/5 rounded-[8px] bg-brand-white/[0.02] hover:bg-brand-white/[0.04] transition-all duration-500 group">
+    <div className="relative p-8 md:p-10 border border-brand-border rounded-[8px] bg-brand-white transition-all duration-500 group">
       {image && (
         <div className="relative w-full aspect-[4/3] rounded-[6px] overflow-hidden mb-6">
           <Image
@@ -28,7 +28,7 @@ export function ReviewCard({ name, role, quote, rating, image }: ReviewCardProps
       )}
       <StarRating rating={rating} size={14} />
       <Quote size={20} className="text-brand-gold/30 my-4" />
-      <blockquote className="font-sans text-brand-white/80 text-sm md:text-base leading-relaxed mb-6">
+      <blockquote className="font-sans text-brand-black/80 text-sm md:text-base leading-relaxed mb-6">
         &ldquo;{quote}&rdquo;
       </blockquote>
       <div className="flex items-center gap-3">
@@ -38,7 +38,7 @@ export function ReviewCard({ name, role, quote, rating, image }: ReviewCardProps
           </span>
         </div>
         <div>
-          <p className="font-sans text-sm text-brand-white font-medium">{name}</p>
+          <p className="font-sans text-sm text-brand-black font-medium">{name}</p>
           {role && <p className="font-sans text-xs text-brand-gray">{role}</p>}
         </div>
       </div>

@@ -52,7 +52,7 @@ export const metadata: Metadata = {
 };
 
 import { ThemeProvider } from "@/components/providers";
-import { CartProvider } from "@/components/shop";
+import { CartProvider, CartDrawer } from "@/components/shop";
 import { HeaderWrapper } from "@/components/layout/HeaderWrapper";
 import { Footer } from "@/components/layout/Footer";
 import { CharcoalDust } from "@/components/effects/CharcoalDust";
@@ -84,6 +84,7 @@ export default function RootLayout({
             <Footer />
             <ScrollToTop />
             <StarPaintDust />
+            <CartDrawer />
           </CartProvider>
         </ThemeProvider>
       </body>

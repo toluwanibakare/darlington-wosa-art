@@ -5,14 +5,16 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Logo } from '@/components/ui';
-import { User, LayoutDashboard, UserCircle, Gift, LogOut } from 'lucide-react';
+import { User, LayoutDashboard, UserCircle, Gift, LogOut, ShoppingCart } from 'lucide-react';
 import { useUser } from '@/lib/use-user';
 import { api } from '@/lib/api';
 import { ThemeToggle } from '@/components/providers';
+import { useCart } from '@/components/shop';
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const { user, logout } = useUser();
+  const { count, setOpen } = useCart();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -79,12 +81,12 @@ export function Header() {
         {/* Desktop Logo */}
         <div className={`flex-1 flex justify-start ${mobileMenuOpen ? 'max-md:invisible max-md:pointer-events-none' : ''}`}>
           <Link href="/" className="transition-transform duration-300 hover:scale-105 active:scale-95 flex items-center shrink-0">
-            <Logo height={44} className="hidden md:block origin-left transition-transform duration-300" />
-            <Logo height={40} className="md:hidden origin-left transition-transform duration-300 ml-4" />
+            <Logo height={56} className="hidden md:block origin-left transition-transform duration-300" />
+            <Logo height={44} className="md:hidden origin-left transition-transform duration-300 ml-4" />
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center justify-center gap-6 lg:gap-10 flex-1 mt-0.5">
+        <nav className="hidden md:flex items-center justify-center gap-8 lg:gap-12 flex-1 mt-0.5">
           {!isAuthPage && navItems.map((item) => {
             const isActive = isActiveCheck(item.href);
             return (
@@ -93,7 +95,7 @@ export function Header() {
               href={item.href}
               className={`font-sans tracking-[0.15em] uppercase font-semibold transition-all duration-300 relative pb-1 ${
                 isActive ? 'text-brand-gold' : 'text-brand-black/60 hover:text-brand-black'
-              } ${scrolled ? 'text-[10px] sm:text-[11px]' : 'text-[11px] sm:text-xs'}`}
+              } ${scrolled ? 'text-xs' : 'text-sm'}`}
             >
               {item.label}
               {isActive && (
@@ -121,20 +123,33 @@ export function Header() {
             transition={{ duration: 0.7, delay: 0.5, ease: easeExpoOut }}
             className="flex items-center gap-3"
           >
-            <Link
-              href="/contact"
-              className="flex items-center text-[11px] tracking-[0.15em] uppercase font-sans text-brand-gold hover:text-brand-gold-light transition-all duration-300"
-            >
-              {!scrolled && (
+            {!scrolled && (
+              <Link
+                href="/contact"
+                className="flex items-center text-[11px] tracking-[0.15em] uppercase font-sans text-brand-gold hover:text-brand-gold-light transition-all duration-300"
+              >
                 <span className="relative flex items-center justify-center h-2 w-2 mr-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-gold opacity-40" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-gold" />
                 </span>
-              )}
-              Get in Touch
-            </Link>
+                Get in Touch
+              </Link>
+            )}
 
             <ThemeToggle />
+
+            <button
+              onClick={() => setOpen(true)}
+              className="relative flex items-center justify-center h-8 w-8 rounded-full border border-brand-gold/30 hover:border-brand-gold bg-brand-surface hover:shadow-[0_0_15px_rgba(158,101,27,0.2)] transition-all duration-300 cursor-pointer"
+              aria-label="Open cart"
+            >
+              <ShoppingCart size={14} className="text-brand-black" />
+              {count > 0 && (
+                <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-brand-gold text-brand-black text-[9px] font-bold flex items-center justify-center font-sans">
+                  {count > 9 ? '9+' : count}
+                </span>
+              )}
+            </button>
 
             <span className="inline-block h-4 w-[1px] bg-brand-border" />
 
