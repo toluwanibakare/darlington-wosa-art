@@ -13,7 +13,6 @@ async function request<T>(
   const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
     'Accept': 'application/json',
     ...(options.headers as Record<string, string> || {}),
   };
@@ -42,6 +41,18 @@ async function request<T>(
   }
 }
 
+function buildFormData(body: Record<string, unknown>): FormData {
+  const fd = new FormData();
+  for (const [key, value] of Object.entries(body)) {
+    if (value instanceof File) {
+      fd.append(key, value);
+    } else if (value !== null && value !== undefined) {
+      fd.append(key, String(value));
+    }
+  }
+  return fd;
+}
+
 export const api = {
   get: <T>(endpoint: string) => request<T>(endpoint),
 
@@ -56,4 +67,7 @@ export const api = {
 
   delete: <T>(endpoint: string) =>
     request<T>(endpoint, { method: 'DELETE' }),
+
+  upload: <T>(endpoint: string, body: Record<string, unknown>) =>
+    request<T>(endpoint, { method: 'POST', body: buildFormData(body) }),
 };

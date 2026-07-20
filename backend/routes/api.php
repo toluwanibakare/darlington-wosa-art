@@ -52,6 +52,8 @@ Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
 Route::post('/newsletter/unsubscribe', [NewsletterController::class, 'unsubscribe']);
 
 Route::get('/testimonials', [TestimonialController::class, 'index']);
+Route::get('/testimonials/stats', [TestimonialController::class, 'stats']);
+Route::post('/testimonials', [TestimonialController::class, 'store']);
 
 Route::get('/videos', [VideoController::class, 'index']);
 Route::post('/videos', [VideoController::class, 'store']);

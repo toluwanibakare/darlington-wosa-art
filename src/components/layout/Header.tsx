@@ -42,6 +42,7 @@ export function Header() {
     { label: 'Portfolio', href: '/portfolio' },
     { label: 'Services', href: '/services' },
     { label: 'Classes', href: '/classes' },
+    { label: 'Reviews', href: '/reviews' },
   ] as const;
 
   const isActiveCheck = (href: string) => {
