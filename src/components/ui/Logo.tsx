@@ -39,7 +39,7 @@ export function Logo({
           }}
         >
           <Image
-            src={theme === 'dark' ? '/logo_white.jpg' : '/logo.png'}
+            src={theme === 'dark' ? '/logo_white.png' : '/logo.png'}
             alt="Darlington Wosa Art & Frames"
             fill
             sizes={`${width}px`}
