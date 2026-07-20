@@ -72,6 +72,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-brand-surface">
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20" style={{ backgroundImage: 'var(--bg-noise)' }} />
 
+      {/* Mobile floating menu button */}
+      <button
+        onClick={() => setMobileOpen(!mobileOpen)}
+        className="fixed top-3 left-3 z-50 w-10 h-10 rounded-full bg-brand-black text-brand-white border border-brand-gold flex items-center justify-center shadow-lg lg:hidden cursor-pointer"
+      >
+        {mobileOpen ? <X size={16} /> : <Menu size={16} />}
+      </button>
+
       {/* Mobile overlay */}
       <AnimatePresence>
         {mobileOpen && (
@@ -80,22 +88,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setMobileOpen(false)}
-            className="fixed inset-0 bg-black/30 z-40 lg:hidden"
+            className="fixed inset-0 bg-black/40 z-40 lg:hidden"
           />
         )}
       </AnimatePresence>
 
       {/* Sidebar */}
-      <aside className={`fixed top-0 left-0 h-full z-50 bg-brand-surface border-r border-brand-border w-[260px] transition-transform duration-500 ease-[var(--ease-expo-out)] ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
-        <div className="flex flex-col h-full pb-6">
-          <div className="pt-6 pb-5 border-b border-brand-border px-5">
-            <Link href="/admin" className="block">
-              <p className="font-display text-base text-brand-black leading-tight">Admin Panel</p>
-              <p className="font-sans text-[9px] tracking-[0.15em] uppercase text-brand-gold/70">Darlington Wosa Art</p>
+      <aside className={`fixed top-0 left-0 h-full z-50 bg-brand-surface border-r border-brand-border w-[240px] transition-transform duration-500 ease-[var(--ease-expo-out)] ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        <div className="flex flex-col h-full pb-4">
+          <div className="px-4 py-4 border-b border-brand-border">
+            <Link href="/admin" className="flex items-center gap-3">
+              <img src="/logo.png" alt="Darlington Wosa" className="w-8 h-8 object-contain flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="font-display text-sm text-brand-black leading-tight truncate">Admin Panel</p>
+                <p className="font-sans text-[8px] tracking-[0.15em] uppercase text-brand-gold/70 truncate">Darlington Wosa Art</p>
+              </div>
             </Link>
           </div>
 
-          <nav className="flex-1 overflow-y-auto px-2 py-4 space-y-0.5">
+          <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-0.5">
             {NAV_ITEMS.map((item) => {
               const active = isActive(item.href);
               return (
@@ -103,13 +114,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   key={item.label}
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-2.5 rounded-[8px] transition-all duration-300 ${
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-[8px] transition-all duration-300 ${
                     active
                       ? 'bg-brand-black text-brand-white'
                       : 'text-brand-gray/60 hover:text-brand-gold hover:bg-brand-border/30'
                   }`}
                 >
-                  <item.icon size={16} className="flex-shrink-0" />
+                  <item.icon size={15} className="flex-shrink-0" />
                   <span className="font-sans text-[11px] tracking-[0.1em] uppercase flex-1">{item.label}</span>
                   {active && <span className="h-2 w-2 rounded-full bg-brand-gold ring-2 ring-brand-gold/30 flex-shrink-0" />}
                 </Link>
@@ -117,19 +128,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             })}
           </nav>
 
-          <div className="mt-auto pt-4 border-t border-brand-border px-3">
+          <div className="mt-auto pt-3 border-t border-brand-border px-2">
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 w-full px-4 py-2.5 rounded-[8px] text-brand-gray hover:text-brand-gold hover:bg-brand-border/30 transition-all duration-300 cursor-pointer"
+              className="flex items-center gap-3 w-full px-3 py-2.5 rounded-[8px] text-brand-gray hover:text-brand-gold hover:bg-brand-border/30 transition-all duration-300 cursor-pointer"
             >
-              <LogOut size={16} className="flex-shrink-0" />
+              <LogOut size={15} className="flex-shrink-0" />
               <span className="font-sans text-[11px] tracking-[0.1em] uppercase">Sign Out</span>
             </button>
             <Link
               href="/"
-              className="flex items-center gap-2 mt-1 px-4 py-2.5 rounded-[8px] text-brand-gray/50 hover:text-brand-gold hover:bg-brand-border/30 transition-all duration-300"
+              className="flex items-center gap-2 mt-0.5 px-3 py-2.5 rounded-[8px] text-brand-gray/50 hover:text-brand-gold hover:bg-brand-border/30 transition-all duration-300"
             >
-              <ChevronRight size={12} />
+              <ChevronRight size={11} />
               <span className="font-sans text-[10px] tracking-[0.1em] uppercase">Back to Site</span>
             </Link>
           </div>
@@ -137,27 +148,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main content */}
-      <div className="lg:ml-[260px] min-h-screen">
-        {/* Header */}
-        <header className="sticky top-0 z-30 bg-brand-surface/80 backdrop-blur-xl border-b border-brand-border">
-          <div className="flex items-center justify-between h-16 px-4 md:px-8">
-            <div className="flex items-center gap-3 lg:hidden">
-              <button
-                onClick={() => setMobileOpen(!mobileOpen)}
-                className="w-8 h-8 rounded-full border border-brand-border flex items-center justify-center hover:border-brand-gold/50 transition-colors cursor-pointer"
-              >
-                {mobileOpen ? <X size={14} /> : <Menu size={14} />}
-              </button>
-            </div>
-            <div className="flex items-center gap-3 ml-auto">
-              <Link href="/" className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/50 hover:text-brand-gold transition-colors">
-                View Site
-              </Link>
-            </div>
-          </div>
-        </header>
-
-        <main>{children}</main>
+      <div className="lg:ml-[240px] min-h-screen pt-14 lg:pt-0">
+        <main className="pb-8">{children}</main>
       </div>
     </div>
   );

@@ -1,11 +1,10 @@
-./src/app/admin/page.tsx:51:35
-Type error: 's.users' is possibly 'undefined'.
-  49 |     label: 'Total Users',
-  50 |     icon: Users,
-> 51 |     value: (s: DashboardStats) => s.users.toLocaleString(),
-     |                                   ^
-  52 |   },
-  53 |   {
-  54 |     key: 'orders',
-Next.js build worker exited with code: 1 and signal: null
-Error: Command "npm run build" exited with 1
+-- Check if admin user exists first
+SELECT id, name, email, is_admin FROM users WHERE name = 'darlingtonwosa';
+
+-- If no result, run this to create it
+INSERT INTO users (name, email, password, is_admin, created_at, updated_at) 
+VALUES ('darlingtonwosa', 'darlingtonwosa.studio@gmail.com', '$2y$12$.TJ7jroAvRNVlqweG5RU1e1etg0paXEgQsT2HAyXyd43YMmLDoya2', 1, NOW(), NOW());
+
+-- Run both ALTER TABLE queries too (if not done yet)
+ALTER TABLE testimonials ADD COLUMN status VARCHAR(255) DEFAULT 'pending' AFTER is_active;
+ALTER TABLE testimonials ADD COLUMN admin_reply TEXT NULL AFTER status;
