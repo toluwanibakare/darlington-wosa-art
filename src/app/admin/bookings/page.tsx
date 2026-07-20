@@ -63,7 +63,7 @@ export default function BookingsPage() {
   const [editStatus, setEditStatus] = useState('');
   const [saving, setSaving] = useState(false);
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.darlingtonwosa.art';
   const apiAdmin = {
     get: async (endpoint: string) => {
       const token = localStorage.getItem('auth_token');

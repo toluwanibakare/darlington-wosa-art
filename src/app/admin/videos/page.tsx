@@ -62,7 +62,7 @@ const STATUS_COLORS: Record<string, string> = {
   pending: 'bg-amber-100 text-amber-700',
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.darlingtonwosa.art';
 
 export default function AdminVideosPage() {
   const [videos, setVideos] = useState<VideoSubmission[]>([]);

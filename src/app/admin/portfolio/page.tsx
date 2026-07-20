@@ -31,7 +31,7 @@ interface PaginatedResponse {
 
 const CATEGORIES = ['All', 'Charcoal Portraits', 'Pencil Drawings', 'Mixed Media', 'Corporate', 'Creative Events'];
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.darlingtonwosa.art';
 
 const apiAdmin = {
   get: async (endpoint: string) => {
