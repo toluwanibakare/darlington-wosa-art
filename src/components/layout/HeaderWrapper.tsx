@@ -5,6 +5,6 @@ import { Header } from './Header';
 
 export function HeaderWrapper() {
   const pathname = usePathname();
-  if (pathname.startsWith('/dashboard')) return null;
+  if (pathname.startsWith('/dashboard') || pathname.startsWith('/admin')) return null;
   return <Header />;
 }
