@@ -1,10 +1,3 @@
--- Check if admin user exists first
-SELECT id, name, email, is_admin FROM users WHERE name = 'darlingtonwosa';
-
--- If no result, run this to create it
-INSERT INTO users (name, email, password, is_admin, created_at, updated_at) 
-VALUES ('darlingtonwosa', 'darlingtonwosa.studio@gmail.com', '$2y$12$.TJ7jroAvRNVlqweG5RU1e1etg0paXEgQsT2HAyXyd43YMmLDoya2', 1, NOW(), NOW());
-
--- Run both ALTER TABLE queries too (if not done yet)
-ALTER TABLE testimonials ADD COLUMN status VARCHAR(255) DEFAULT 'pending' AFTER is_active;
-ALTER TABLE testimonials ADD COLUMN admin_reply TEXT NULL AFTER status;
+Failed to load resource: the server responded with a status of 400 ()
+api.darlingtonwosa.art/verify-otp:1  Failed to load resource: the server responded with a status of 400 ()
+api.darlingtonwosa.art/verify-otp:1  Failed to load resource: the server responded with a status of 400 ()

@@ -29,6 +29,8 @@ class User extends Authenticatable
         'country',
         'bio',
         'wallet_balance',
+        'otp',
+        'otp_expires_at',
     ];
 
     protected $hidden = [
@@ -43,6 +45,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_admin' => 'boolean',
             'date_of_birth' => 'date',
+            'otp_expires_at' => 'datetime',
             'wallet_balance' => 'decimal:2',
         ];
     }

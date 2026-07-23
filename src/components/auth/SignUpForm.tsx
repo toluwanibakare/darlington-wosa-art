@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -17,6 +17,7 @@ export function SignUpForm() {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [otpLoading, setOtpLoading] = useState(false);
   const [otpError, setOtpError] = useState('');
+  const [resendCooldown, setResendCooldown] = useState(0);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [form, setForm] = useState({
     fullName: '',
@@ -24,6 +25,12 @@ export function SignUpForm() {
     phone: '',
     password: '',
   });
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [resendCooldown]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,6 +112,7 @@ export function SignUpForm() {
   };
 
   const handleResendOtp = async () => {
+    setResendCooldown(60);
     setOtpLoading(true);
     try {
       await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://api.darlingtonwosa.art'}/resend-otp`, {
@@ -227,9 +235,9 @@ export function SignUpForm() {
                   className="w-full px-6 py-3 bg-brand-black text-brand-white border border-brand-gold rounded-[6px] font-sans text-[10px] tracking-[0.15em] uppercase hover:shadow-[0_0_20px_rgba(158,101,27,0.15)] transition-all cursor-pointer disabled:opacity-40">
                   {otpLoading ? <Loader2 size={14} className="animate-spin mx-auto" /> : 'Verify Email'}
                 </button>
-                <button onClick={handleResendOtp} disabled={otpLoading}
+                <button onClick={handleResendOtp} disabled={otpLoading || resendCooldown > 0}
                   className="mt-4 font-sans text-xs text-brand-gold hover:underline cursor-pointer disabled:opacity-40">
-                  Resend code
+                  {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend code'}
                 </button>
               </div>
             </motion.div>
