@@ -28,7 +28,7 @@ export function ScrollToTop() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.6, y: 20 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-6 right-5 sm:right-8 z-50 w-10 h-10 rounded-full bg-white/40 backdrop-blur-lg border border-white/20 hover:border-brand-gold/50 shadow-lg hover:shadow-[0_0_30px_rgba(158,101,27,0.2)] flex items-center justify-center cursor-pointer group transition-all duration-500"
+          className="fixed bottom-6 right-5 sm:right-8 z-50 w-10 h-10 rounded-full bg-brand-surface/80 backdrop-blur-xl border border-brand-border/60 hover:border-brand-gold/60 shadow-lg hover:shadow-[0_0_30px_rgba(158,101,27,0.25)] flex items-center justify-center cursor-pointer group transition-all duration-500"
           aria-label="Scroll to top"
         >
           {/* Progress Ring */}
@@ -70,7 +70,7 @@ export function ScrollToTop() {
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="relative text-brand-gray group-hover:text-brand-gold transition-colors duration-500"
+            className="relative text-brand-black dark:text-brand-white group-hover:text-brand-gold transition-colors duration-500"
             animate={visible ? { y: [0, -3, 0] } : { y: 0 }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >

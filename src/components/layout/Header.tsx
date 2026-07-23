@@ -93,9 +93,9 @@ export function Header() {
             <Link
               key={item.label}
               href={item.href}
-              className={`font-sans tracking-[0.15em] uppercase font-semibold transition-all duration-300 relative pb-1 ${
-                isActive ? 'text-brand-gold' : 'text-brand-black/60 hover:text-brand-black'
-              } ${scrolled ? 'text-[10px] sm:text-[11px]' : 'text-[11px] sm:text-xs'}`}
+               className={`font-sans tracking-[0.15em] uppercase font-bold transition-all duration-300 relative pb-1 ${
+                 isActive ? 'text-brand-gold' : 'text-brand-black/60 dark:text-brand-white/60 hover:text-brand-black dark:hover:text-brand-white'
+               } ${scrolled ? 'text-[10px] sm:text-[11px]' : 'text-[11px] sm:text-xs'}`}
             >
               {item.label}
               {isActive && (
@@ -111,7 +111,7 @@ export function Header() {
         </nav>
 
         {/* Mobile Active Page */}
-        <span className={`md:hidden flex-1 text-left pl-2 font-sans text-sm sm:text-base tracking-[0.15em] uppercase text-brand-gold font-medium ${mobileMenuOpen ? 'invisible pointer-events-none' : ''}`}>
+        <span className={`md:hidden flex-1 text-left pl-2 font-sans text-sm sm:text-base tracking-[0.15em] uppercase text-brand-gold font-bold ${mobileMenuOpen ? 'invisible pointer-events-none' : ''}`}>
           {isAuthPage ? (pathname === '/login' ? 'Sign In' : 'Sign Up') : activePage}
         </span>
 
@@ -259,11 +259,11 @@ export function Header() {
                       key={item.label}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`font-sans text-sm tracking-[0.15em] uppercase py-3 px-4 rounded-[8px] transition-all duration-300 flex items-center justify-between ${
-                        active
-                          ? 'bg-brand-black text-brand-white'
-                          : 'text-brand-black/70 hover:text-brand-black hover:bg-brand-border/30'
-                      }`}
+                       className={`font-sans text-sm tracking-[0.15em] uppercase font-bold py-3 px-4 rounded-[8px] transition-all duration-300 flex items-center justify-between ${
+                         active
+                           ? 'bg-brand-black text-brand-white'
+                           : 'text-brand-black/70 dark:text-brand-white/70 hover:text-brand-black dark:hover:text-brand-white hover:bg-brand-border/30'
+                       }`}
                     >
                       {item.label}
                       {active && (

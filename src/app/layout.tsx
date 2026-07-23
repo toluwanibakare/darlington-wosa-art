@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   description: "Premium Art, Framing, and Creative Services — Darlington Wosa Art & Frames Ltd, Rivers State, Nigeria. Custom portraiture, museum-grade framing, and art education since 2018.",
   icons: {
     icon: [
-      { url: "/object_logo.png", type: "image/png" },
+      { url: "/logo_white.png", type: "image/png" },
     ],
   },
   openGraph: {
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/object_logo.png",
-        width: 512,
-        height: 512,
+        url: "/logo_white.png",
+        width: 1200,
+        height: 630,
         alt: "Darlington Wosa Art & Frames Ltd",
       },
     ],
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Darlington Wosa Art & Frames Ltd",
     description: "Premium handcrafted portraiture, bespoke museum-grade framing, and art education by Darlington Wosa.",
-    images: ["/object_logo.png"],
+    images: ["/logo_white.png"],
   },
 };
 
