@@ -1,7 +1,28 @@
+import type { Metadata } from "next";
 import React from 'react';
 import Link from 'next/link';
 import { ForgotPasswordForm } from '@/components/auth/ForgotPasswordForm';
 import { Logo } from '@/components/ui';
+
+export const metadata: Metadata = {
+  title: "Reset Password | Darlington Wosa Art & Frames Ltd",
+  description: "Reset your Darlington Wosa Art & Frames account password. We will send you a link to create a new one.",
+  openGraph: {
+    title: "Reset Password | Darlington Wosa Art & Frames Ltd",
+    description: "Reset your Darlington Wosa Art & Frames account password.",
+    url: "https://darlingtonwosaart.com/forgot-password",
+    siteName: "Darlington Wosa Art & Frames Ltd",
+    locale: "en_NG",
+    type: "website",
+    images: [{ url: "/object_logo.png", width: 512, height: 512, alt: "Darlington Wosa Art & Frames Ltd" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Reset Password | Darlington Wosa Art & Frames Ltd",
+    description: "Reset your Darlington Wosa Art & Frames account password.",
+    images: ["/object_logo.png"],
+  },
+};
 
 export default function ForgotPasswordPage() {
   return (

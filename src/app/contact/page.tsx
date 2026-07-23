@@ -1,7 +1,28 @@
+import type { Metadata } from "next";
 import React, { Suspense } from 'react';
 import { ContactHero } from '@/components/contact/ContactHero';
 import { ContactForm } from '@/components/contact/ContactForm';
 import { ContactFAQ } from '@/components/contact/ContactFAQ';
+export const metadata: Metadata = {
+  title: "Contact | Darlington Wosa Art & Frames Ltd",
+  description: "Get in touch with Darlington Wosa Art & Frames Ltd. Book a commission, inquire about framing services, or visit our studio in Rivers State, Nigeria.",
+  openGraph: {
+    title: "Contact | Darlington Wosa Art & Frames Ltd",
+    description: "Get in touch with Darlington Wosa Art & Frames Ltd. Book a commission, inquire about framing services, or visit our studio in Rivers State, Nigeria.",
+    url: "https://darlingtonwosaart.com/contact",
+    siteName: "Darlington Wosa Art & Frames Ltd",
+    locale: "en_NG",
+    type: "website",
+    images: [{ url: "/object_logo.png", width: 512, height: 512, alt: "Darlington Wosa Art & Frames Ltd" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact | Darlington Wosa Art & Frames Ltd",
+    description: "Book a commission, inquire about framing, or visit our studio in Rivers State, Nigeria.",
+    images: ["/object_logo.png"],
+  },
+};
+
 export default function ContactPage() {
   return (
     <div className="flex flex-col w-full min-h-screen bg-brand-surface text-brand-black">

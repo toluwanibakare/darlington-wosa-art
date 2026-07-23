@@ -1,6 +1,27 @@
+import type { Metadata } from "next";
 import React from 'react';
 import Link from 'next/link';
 import { LoginForm } from '@/components/auth/LoginForm';
+
+export const metadata: Metadata = {
+  title: "Sign In | Darlington Wosa Art & Frames Ltd",
+  description: "Sign in to your Darlington Wosa Art & Frames account to manage orders, bookings, and profile.",
+  openGraph: {
+    title: "Sign In | Darlington Wosa Art & Frames Ltd",
+    description: "Sign in to your Darlington Wosa Art & Frames account.",
+    url: "https://darlingtonwosaart.com/login",
+    siteName: "Darlington Wosa Art & Frames Ltd",
+    locale: "en_NG",
+    type: "website",
+    images: [{ url: "/object_logo.png", width: 512, height: 512, alt: "Darlington Wosa Art & Frames Ltd" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sign In | Darlington Wosa Art & Frames Ltd",
+    description: "Sign in to your Darlington Wosa Art & Frames account.",
+    images: ["/object_logo.png"],
+  },
+};
 
 export default function LoginPage() {
   return (
