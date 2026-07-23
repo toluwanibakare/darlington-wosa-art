@@ -11,6 +11,3 @@ GET https://darlingtonwosa.art/_next/static/chunks/0ws0g6zvqt8s6.js net::ERR_ABO
 (index):1  GET https://darlingtonwosa.art/_next/static/chunks/0dkqn9yht4lrr.js net::ERR_ABORTED 404 (Not Found)
 (index):1  GET https://darlingtonwosa.art/_next/static/chunks/2q7bjlqvdyr1u.js net::ERR_ABORTED 404 (Not Found)
 (index):1  GET https://darlingtonwosa.art/_next/static/chunks/19rmtebaqr6nm.js net::ERR_ABORTED 404 (Not Found)
-(index):1 The resource https://darlingtonwosa.art/_next/static/media/e8f2fbee2754df70-s.p.1dqa_6e_ad4sj.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
-(index):1 The resource https://darlingtonwosa.art/_next/static/media/cc014fcb166cf364-s.p.2cu9iw-l3ih8o.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
-(index):1 The resource https://darlingtonwosa.art/_next/static/media/db3f01ae0719bbb0-s.p.2c0pkezzij_il.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
