@@ -1,1 +1,16 @@
-3szy29i9dvwtf.js:9  POST https://api.darlingtonwosa.art/register 500 (Internal Server Error)
+GET https://darlingtonwosa.art/_next/static/chunks/0ws0g6zvqt8s6.js net::ERR_ABORTED 404 (Not Found)
+(index):1  GET https://darlingtonwosa.art/_next/static/chunks/448091vkh-egq.js net::ERR_ABORTED 404 (Not Found)
+(index):1  GET https://darlingtonwosa.art/_next/static/chunks/0g28ty8ax9q7v.js net::ERR_ABORTED 404 (Not Found)
+(index):1  GET https://darlingtonwosa.art/_next/static/chunks/1__yy_cpi9kb8.js net::ERR_ABORTED 404 (Not Found)
+(index):1  GET https://darlingtonwosa.art/_next/static/chunks/32oa6ivm1ec1e.js net::ERR_ABORTED 404 (Not Found)
+(index):1  GET https://darlingtonwosa.art/_next/static/chunks/turbopack-2_7f-hmmozxnb.js net::ERR_ABORTED 404 (Not Found)
+(index):1  GET https://darlingtonwosa.art/_next/static/chunks/0x2lwp7qf0bkh.js net::ERR_ABORTED 404 (Not Found)
+(index):1  GET https://darlingtonwosa.art/_next/static/chunks/30q_ypgo-kq6g.js net::ERR_ABORTED 404 (Not Found)
+(index):1  GET https://darlingtonwosa.art/_next/static/chunks/0sj4db1idf9u9.js net::ERR_ABORTED 404 (Not Found)
+(index):1  GET https://darlingtonwosa.art/_next/static/chunks/06lqoh37oeg7f.js net::ERR_ABORTED 404 (Not Found)
+(index):1  GET https://darlingtonwosa.art/_next/static/chunks/0dkqn9yht4lrr.js net::ERR_ABORTED 404 (Not Found)
+(index):1  GET https://darlingtonwosa.art/_next/static/chunks/2q7bjlqvdyr1u.js net::ERR_ABORTED 404 (Not Found)
+(index):1  GET https://darlingtonwosa.art/_next/static/chunks/19rmtebaqr6nm.js net::ERR_ABORTED 404 (Not Found)
+(index):1 The resource https://darlingtonwosa.art/_next/static/media/e8f2fbee2754df70-s.p.1dqa_6e_ad4sj.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+(index):1 The resource https://darlingtonwosa.art/_next/static/media/cc014fcb166cf364-s.p.2cu9iw-l3ih8o.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
+(index):1 The resource https://darlingtonwosa.art/_next/static/media/db3f01ae0719bbb0-s.p.2c0pkezzij_il.woff2 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.
