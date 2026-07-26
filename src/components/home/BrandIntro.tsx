@@ -145,8 +145,8 @@ export function BrandIntro() {
             distance={40}
             className="lg:col-span-7"
           >
-            <h2 className="font-display text-[clamp(1.8rem,4vw,3.2rem)] md:text-[2.8rem] lg:text-[3.5rem] text-brand-black leading-[1.15] tracking-tight mb-8">
-              I create custom portraits, fine artworks, and premium framing solutions that preserve memories and transform spaces.
+            <h2 className="font-display text-[clamp(1.8rem,4vw,3.2rem)] md:text-[2.8rem] lg:text-[3.5rem] text-brand-black leading-[1.15] tracking-tight mb-8 uppercase font-bold">
+              I Create Custom Portraits, Fine Artworks, And Premium Framing Solutions That Preserve Memories And Transform Spaces.
             </h2>
           </Reveal>
 

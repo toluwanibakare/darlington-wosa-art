@@ -72,7 +72,7 @@ export function Header() {
         onClick={() => { if (mobileMenuOpen) setMobileMenuOpen(false); }}
         className={`pl-0 sm:pl-2 md:pl-10 pr-4 sm:pr-6 md:pr-10 h-16 sm:h-20 flex items-center justify-between transition-all duration-500 ease-[var(--ease-expo-out)] ${
           scrolled && !mobileMenuOpen
-            ? 'rounded-full bg-brand-surface/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.06)] border border-brand-border/10 dark:max-md:bg-white/95 dark:max-md:border-brand-gray/30 dark:max-md:[&_svg]:text-brand-black dark:max-md:[&_span]:text-brand-black' 
+            ? 'rounded-full bg-brand-surface/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.06)] border border-brand-border/10 dark:max-md:bg-[#F5F2EB]/95 dark:max-md:border-brand-gray/30 dark:max-md:text-[#111111] dark:max-md:[&_svg]:text-[#111111] dark:max-md:[&_span]:text-[#111111] dark:max-md:[&_button]:text-[#111111]'
             : mobileMenuOpen
             ? 'bg-transparent'
             : 'bg-brand-surface/30 md:bg-brand-surface/5'
@@ -213,7 +213,7 @@ export function Header() {
         {/* Mobile Hamburger */}
         <button
           onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(!mobileMenuOpen); }}
-          className="md:hidden text-brand-black p-1 cursor-pointer hover:text-brand-black/70 transition-colors relative z-[200]"
+          className="md:hidden p-1 cursor-pointer transition-colors relative z-[200] text-brand-black"
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
         >
           {mobileMenuOpen ? (
@@ -260,10 +260,10 @@ export function Header() {
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                        className={`font-sans text-sm tracking-[0.15em] uppercase font-bold py-3 px-4 rounded-[8px] transition-all duration-300 flex items-center justify-between ${
-                         active
-                           ? 'bg-brand-black text-brand-white'
-                           : 'text-brand-black/70 dark:text-brand-white/70 hover:text-brand-black dark:hover:text-brand-white hover:bg-brand-border/30'
-                       }`}
+                          active
+                            ? 'bg-brand-black text-brand-white'
+                            : 'text-brand-black/70 hover:text-brand-black hover:bg-brand-border/30'
+                        }`}
                     >
                       {item.label}
                       {active && (

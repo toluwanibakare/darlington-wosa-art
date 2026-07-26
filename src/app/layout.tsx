@@ -3,7 +3,7 @@ import { Poppins, Pinyon_Script } from "next/font/google";
 import "./globals.css";
 
 const poppinsDisplay = Poppins({
-  weight: ["800"],
+  weight: ["900"],
   variable: "--font-display",
   subsets: ["latin"],
 });
