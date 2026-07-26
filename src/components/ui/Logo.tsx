@@ -10,6 +10,7 @@ interface LogoProps {
   scale?: number;
   offsetX?: number;
   offsetY?: number;
+  variant?: 'auto' | 'dark' | 'light';
 }
 
 export function Logo({
@@ -18,9 +19,15 @@ export function Logo({
   scale = 1.0,
   offsetX = 0,
   offsetY = 0,
+  variant = 'auto',
 }: LogoProps) {
   const { theme } = useTheme();
   const width = height * 3.5;
+
+  const logoSrc =
+    variant === 'light' ? '/logo.png' :
+    variant === 'dark' ? '/logo_white.png' :
+    theme === 'dark' ? '/logo_white.png' : '/logo.png';
 
   return (
     <div className={`relative flex items-center select-none ${className}`}>
@@ -39,7 +46,7 @@ export function Logo({
           }}
         >
           <Image
-            src={theme === 'dark' ? '/logo_white.png' : '/logo.png'}
+            src={logoSrc}
             alt="Darlington Wosa Art & Frames"
             fill
             sizes={`${width}px`}

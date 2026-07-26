@@ -138,6 +138,10 @@ p {
   line-height: 1.6;
 }
 
+.font-display {
+  font-weight: 900 !important;
+}
+
 /* Custom Scrollbar for premium feel */
 ::-webkit-scrollbar {
   width: 8px;
