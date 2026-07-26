@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { Cinzel, Montserrat, Pinyon_Script } from "next/font/google";
+import { Poppins, Pinyon_Script } from "next/font/google";
 import "./globals.css";
 
-const cinzel = Cinzel({
+const poppinsDisplay = Poppins({
+  weight: ["800"],
   variable: "--font-display",
   subsets: ["latin"],
 });
 
-const montserrat = Montserrat({
+const poppinsSans = Poppins({
+  weight: ["200", "400", "700"],
   variable: "--font-sans",
   subsets: ["latin"],
 });
@@ -66,7 +68,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cinzel.variable} ${montserrat.variable} ${pinyonScript.variable} antialiased h-full`} suppressHydrationWarning>
+    <html lang="en" className={`${poppinsDisplay.variable} ${poppinsSans.variable} ${pinyonScript.variable} antialiased h-full`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{
           __html: `(function(){try{var t=localStorage.getItem('theme')||'dark';if(t==='dark')document.documentElement.classList.add('dark')}catch(e){document.documentElement.classList.add('dark')}})()`

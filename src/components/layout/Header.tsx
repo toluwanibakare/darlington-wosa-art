@@ -72,7 +72,7 @@ export function Header() {
         onClick={() => { if (mobileMenuOpen) setMobileMenuOpen(false); }}
         className={`pl-0 sm:pl-2 md:pl-10 pr-4 sm:pr-6 md:pr-10 h-16 sm:h-20 flex items-center justify-between transition-all duration-500 ease-[var(--ease-expo-out)] ${
           scrolled && !mobileMenuOpen
-            ? 'rounded-full bg-brand-surface/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.06)] border border-brand-border/10' 
+            ? 'rounded-full bg-brand-surface/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.06)] border border-brand-border/10 dark:max-md:bg-white/95 dark:max-md:border-brand-gray/30 dark:max-md:[&_svg]:text-brand-black dark:max-md:[&_span]:text-brand-black' 
             : mobileMenuOpen
             ? 'bg-transparent'
             : 'bg-brand-surface/30 md:bg-brand-surface/5'

@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link';
 import {
   Palette,
   Frame,
@@ -8,7 +9,7 @@ import {
   Camera,
   ArrowRight
 } from 'lucide-react';
-import { Button, Reveal, StaggerList, StaggerItem } from '@/components/ui';
+import { Reveal } from '@/components/ui';
 
 const SERVICES = [
   {
@@ -98,29 +99,12 @@ export function Services() {
           viewportMargin="0px"
           className="mt-16 text-center"
         >
-          <Button variant="secondary">
-            View All Services
-            <ArrowRight size={14} className="ml-2 inline-block" />
-          </Button>
-        </Reveal>
-
-        <Reveal
-          delay={0.4}
-          viewportMargin="0px"
-          className="mt-20 pt-16 border-t border-brand-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6"
-        >
-          <div>
-            <p className="font-sans text-brand-gray text-sm">
-              Not sure which service fits your vision?
-            </p>
-            <p className="font-display text-lg text-brand-black mt-1">
-              Let&apos;s talk about your project.
-            </p>
-          </div>
-          <Button variant="secondary">
-            Book a Consultation
-            <ArrowRight size={14} className="ml-2 inline-block" />
-          </Button>
+          <Link href="/services">
+            <span className="inline-flex items-center gap-2 px-8 py-4 border border-brand-black/20 hover:border-brand-black rounded-[8px] font-sans text-[10px] tracking-[0.2em] uppercase text-brand-black hover:bg-brand-black hover:text-brand-white transition-all duration-500 cursor-pointer">
+              View All Services
+              <ArrowRight size={14} className="inline-block" />
+            </span>
+          </Link>
         </Reveal>
       </div>
     </section>

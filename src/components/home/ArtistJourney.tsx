@@ -65,13 +65,7 @@ export function ArtistJourney() {
             className="space-y-6 text-brand-gray text-text-body"
           >
             <p>
-              True luxury lies in the details. As a self-taught portrait artist, custom framer, and art educator, I blend meticulous technical skill with an uncompromising commitment to premium presentation. My journey into fine art began in childhood, evolving through a lifelong dedication to the craft and a deep passion for hyper-realism.
-            </p>
-            <p>
-              Specializing primarily in hyper-realistic charcoal, alongside vibrant work in pastel and acrylic, my studio crafts timeless, priceless masterpieces for high-profile individuals and discerning collectors. These works are designed to honor leadership, celebrate milestones, and gift loved ones with a legacy that transcends generations. Every piece is handled with extreme attention to detail, paired with bespoke luxury framing solutions, and delivered with absolute reliability.
-            </p>
-            <p>
-              Parallel to my studio practice, my mission is rooted in the belief that excellence is a learned discipline. As an active art educator and course creator, I provide the structured mentorship and devotion necessary for aspiring artists to scale up their skills. Driven by an unwavering pursuit of creativity and perfection, I don't just create art — I preserve moments, elevate spaces, and mentor the next generation of creative mastery.
+              True luxury lies in the details. As a self-taught portrait artist, custom framer, and art educator, I blend meticulous technical skill with an uncompromising commitment to premium presentation. My journey into fine art began in childhood, evolving through a lifelong dedication to the craft and a deep passion for hyper-realism...
             </p>
 
             <div className="pt-4">
@@ -79,7 +73,7 @@ export function ArtistJourney() {
                 href="/about"
                 className="inline-flex items-center gap-2 font-sans text-[11px] tracking-[0.2em] uppercase text-brand-gold hover:text-brand-gold-light transition-colors duration-300 relative pb-1 group"
               >
-                Read More
+                Read More on About
                 <ArrowUpRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 <span className="absolute -bottom-0.5 left-0 right-0 h-[1px] bg-brand-gold/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left ease-[var(--ease-expo-out)]" />
               </Link>

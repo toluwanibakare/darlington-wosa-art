@@ -12,14 +12,15 @@
   --color-brand-gray: #5C5C5C;
   --color-brand-border: #E5E0D8;
   
-  /* Fonts - Artistic and luxurious */
+  /* Fonts - Bold and strong */
   --font-sans: var(--font-sans), sans-serif;
-  --font-display: var(--font-display), serif;
+  --font-display: var(--font-display), sans-serif;
 
   /* Typography Scale */
   --text-hero: clamp(3rem, 8vw, 6rem);
   --text-h1: clamp(2.5rem, 5vw, 4.5rem);
   --text-h2: clamp(2rem, 3vw, 3rem);
+  --text-h3: clamp(1.25rem, 2vw, 1.75rem);
   --text-body: clamp(1rem, 1.2vw, 1.125rem);
   
   /* Custom Animation Curves */

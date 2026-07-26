@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from 'react';
+import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { Card, Reveal } from '@/components/ui';
 
@@ -59,10 +60,10 @@ export function Exhibition() {
         </div>
         
         <Reveal direction="right" delay={0.2}
-        >
-          <button className="text-brand-black border-b border-brand-gold pb-1 font-sans text-sm hover:text-brand-gold transition-colors duration-[400ms] cursor-pointer">
+          >
+          <Link href="/portfolio" className="text-brand-black border-b border-brand-gold pb-1 font-sans text-sm hover:text-brand-gold transition-colors duration-[400ms]">
             View Complete Gallery
-          </button>
+          </Link>
         </Reveal>
       </div>
 
