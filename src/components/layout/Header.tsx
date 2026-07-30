@@ -8,13 +8,14 @@ import { Logo } from '@/components/ui';
 import { User, LayoutDashboard, UserCircle, Gift, LogOut, ShoppingCart } from 'lucide-react';
 import { useUser } from '@/lib/use-user';
 import { api } from '@/lib/api';
-import { ThemeToggle } from '@/components/providers';
+import { ThemeToggle, useTheme } from '@/components/providers';
 import { useCart } from '@/components/shop';
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const { user, logout } = useUser();
   const { count, setOpen } = useCart();
+  const { theme } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -56,6 +57,8 @@ export function Header() {
   const activePage = navItems.find(item => isActiveCheck(item.href))?.label || '';
   const isAuthPage = pathname === '/login' || pathname === '/signup';
 
+  const isNavbarDark = scrolled ? (theme !== 'dark') : (theme === 'dark');
+
   return (
     <>
     <motion.header
@@ -72,7 +75,11 @@ export function Header() {
         onClick={() => { if (mobileMenuOpen) setMobileMenuOpen(false); }}
         className={`pl-0 sm:pl-2 md:pl-10 pr-4 sm:pr-6 md:pr-10 h-16 sm:h-20 flex items-center justify-between transition-all duration-500 ease-[var(--ease-expo-out)] ${
           scrolled && !mobileMenuOpen
-            ? 'rounded-full bg-brand-surface/95 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.06)] border border-brand-border/10 dark:max-md:bg-[#F5F2EB]/95 dark:max-md:border-brand-gray/30 dark:max-md:text-[#111111] dark:max-md:[&_svg]:text-[#111111] dark:max-md:[&_span]:text-[#111111] dark:max-md:[&_button]:text-[#111111]'
+            ? `rounded-full backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.15)] border ${
+                isNavbarDark
+                  ? 'bg-[#111111]/95 border-white/10 text-white [&_svg]:text-white [&_span]:text-white [&_button]:text-white'
+                  : 'bg-[#F5F2EB]/95 border-[#E5E0D8]/80 text-[#111111] [&_svg]:text-[#111111] [&_span]:text-[#111111] [&_button]:text-[#111111]'
+              }`
             : mobileMenuOpen
             ? 'bg-transparent'
             : 'bg-brand-surface/30 md:bg-brand-surface/5'
@@ -81,8 +88,8 @@ export function Header() {
         {/* Desktop Logo */}
         <div className={`flex-1 flex justify-start ${mobileMenuOpen ? 'max-md:invisible max-md:pointer-events-none' : ''}`}>
           <Link href="/" className="transition-transform duration-300 hover:scale-105 active:scale-95 flex items-center shrink-0">
-            <Logo height={60} className="hidden md:block origin-left transition-transform duration-300" />
-            <Logo height={48} variant={scrolled ? 'light' : undefined} className="md:hidden origin-left transition-transform duration-300 ml-4" />
+            <Logo height={60} variant={isNavbarDark ? 'dark' : 'light'} className="hidden md:block origin-left transition-transform duration-300" />
+            <Logo height={48} variant={isNavbarDark ? 'dark' : 'light'} className="md:hidden origin-left transition-transform duration-300 ml-4" />
           </Link>
         </div>
 
@@ -94,7 +101,11 @@ export function Header() {
               key={item.label}
               href={item.href}
                className={`font-sans tracking-[0.15em] uppercase font-bold transition-all duration-300 relative pb-1 ${
-                 isActive ? 'text-brand-gold' : 'text-brand-black/60 dark:text-brand-white/60 hover:text-brand-black dark:hover:text-brand-white'
+                 isActive 
+                   ? 'text-brand-gold' 
+                   : isNavbarDark
+                   ? 'text-white/60 hover:text-white'
+                   : 'text-[#111111]/60 hover:text-[#111111]'
                } ${scrolled ? 'text-[10px] sm:text-[11px]' : 'text-[11px] sm:text-xs'}`}
             >
               {item.label}
@@ -140,10 +151,14 @@ export function Header() {
 
             <button
               onClick={() => setOpen(true)}
-              className="relative flex items-center justify-center h-8 w-8 rounded-full border border-brand-gold/30 hover:border-brand-gold bg-brand-surface hover:shadow-[0_0_15px_rgba(158,101,27,0.2)] transition-all duration-300 cursor-pointer"
+              className={`relative flex items-center justify-center h-8 w-8 rounded-full border transition-all duration-300 cursor-pointer ${
+                isNavbarDark
+                  ? 'border-white/20 hover:border-brand-gold bg-white/10 hover:shadow-[0_0_15px_rgba(158,101,27,0.3)]'
+                  : 'border-brand-gold/30 hover:border-brand-gold bg-[#F5F2EB] hover:shadow-[0_0_15px_rgba(158,101,27,0.2)]'
+              }`}
               aria-label="Open cart"
             >
-              <ShoppingCart size={14} className="text-brand-black" />
+              <ShoppingCart size={14} className={isNavbarDark ? "text-white" : "text-[#111111]"} />
               {count > 0 && (
                 <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-brand-gold text-brand-black text-[9px] font-bold flex items-center justify-center font-sans">
                   {count > 9 ? '9+' : count}
@@ -157,10 +172,14 @@ export function Header() {
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center justify-center h-8 w-8 rounded-full border border-brand-gold/30 hover:border-brand-gold bg-brand-surface hover:shadow-[0_0_15px_rgba(158,101,27,0.2)] transition-all duration-300 cursor-pointer"
+                  className={`flex items-center justify-center h-8 w-8 rounded-full border transition-all duration-300 cursor-pointer ${
+                    isNavbarDark
+                      ? 'border-white/20 hover:border-brand-gold bg-white/10 hover:shadow-[0_0_15px_rgba(158,101,27,0.3)]'
+                      : 'border-brand-gold/30 hover:border-brand-gold bg-[#F5F2EB] hover:shadow-[0_0_15px_rgba(158,101,27,0.2)]'
+                  }`}
                   aria-label="User profile"
                 >
-                  <User size={14} className="text-brand-black" />
+                  <User size={14} className={isNavbarDark ? "text-white" : "text-[#111111]"} />
                 </button>
 
                 <AnimatePresence>
@@ -170,24 +189,38 @@ export function Header() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -8, scale: 0.96 }}
                       transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                      className="absolute right-0 mt-3 w-48 bg-brand-surface border border-brand-border rounded-[10px] shadow-xl overflow-hidden z-50 py-1.5 font-sans"
+                      className={`absolute right-0 mt-3 w-48 border rounded-[10px] shadow-xl overflow-hidden z-50 py-1.5 font-sans ${
+                        isNavbarDark
+                          ? 'bg-[#111111] border-white/10 text-white'
+                          : 'bg-[#F5F2EB] border-[#E5E0D8] text-[#111111]'
+                      }`}
                     >
-                      <div className="px-4 py-2.5 border-b border-brand-border text-[10px] tracking-[0.15em] text-brand-gray/60 uppercase">
+                      <div className={`px-4 py-2.5 border-b text-[10px] tracking-[0.15em] uppercase ${
+                        isNavbarDark ? 'border-white/10 text-white/50' : 'border-[#E5E0D8] text-brand-gray/60'
+                      }`}>
                         {user.name}
                       </div>
-                      <Link href="/dashboard" className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-brand-black hover:bg-brand-gold/5 transition-colors" onClick={() => setDropdownOpen(false)}>
+                      <Link href="/dashboard" className={`flex items-center gap-2.5 px-4 py-2.5 text-xs transition-colors ${
+                        isNavbarDark ? 'text-white hover:bg-white/10' : 'text-[#111111] hover:bg-brand-gold/5'
+                      }`} onClick={() => setDropdownOpen(false)}>
                         <LayoutDashboard size={13} className="text-brand-gold/70" />
                         Dashboard
                       </Link>
-                      <Link href="/dashboard/profile" className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-brand-black hover:bg-brand-gold/5 transition-colors" onClick={() => setDropdownOpen(false)}>
+                      <Link href="/dashboard/profile" className={`flex items-center gap-2.5 px-4 py-2.5 text-xs transition-colors ${
+                        isNavbarDark ? 'text-white hover:bg-white/10' : 'text-[#111111] hover:bg-brand-gold/5'
+                      }`} onClick={() => setDropdownOpen(false)}>
                         <UserCircle size={13} className="text-brand-gold/70" />
                         Profile
                       </Link>
-                      <Link href="/dashboard/referrals" className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-brand-black hover:bg-brand-gold/5 transition-colors" onClick={() => setDropdownOpen(false)}>
+                      <Link href="/dashboard/referrals" className={`flex items-center gap-2.5 px-4 py-2.5 text-xs transition-colors ${
+                        isNavbarDark ? 'text-white hover:bg-white/10' : 'text-[#111111] hover:bg-brand-gold/5'
+                      }`} onClick={() => setDropdownOpen(false)}>
                         <Gift size={13} className="text-brand-gold/70" />
                         Referrals
                       </Link>
-                      <button onClick={async () => { await api.post('/logout', {}); logout(); setDropdownOpen(false); router.push('/'); }} className="w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-xs text-brand-gray hover:text-brand-gold hover:bg-brand-gold/5 transition-colors cursor-pointer border-t border-brand-border/50 mt-1 pt-2.5">
+                      <button onClick={async () => { await api.post('/logout', {}); logout(); setDropdownOpen(false); router.push('/'); }} className={`w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-xs cursor-pointer border-t mt-1 pt-2.5 transition-colors ${
+                        isNavbarDark ? 'border-white/10 text-white/70 hover:bg-white/10 hover:text-brand-gold' : 'border-[#E5E0D8]/50 text-brand-gray hover:text-brand-gold hover:bg-brand-gold/5'
+                      }`}>
                         <LogOut size={13} />
                         Sign Out
                       </button>
@@ -203,7 +236,9 @@ export function Header() {
                 {pathname === '/login' ? 'Sign Up' : 'Sign In'}
               </Link>
             ) : (
-              <Link href="/login" className="text-[11px] tracking-[0.15em] uppercase font-sans text-brand-gray hover:text-brand-black transition-colors">
+              <Link href="/login" className={`text-[11px] tracking-[0.15em] uppercase font-sans transition-colors ${
+                isNavbarDark ? 'text-white/70 hover:text-white' : 'text-brand-gray hover:text-[#111111]'
+              }`}>
                 Sign In
               </Link>
             )}
@@ -213,7 +248,9 @@ export function Header() {
         {/* Mobile Hamburger */}
         <button
           onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(!mobileMenuOpen); }}
-          className="md:hidden p-1 cursor-pointer transition-colors relative z-[200] text-brand-black"
+          className={`md:hidden p-1 cursor-pointer transition-colors relative z-[200] ${
+            isNavbarDark ? 'text-white hover:text-brand-gold' : 'text-[#111111] hover:text-brand-gold'
+          }`}
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
         >
           {mobileMenuOpen ? (

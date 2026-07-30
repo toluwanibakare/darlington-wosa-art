@@ -5,9 +5,7 @@ import { BrandIntro } from '@/components/home/BrandIntro';
 import { ArtistJourney } from '@/components/home/ArtistJourney';
 import { Services } from '@/components/home/Services';
 import { Exhibition } from '@/components/home/Exhibition';
-import { PromoBanner } from '@/components/home/PromoBanner';
 import { Testimonials } from '@/components/home/Testimonials';
-import { OrderProcess } from '@/components/home/OrderProcess';
 import { ClassesPreview } from '@/components/home/ClassesPreview';
 import { ContactCTA } from '@/components/home/ContactCTA';
 
@@ -39,10 +37,8 @@ export default function Home() {
       <ArtistJourney />
       <Services />
       <Exhibition />
-      <PromoBanner />
       <Testimonials />
       <ClassesPreview />
-      <OrderProcess />
       <ContactCTA />
     </div>
   );

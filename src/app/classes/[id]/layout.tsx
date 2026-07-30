@@ -31,13 +31,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       siteName: "Darlington Wosa Art & Frames Ltd",
       locale: "en_NG",
       type: "website",
-      images: [{ url: "/object_logo.png", width: 512, height: 512, alt: "Darlington Wosa Art & Frames Ltd" }],
+      images: [{ url: "/logo_white.png", width: 512, height: 512, alt: "Darlington Wosa Art & Frames Ltd" }],
     },
     twitter: {
       card: "summary_large_image",
       title: `${title} | Darlington Wosa Art & Frames Ltd`,
       description,
-      images: ["/object_logo.png"],
+      images: ["/logo_white.png"],
     },
   };
 }

@@ -100,7 +100,7 @@ export function Services() {
           className="mt-16 text-center"
         >
           <Link href="/services">
-            <span className="inline-flex items-center gap-2 px-8 py-4 border border-brand-black/20 hover:border-brand-black rounded-[8px] font-sans text-[10px] tracking-[0.2em] uppercase text-brand-black hover:bg-brand-black hover:text-brand-white transition-all duration-500 cursor-pointer">
+            <span className="inline-flex items-center gap-2 px-8 py-4 bg-brand-gold text-brand-white border border-brand-gold hover:bg-brand-black hover:border-brand-black rounded-[8px] font-sans text-[10px] tracking-[0.2em] uppercase transition-all duration-500 cursor-pointer">
               View All Services
               <ArrowRight size={14} className="inline-block" />
             </span>

@@ -13,13 +13,13 @@ export const metadata: Metadata = {
     siteName: "Darlington Wosa Art & Frames Ltd",
     locale: "en_NG",
     type: "website",
-    images: [{ url: "/object_logo.png", width: 512, height: 512, alt: "Darlington Wosa Art & Frames Ltd" }],
+    images: [{ url: "/logo_white.png", width: 512, height: 512, alt: "Darlington Wosa Art & Frames Ltd" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Create Account | Darlington Wosa Art & Frames Ltd",
     description: "Create an account to book classes, order commissions, and track your creative journey.",
-    images: ["/object_logo.png"],
+    images: ["/logo_white.png"],
   },
 };
 

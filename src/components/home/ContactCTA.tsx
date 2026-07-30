@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link';
 import { Button, Reveal } from '@/components/ui';
 import { MapPin, Phone, Mail, Clock, ArrowRight } from 'lucide-react';
 
@@ -35,13 +36,17 @@ export function ContactCTA() {
               that will be cherished for generations.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="primary">
-                Start Your Project
-                <ArrowRight size={14} className="ml-2 inline-block" />
-              </Button>
-              <Button variant="secondary">
-                View Portfolio
-              </Button>
+              <Link href="/contact" className="w-full sm:w-auto">
+                <Button variant="primary" className="w-full">
+                  Start Your Project
+                  <ArrowRight size={14} className="ml-2 inline-block" />
+                </Button>
+              </Link>
+              <Link href="/portfolio" className="w-full sm:w-auto">
+                <Button variant="gold" className="w-full">
+                  View Portfolio
+                </Button>
+              </Link>
             </div>
           </Reveal>
 
