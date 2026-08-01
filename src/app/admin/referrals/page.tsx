@@ -35,7 +35,9 @@ export default function AdminReferrals() {
     setLoading(true);
     const qs = statusFilter ? `?status=${statusFilter}` : '';
     const json = await a.get(`/referrals${qs}`);
-    setReferrals(json?.data || json || []);
+    // Check paginated database wrapper keys
+    const items = json?.data?.data || json?.data || json || [];
+    setReferrals(Array.isArray(items) ? items : []);
     setLoading(false);
   }, [statusFilter]);
 
