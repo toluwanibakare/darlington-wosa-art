@@ -24,7 +24,7 @@ export default function ClassesPage() {
         // api wrapper returns object with data field containing API body
         const payload = res.data;
         const items = payload?.data || payload || [];
-        setClassesList(items);
+        setClassesList(Array.isArray(items) ? items : []);
         setLoading(false);
       })
       .catch(() => {
