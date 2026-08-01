@@ -38,6 +38,8 @@ use App\Http\Controllers\Admin\ShopCategoryController as AdminShopCategoryContro
 use App\Http\Controllers\Admin\ShopItemController as AdminShopItemController;
 use App\Http\Controllers\Admin\NegotiationController as AdminNegotiationController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
+use App\Http\Controllers\Admin\ReferralController as AdminReferralController;
+use App\Http\Controllers\Admin\RewardController as AdminRewardController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
