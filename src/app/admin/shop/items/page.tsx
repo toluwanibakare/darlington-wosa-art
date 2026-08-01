@@ -164,7 +164,7 @@ export default function AdminShopItems() {
         fd.append('_method', 'PUT');
       }
 
-      const res = await fetch(url, {
+      const res = await window.fetch(url, {
         method,
         headers: {
           'Authorization': `Bearer ${token}`,
