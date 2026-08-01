@@ -7,7 +7,7 @@ import { Loader2, Users, Copy, ExternalLink } from 'lucide-react';
 interface Referral {
   id: number;
   referrer: { id: number; name: string; email: string };
-  referred: { id: number; name: string; email: string } | null;
+  referee: { id: number; name: string; email: string } | null;
   code: string;
   status: string;
   reward: { id: number; name: string } | null;
