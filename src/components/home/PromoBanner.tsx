@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link';
 import { Button, Reveal } from '@/components/ui';
 import { ArrowRight, Clock } from 'lucide-react';
 
@@ -31,13 +32,17 @@ export function PromoBanner() {
               to framing style - with zero obligation.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="primary">
-                Claim Your Free Session
-                <ArrowRight size={14} className="ml-2 inline-block" />
-              </Button>
-              <Button variant="secondary" className="!border-brand-white/20 !text-brand-white hover:!border-brand-white/50">
-                Learn More
-              </Button>
+              <Link href="/contact">
+                <Button variant="primary">
+                  Claim Your Free Session
+                  <ArrowRight size={14} className="ml-2 inline-block" />
+                </Button>
+              </Link>
+              <Link href="/services">
+                <Button variant="secondary" className="!border-brand-white/20 !text-brand-white hover:!border-brand-white/50">
+                  Learn More
+                </Button>
+              </Link>
             </div>
           </Reveal>
 

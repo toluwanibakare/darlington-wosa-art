@@ -18,19 +18,20 @@ export default function ClassesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch dynamic classes from backend API
-    api.get('/classes')
-      .then((res: any) => {
-        // api wrapper returns object with data field containing API body
-        const payload = res.data;
-        const items = payload?.data || payload || [];
-        setClassesList(Array.isArray(items) ? items : []);
-        setLoading(false);
-      })
-      .catch(() => {
-        setClassesList([]);
-        setLoading(false);
-      });
+    Promise.all([
+      api.get('/classes').catch(() => ({ data: [] })),
+      api.get('/ebooks').catch(() => ({ data: [] })),
+    ]).then(([classRes, ebookRes]: any[]) => {
+      const classPayload = classRes.data;
+      const classItems = classPayload?.data || classPayload || [];
+      setClassesList(Array.isArray(classItems) ? classItems : []);
+
+      const ebookPayload = ebookRes.data;
+      const ebookItems = ebookPayload?.data || ebookPayload || [];
+      setEbooksList(Array.isArray(ebookItems) ? ebookItems : []);
+
+      setLoading(false);
+    });
   }, []);
 
   return (
@@ -205,12 +206,15 @@ export default function ClassesPage() {
                             </div>
                           </div>
 
-                          <button className="flex items-center justify-center gap-2 w-full py-3 bg-brand-black text-brand-white border border-brand-gold rounded-[6px] font-sans text-[10px] tracking-[0.2em] uppercase transition-all duration-500 hover:shadow-[0_0_30px_rgba(158,101,27,0.15)] group/btn">
-                            <span className="relative z-10 flex items-center gap-2 group-hover/btn:text-brand-black transition-colors duration-[400ms]">
+                          <Link
+                            href={`/classes/${book.id}`}
+                            className="flex items-center justify-center gap-2 w-full py-3 bg-brand-black text-brand-white border border-brand-gold rounded-[6px] font-sans text-[10px] tracking-[0.2em] uppercase transition-all duration-500 hover:shadow-[0_0_30px_rgba(158,101,27,0.15)] group/btn"
+                          >
+                            <span className="relative z-10 flex items-center gap-2">
                               Buy Now
                               <ArrowRight size={12} />
                             </span>
-                          </button>
+                          </Link>
                         </div>
                       </motion.div>
                     );

@@ -3,12 +3,14 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { X, ShoppingCart, Trash2, Plus, Minus } from 'lucide-react';
 import { useCart } from './CartContext';
 import { api } from '@/lib/api';
 
 export function CartDrawer() {
   const { items, total, count, open, setOpen, refresh } = useCart();
+  const router = useRouter();
 
   const updateQty = async (id: number, qty: number) => {
     if (qty < 1) return;
@@ -110,7 +112,10 @@ export function CartDrawer() {
                       &#8358;{total.toLocaleString()}
                     </span>
                   </div>
-                  <button className="w-full py-3 bg-brand-black text-brand-white font-sans text-xs tracking-[0.15em] uppercase rounded-[6px] hover:bg-brand-black/90 transition-colors">
+                  <button
+                    onClick={() => { setOpen(false); router.push('/dashboard/orders'); }}
+                    className="w-full py-3 bg-brand-black text-brand-white font-sans text-xs tracking-[0.15em] uppercase rounded-[6px] hover:bg-brand-black/90 transition-colors"
+                  >
                     Proceed to Checkout
                   </button>
                 </div>
