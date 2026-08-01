@@ -70,7 +70,7 @@ export function Footer() {
   return (
     <footer className="relative w-full bg-brand-surface border-t border-brand-border">
       {/* Main Footer Content */}
-      <div className="max-w-[1800px] mx-auto px-6 md:px-16 pt-32 pb-12">
+      <div className="max-w-[1800px] mx-auto px-6 md:px-16 pt-16 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-16 lg:gap-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
@@ -179,7 +179,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-32 pt-8 border-t border-brand-border flex flex-col md:flex-row items-center justify-between gap-6 font-sans text-xs tracking-wider uppercase">
+        <div className="mt-16 pt-6 border-t border-brand-border flex flex-col md:flex-row items-center justify-between gap-6 font-sans text-xs tracking-wider uppercase">
           <p className="text-brand-gray/60">
             &copy; {new Date().getFullYear()} Darlington Wosa Art & Frames Ltd. All rights reserved.
           </p>

@@ -143,7 +143,14 @@ export function ServicesGrid() {
                 </div>
 
                 <div className="flex flex-wrap gap-3">
-                  <Button variant="secondary" className="text-xs">
+                  <Button
+                    variant="secondary"
+                    className="text-xs cursor-pointer"
+                    onClick={() => {
+                      const serviceSlug = service.title.toLowerCase().replace(/\s+/g, '-');
+                      window.location.href = `/contact?service=${serviceSlug}`;
+                    }}
+                  >
                     Inquire About This Service
                     <ArrowRight size={12} className="ml-2 inline-block" />
                   </Button>

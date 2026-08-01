@@ -257,27 +257,65 @@ function Lightbox({
 export function PortfolioGallery() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [lightboxItem, setLightboxItem] = useState<PortfolioItem | null>(null);
+  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const { api } = require('@/lib/api');
+    api.get('/portfolio')
+      .then((res: any) => {
+        if (res.data) {
+          // Map DB response to expected structure
+          const items = res.data.map((item: any) => ({
+            id: item.id,
+            title: item.title,
+            category: item.category,
+            type: item.type || 'image',
+            src: item.src || item.image || '',
+            thumb: item.thumb || item.image || '',
+            width: item.width || 1200,
+            height: item.height || 1500,
+            description: item.description || '',
+            client: item.client || '',
+            year: item.year || '',
+            medium: item.medium || '',
+            videoEmbed: item.video_embed || '',
+            videoSrc: item.video_src || ''
+          }));
+          setPortfolioItems(items.length > 0 ? items : PORTFOLIO_DATA);
+        } else {
+          setPortfolioItems(PORTFOLIO_DATA);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setPortfolioItems(PORTFOLIO_DATA);
+        setLoading(false);
+      });
+  }, []);
+
+  const itemsToUse = portfolioItems.length > 0 ? portfolioItems : PORTFOLIO_DATA;
 
   const filtered =
     activeFilter === "All"
-      ? PORTFOLIO_DATA
-      : PORTFOLIO_DATA.filter((item) => item.category === activeFilter);
+      ? itemsToUse
+      : itemsToUse.filter((item) => item.category === activeFilter);
 
   const openLightbox = (id: number) => {
-    const found = PORTFOLIO_DATA.find((item) => item.id === id);
+    const found = itemsToUse.find((item) => item.id === id);
     if (found) setLightboxItem(found);
   };
 
   const prevItem = () => {
     if (!lightboxItem) return;
-    const idx = PORTFOLIO_DATA.findIndex((i) => i.id === lightboxItem.id);
-    if (idx > 0) setLightboxItem(PORTFOLIO_DATA[idx - 1]);
+    const idx = itemsToUse.findIndex((i) => i.id === lightboxItem.id);
+    if (idx > 0) setLightboxItem(itemsToUse[idx - 1]);
   };
 
   const nextItem = () => {
     if (!lightboxItem) return;
-    const idx = PORTFOLIO_DATA.findIndex((i) => i.id === lightboxItem.id);
-    if (idx < PORTFOLIO_DATA.length - 1) setLightboxItem(PORTFOLIO_DATA[idx + 1]);
+    const idx = itemsToUse.findIndex((i) => i.id === lightboxItem.id);
+    if (idx < itemsToUse.length - 1) setLightboxItem(itemsToUse[idx + 1]);
   };
 
   return (
@@ -297,9 +335,15 @@ export function PortfolioGallery() {
         </motion.div>
 
         {/* Grid */}
-        <AnimatePresence mode="wait">
-          <GalleryGrid key={activeFilter} items={filtered} onOpen={openLightbox} />
-        </AnimatePresence>
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <div className="w-6 h-6 border-2 border-brand-gold border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : (
+          <AnimatePresence mode="wait">
+            <GalleryGrid key={activeFilter} items={filtered} onOpen={openLightbox} />
+          </AnimatePresence>
+        )}
       </div>
 
       {/* Lightbox */}
@@ -307,7 +351,7 @@ export function PortfolioGallery() {
         {lightboxItem && (
           <Lightbox
             item={lightboxItem}
-            items={PORTFOLIO_DATA}
+            items={itemsToUse}
             onClose={() => setLightboxItem(null)}
             onPrev={prevItem}
             onNext={nextItem}

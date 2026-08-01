@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('referrer_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('referee_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('code')->unique();
+            $table->string('code');
             $table->string('status')->default('pending');
             $table->integer('reward_points')->default(0);
             $table->timestamps();

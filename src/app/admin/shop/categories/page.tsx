@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
-  Layers, Plus, X, Loader2, Trash2, Check,
+  Layers, Plus, X, Loader2, Trash2, Check, ArrowLeft,
 } from 'lucide-react';
 
 interface ShopCategory {
@@ -33,6 +34,7 @@ function api() {
 const defaultForm = { name: '', description: '', is_active: true, sort_order: 0 };
 
 export default function AdminShopCategories() {
+  const router = useRouter();
   const [cats, setCats] = useState<ShopCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -79,10 +81,33 @@ export default function AdminShopCategories() {
     setDeleting(null);
   };
 
+  const addDemoCategories = async () => {
+    setSaving(true);
+    try {
+      const demoCats = [
+        { name: 'Pencil Sketches', description: 'Handcrafted premium pencil sketching artworks.', is_active: true, sort_order: 1 },
+        { name: 'Charcoal Portraits', description: 'Stunning charcoal portrait drawings from reference pictures.', is_active: true, sort_order: 2 },
+        { name: 'Art Frames', description: 'Museum-grade customized frames for keeping your artworks clean and luxury-like.', is_active: true, sort_order: 3 },
+        { name: 'E-Books & Tutorials', description: 'Educational books and guides written by Darlington Wosa.', is_active: true, sort_order: 4 }
+      ];
+      for (const dc of demoCats) {
+        await a.post('/shop/categories', dc);
+      }
+      fetch();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <div className="px-4 md:px-8 py-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="flex items-center justify-between mb-8">
+        <button onClick={() => router.push('/admin/shop')} className="flex items-center gap-2 mb-4 text-xs font-sans text-brand-gray hover:text-brand-gold transition-colors cursor-pointer">
+          <ArrowLeft size={14} /> Back to Shop
+        </button>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-brand-gold/10 flex items-center justify-center">
               <Layers size={18} className="text-brand-gold" />
@@ -92,9 +117,16 @@ export default function AdminShopCategories() {
               <p className="font-sans text-xs text-brand-gray">{cats.length} categories</p>
             </div>
           </div>
-          <button onClick={openAdd} className="flex items-center gap-2 px-5 py-2.5 bg-brand-black text-brand-white border border-brand-gold rounded-[6px] font-sans text-[10px] tracking-[0.15em] uppercase hover:shadow-[0_0_20px_rgba(158,101,27,0.15)] transition-all cursor-pointer">
-            <Plus size={14} /> Add Category
-          </button>
+          <div className="flex items-center gap-3">
+            {cats.length === 0 && (
+              <button onClick={addDemoCategories} disabled={saving} className="px-5 py-2.5 border border-brand-gold text-brand-gold hover:bg-brand-gold/10 rounded-[6px] font-sans text-[10px] tracking-[0.15em] uppercase transition-all cursor-pointer">
+                {saving ? 'Adding...' : 'Add Demo Categories'}
+              </button>
+            )}
+            <button onClick={openAdd} className="flex items-center gap-2 px-5 py-2.5 bg-brand-black text-brand-white border border-brand-gold rounded-[6px] font-sans text-[10px] tracking-[0.15em] uppercase hover:shadow-[0_0_20px_rgba(158,101,27,0.15)] transition-all cursor-pointer">
+              <Plus size={14} /> Add Category
+            </button>
+          </div>
         </div>
 
         {loading ? (

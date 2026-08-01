@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   Package, Plus, X, Loader2, Trash2, ChevronLeft, ChevronRight,
-  Check, Search, Image as ImageIcon,
+  Check, Search, Image as ImageIcon, ArrowLeft,
 } from 'lucide-react';
 
 interface ShopItem {
@@ -50,6 +51,15 @@ function api() {
   };
 }
 
+const SAMPLE_IMAGES = [
+  { label: 'Pencil Sketch 1 (Face)', url: '/images/sample_sketch1.jpg' },
+  { label: 'Pencil Sketch 2 (Portrait)', url: '/images/sample_sketch2.jpg' },
+  { label: 'Charcoal Painting 1', url: '/images/sample_charcoal1.jpg' },
+  { label: 'Charcoal Painting 2', url: '/images/sample_charcoal2.jpg' },
+  { label: 'Framed Artwork 1', url: '/images/sample_frame1.jpg' },
+  { label: 'Framed Artwork 2', url: '/images/sample_frame2.jpg' }
+];
+
 const defaultForm = {
   category_id: null as number | null,
   name: '',
@@ -61,9 +71,11 @@ const defaultForm = {
   is_active: true,
   is_sold: false,
   sort_order: 0,
+  images: [] as string[]
 };
 
 export default function AdminShopItems() {
+  const router = useRouter();
   const [items, setItems] = useState<ShopItem[]>([]);
   const [categories, setCategories] = useState<ShopCategory[]>([]);
   const [page, setPage] = useState(1);
@@ -76,6 +88,7 @@ export default function AdminShopItems() {
   const [form, setForm] = useState(defaultForm);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState<number | null>(null);
+  const [customImageUrl, setCustomImageUrl] = useState('');
 
   const a = api();
 
@@ -95,7 +108,7 @@ export default function AdminShopItems() {
 
   useEffect(() => { fetch(); fetchCats(); }, [fetch, fetchCats]);
 
-  const openAdd = () => { setEditing(null); setForm(defaultForm); setModalOpen(true); };
+  const openAdd = () => { setEditing(null); setForm(defaultForm); setCustomImageUrl(''); setModalOpen(true); };
   const openEdit = (item: ShopItem) => {
     setEditing(item);
     setForm({
@@ -109,7 +122,9 @@ export default function AdminShopItems() {
       is_active: item.is_active,
       is_sold: item.is_sold,
       sort_order: item.sort_order,
+      images: item.images || []
     });
+    setCustomImageUrl('');
     setModalOpen(true);
   };
 
@@ -143,9 +158,27 @@ export default function AdminShopItems() {
     setDeleting(null);
   };
 
+  const addImageUrl = (url: string) => {
+    if (!url) return;
+    setForm((f) => ({
+      ...f,
+      images: [...f.images, url]
+    }));
+  };
+
+  const removeImageUrl = (index: number) => {
+    setForm((f) => ({
+      ...f,
+      images: f.images.filter((_, i) => i !== index)
+    }));
+  };
+
   return (
     <div className="px-4 md:px-8 py-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        <button onClick={() => router.push('/admin/shop')} className="flex items-center gap-2 mb-4 text-xs font-sans text-brand-gray hover:text-brand-gold transition-colors cursor-pointer">
+          <ArrowLeft size={14} /> Back to Shop
+        </button>
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-brand-gold/10 flex items-center justify-center">
@@ -272,6 +305,48 @@ export default function AdminShopItems() {
                 <label className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-2">Description</label>
                 <textarea value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} rows={3} className="w-full bg-transparent border border-brand-border rounded-[6px] px-4 py-2.5 text-sm text-brand-black focus:outline-none focus:border-brand-gold transition-colors font-sans resize-none" placeholder="Item description" />
               </div>
+              <div>
+                <label className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-2">Item Images</label>
+                
+                {/* Current images list */}
+                {form.images.length > 0 && (
+                  <div className="flex flex-wrap gap-3 mb-4">
+                    {form.images.map((img, i) => (
+                      <div key={i} className="relative w-16 h-16 rounded-[4px] border border-brand-border overflow-hidden group">
+                        <img src={img} alt={`Item ${i}`} className="w-full h-full object-cover" />
+                        <button type="button" onClick={() => removeImageUrl(i)} className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity cursor-pointer">
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Custom URL Input */}
+                <div className="flex gap-2 mb-4">
+                  <input type="text" value={customImageUrl} onChange={(e) => setCustomImageUrl(e.target.value)} className="flex-1 bg-transparent border border-brand-border rounded-[6px] px-4 py-2.5 text-sm text-brand-black focus:outline-none focus:border-brand-gold font-sans" placeholder="https://example.com/art.jpg" />
+                  <button type="button" onClick={() => { addImageUrl(customImageUrl); setCustomImageUrl(''); }} className="px-4 py-2 bg-brand-black text-brand-white rounded-[6px] font-sans text-xs tracking-wider uppercase cursor-pointer">Add</button>
+                </div>
+
+                {/* Sample Images Selection */}
+                <div>
+                  <p className="font-sans text-[9px] uppercase tracking-wider text-brand-gray/60 mb-2">Quick Add Sample Images:</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    {SAMPLE_IMAGES.map((sample) => (
+                      <button
+                        key={sample.url}
+                        type="button"
+                        onClick={() => addImageUrl(sample.url)}
+                        disabled={form.images.includes(sample.url)}
+                        className={`p-2 border text-left rounded-[4px] font-sans text-[10px] truncate transition-colors cursor-pointer ${form.images.includes(sample.url) ? 'bg-brand-border/40 border-brand-border text-brand-gray/60' : 'border-brand-border/60 hover:border-brand-gold hover:bg-brand-gold/5 text-brand-black'}`}
+                      >
+                        {sample.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
               <div className="flex items-center gap-6">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" checked={form.is_active} onChange={(e) => setForm((f) => ({ ...f, is_active: e.target.checked }))} className="w-4 h-4 rounded border-brand-border text-brand-gold focus:ring-brand-gold" />

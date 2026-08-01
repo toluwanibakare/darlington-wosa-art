@@ -24,7 +24,6 @@ const NAV_ITEMS = [
   { label: 'Messages', href: '/admin/messages', icon: MessageSquare },
   { label: 'Testimonials', href: '/admin/testimonials', icon: Star },
   { label: 'Referrals', href: '/admin/referrals', icon: GitFork },
-  { label: 'Videos', href: '/admin/videos', icon: Video },
   { label: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
@@ -96,7 +95,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="flex flex-col h-full pb-4">
           <div className="px-4 py-4 border-b border-brand-border">
             <Link href="/admin" className="flex items-center gap-3">
-              <img src="/logo.png" alt="Darlington Wosa" className="w-8 h-8 object-contain flex-shrink-0" />
+              <img src="/logo_white.png" alt="Darlington Wosa" className="w-8 h-8 object-contain flex-shrink-0" />
               <div className="min-w-0">
                 <p className="font-display text-sm text-brand-black leading-tight truncate">Admin Panel</p>
                 <p className="font-sans text-[8px] tracking-[0.15em] uppercase text-brand-gold/70 truncate">Darlington Wosa Art</p>

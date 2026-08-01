@@ -25,11 +25,19 @@ export function ServicesCTA() {
             vision to life.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="primary">
-              Book a Free Consultation
+            <Button
+              variant="primary"
+              className="cursor-pointer"
+              onClick={() => window.location.href = '/contact'}
+            >
+              Start Project
               <ArrowRight size={14} className="ml-2 inline-block" />
             </Button>
-            <Button variant="secondary" className="!border-brand-white/20 !text-brand-white hover:!border-brand-white/50">
+            <Button
+              variant="secondary"
+              className="!border-brand-white/20 !text-brand-white hover:!border-brand-white/50 cursor-pointer"
+              onClick={() => window.location.href = '/portfolio'}
+            >
               View Portfolio
             </Button>
           </div>

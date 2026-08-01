@@ -72,6 +72,7 @@ export default function AdminSettingsPage() {
     { key: 'referral_reward_cash', label: 'Referral Reward Cash (NGN)', section: 'Referral Settings' },
     { key: 'min_withdrawal', label: 'Minimum Withdrawal (NGN)', section: 'Referral Settings' },
     { key: 'telegram_link', label: 'Telegram Community Link', section: 'Community' },
+    { key: 'hero_slide_count', label: 'Hero Slide Count Limit', section: 'Hero Settings' }
   ];
 
   return (
@@ -140,6 +141,31 @@ export default function AdminSettingsPage() {
                       onChange={(e) => updateField(field.key, e.target.value)}
                       className="w-full bg-transparent border border-brand-border rounded-[6px] px-4 py-3 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans"
                     />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Hero Carousel Settings */}
+            <div className="border border-brand-border rounded-[8px] overflow-hidden">
+              <div className="px-6 py-4 bg-brand-surface border-b border-brand-border">
+                <h2 className="font-display text-base text-brand-black">Hero Slideshow Settings</h2>
+                <p className="font-sans text-xs text-brand-gray mt-1 font-semibold text-brand-gold">Note: The system supports up to 10-12 slides in the marquee animation track to avoid design/loop breakage.</p>
+              </div>
+              <div className="p-6 space-y-6">
+                {fields.filter((f) => f.section === 'Hero Settings').map((field) => (
+                  <div key={field.key}>
+                    <label className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-2">
+                      {field.label}
+                    </label>
+                    <input
+                      type="number"
+                      value={settings[field.key] || '11'}
+                      onChange={(e) => updateField(field.key, e.target.value)}
+                      className="w-full bg-transparent border border-brand-border rounded-[6px] px-4 py-3 text-sm text-brand-black focus:outline-none focus:border-brand-gold transition-colors font-sans"
+                      placeholder="e.g. 11"
+                    />
+                    <p className="text-[11px] font-sans text-brand-gray mt-1">Controls how many artworks display in the home page header slideshow.</p>
                   </div>
                 ))}
               </div>

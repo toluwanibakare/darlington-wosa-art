@@ -147,16 +147,14 @@ export const staggerItemScale: Variants = {
 };
 
 export const pageTransitionVariants: Variants = {
-  initial: { opacity: 0, y: 8 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -8 },
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
 };
 
 export const pageTransition: Transition = {
-  type: 'spring',
-  stiffness: 200,
-  damping: 30,
-  mass: 0.6,
+  duration: 0.25,
+  ease: 'easeInOut',
 };
 
 export const defaultViewport: UseInViewOptions = {
