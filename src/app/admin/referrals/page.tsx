@@ -102,10 +102,10 @@ export default function AdminReferrals() {
                       <p className="font-sans text-[11px] text-brand-gray">{r.referrer?.email}</p>
                     </td>
                     <td className="px-4 py-4">
-                      {r.referred ? (
+                      {r.referee ? (
                         <>
-                          <p className="font-sans text-sm text-brand-black">{r.referred.name}</p>
-                          <p className="font-sans text-[11px] text-brand-gray">{r.referred.email}</p>
+                          <p className="font-sans text-sm text-brand-black">{r.referee.name}</p>
+                          <p className="font-sans text-[11px] text-brand-gray">{r.referee.email}</p>
                         </>
                       ) : (
                         <span className="font-sans text-xs text-brand-gray/50">Not yet</span>

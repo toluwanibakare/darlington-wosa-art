@@ -21,7 +21,9 @@ export default function ClassesPage() {
     // Fetch dynamic classes from backend API
     api.get('/classes')
       .then((res: any) => {
-        const items = res.data?.data || res.data || [];
+        // api wrapper returns object with data field containing API body
+        const payload = res.data;
+        const items = payload?.data || payload || [];
         setClassesList(items);
         setLoading(false);
       })
