@@ -108,7 +108,9 @@ export default function AdminShopItems() {
 
   useEffect(() => { fetch(); fetchCats(); }, [fetch, fetchCats]);
 
-  const openAdd = () => { setEditing(null); setForm(defaultForm); setCustomImageUrl(''); setModalOpen(true); };
+  const [uploadFiles, setUploadFiles] = useState<File[]>([]);
+
+  const openAdd = () => { setEditing(null); setForm(defaultForm); setCustomImageUrl(''); setUploadFiles([]); setModalOpen(true); };
   const openEdit = (item: ShopItem) => {
     setEditing(item);
     setForm({
@@ -125,28 +127,68 @@ export default function AdminShopItems() {
       images: item.images || []
     });
     setCustomImageUrl('');
+    setUploadFiles([]);
     setModalOpen(true);
   };
 
   const handleSave = async () => {
     setSaving(true);
     try {
-      const body = {
-        ...form,
-        price: form.price ? Number(form.price) : null,
-        width: form.width ? Number(form.width) : null,
-        height: form.height ? Number(form.height) : null,
-        category_id: form.category_id || null,
-      };
+      const token = localStorage.getItem('auth_token');
+      const fd = new FormData();
+      fd.append('name', form.name);
+      if (form.category_id) fd.append('category_id', String(form.category_id));
+      if (form.description) fd.append('description', form.description);
+      if (form.price) fd.append('price', String(form.price));
+      if (form.width) fd.append('width', String(form.width));
+      if (form.height) fd.append('height', String(form.height));
+      fd.append('is_negotiable', form.is_negotiable ? '1' : '0');
+      fd.append('is_active', form.is_active ? '1' : '0');
+      fd.append('is_sold', form.is_sold ? '1' : '0');
+      fd.append('sort_order', String(form.sort_order));
+
+      // Append existing images
+      form.images.forEach((img, idx) => {
+        fd.append(`images_existing[${idx}]`, img);
+      });
+
+      // Append upload files
+      uploadFiles.forEach((file) => {
+        fd.append('images[]', file);
+      });
+
+      const url = editing ? `${API_BASE}/admin/shop/items/${editing.id}` : `${API_BASE}/admin/shop/items`;
+      // Note: Laravel PUT requests with multipart/form-data must be spoofed as POST
+      const method = 'POST';
       if (editing) {
-        const json: { item: ShopItem } = await a.put(`/shop/items/${editing.id}`, body);
+        fd.append('_method', 'PUT');
+      }
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        },
+        body: fd
+      });
+
+      const json = await res.json();
+      if (!res.ok) {
+        alert(json.message || 'Error saving item');
+        return;
+      }
+
+      if (editing) {
         setItems((prev) => prev.map((i) => (i.id === editing.id ? json.item : i)));
       } else {
-        const json: { item: ShopItem } = await a.post('/shop/items', body);
         setItems((prev) => [json.item, ...prev]);
         setTotal((t) => t + 1);
       }
       setModalOpen(false);
+    } catch (err) {
+      console.error(err);
+      alert('Network error saving item');
     } finally { setSaving(false); }
   };
 
@@ -308,12 +350,12 @@ export default function AdminShopItems() {
               <div>
                 <label className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-2">Item Images</label>
                 
-                {/* Current images list */}
+                {/* Current existing images list */}
                 {form.images.length > 0 && (
                   <div className="flex flex-wrap gap-3 mb-4">
                     {form.images.map((img, i) => (
                       <div key={i} className="relative w-16 h-16 rounded-[4px] border border-brand-border overflow-hidden group">
-                        <img src={img} alt={`Item ${i}`} className="w-full h-full object-cover" />
+                        <img src={img.startsWith('http') ? img : `${API_BASE.replace('/api', '')}/storage/${img}`} alt={`Item ${i}`} className="w-full h-full object-cover" />
                         <button type="button" onClick={() => removeImageUrl(i)} className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity cursor-pointer">
                           <X size={14} />
                         </button>
@@ -322,10 +364,47 @@ export default function AdminShopItems() {
                   </div>
                 )}
 
+                {/* Uploaded local files preview */}
+                {uploadFiles.length > 0 && (
+                  <div className="mb-4">
+                    <p className="font-sans text-[9px] uppercase tracking-wider text-brand-gray/60 mb-2">Files waiting to upload:</p>
+                    <div className="flex flex-wrap gap-3">
+                      {uploadFiles.map((file, i) => (
+                        <div key={i} className="relative w-16 h-16 rounded-[4px] border border-brand-border overflow-hidden group bg-brand-border/20 flex flex-col justify-end p-1">
+                          <span className="font-sans text-[8px] text-brand-black truncate">{file.name}</span>
+                          <button type="button" onClick={() => setUploadFiles((prev) => prev.filter((_, idx) => idx !== i))} className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity cursor-pointer">
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Local File Upload Input */}
+                <div className="mb-4">
+                  <label className="flex flex-col items-center justify-center border-2 border-dashed border-brand-border hover:border-brand-gold rounded-[8px] p-5 cursor-pointer hover:bg-brand-gold/5 transition-colors">
+                    <span className="font-sans text-xs text-brand-black font-semibold">Upload Local Images</span>
+                    <span className="font-sans text-[10px] text-brand-gray mt-1">Select one or more image files</span>
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.target.files) {
+                          const files = Array.from(e.target.files);
+                          setUploadFiles((prev) => [...prev, ...files]);
+                        }
+                      }}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+
                 {/* Custom URL Input */}
                 <div className="flex gap-2 mb-4">
                   <input type="text" value={customImageUrl} onChange={(e) => setCustomImageUrl(e.target.value)} className="flex-1 bg-transparent border border-brand-border rounded-[6px] px-4 py-2.5 text-sm text-brand-black focus:outline-none focus:border-brand-gold font-sans" placeholder="https://example.com/art.jpg" />
-                  <button type="button" onClick={() => { addImageUrl(customImageUrl); setCustomImageUrl(''); }} className="px-4 py-2 bg-brand-black text-brand-white rounded-[6px] font-sans text-xs tracking-wider uppercase cursor-pointer">Add</button>
+                  <button type="button" onClick={() => { addImageUrl(customImageUrl); setCustomImageUrl(''); }} className="px-4 py-2 bg-brand-black text-brand-white rounded-[6px] font-sans text-xs tracking-wider uppercase cursor-pointer">Add URL</button>
                 </div>
 
                 {/* Sample Images Selection */}
