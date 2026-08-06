@@ -42,11 +42,6 @@ export function ContactForm() {
     giftType: 'none', // none, birthday, anniversary, corporate, memorial
     // Frame Size
     frameSize: '12x16',
-    // Event booking
-    eventState: 'Rivers',
-    eventLocation: '',
-    eventType: 'performance', // performance, workshop, exhibition
-    expectedGuests: '50',
     // Delivery Details
     deliveryState: 'Rivers',
     deliveryAddress: '',
