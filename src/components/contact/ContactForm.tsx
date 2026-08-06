@@ -495,10 +495,10 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
             <a
-              href="/signup"
-              className="px-6 py-3 border border-brand-gold text-brand-black hover:bg-brand-gold hover:text-brand-black transition-colors rounded-[8px] text-xs uppercase tracking-wider font-semibold"
+              href={`/login?redirect=/contact?tab=${activeTab}`}
+              className="px-6 py-3 border border-brand-gold text-brand-black hover:bg-brand-gold hover:text-brand-black transition-colors rounded-[8px] text-xs uppercase tracking-wider font-semibold animate-pulse"
             >
-              Log In or Sign Up
+              Log In
             </a>
             <button
               onClick={() => setGuestCheckoutChoice(true)}

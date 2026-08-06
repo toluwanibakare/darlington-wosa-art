@@ -1,27 +1,8 @@
-import type { Metadata } from "next";
-import React from 'react';
+"use client";
+
+import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { LoginForm } from '@/components/auth/LoginForm';
-
-export const metadata: Metadata = {
-  title: "Sign In | Darlington Wosa Art & Frames Ltd",
-  description: "Sign in to your Darlington Wosa Art & Frames account to manage orders, bookings, and profile.",
-  openGraph: {
-    title: "Sign In | Darlington Wosa Art & Frames Ltd",
-    description: "Sign in to your Darlington Wosa Art & Frames account.",
-    url: "https://darlingtonwosaart.com/login",
-    siteName: "Darlington Wosa Art & Frames Ltd",
-    locale: "en_NG",
-    type: "website",
-    images: [{ url: "/logo_white.png", width: 512, height: 512, alt: "Darlington Wosa Art & Frames Ltd" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Sign In | Darlington Wosa Art & Frames Ltd",
-    description: "Sign in to your Darlington Wosa Art & Frames account.",
-    images: ["/logo_white.png"],
-  },
-};
 
 export default function LoginPage() {
   return (
@@ -40,7 +21,9 @@ export default function LoginPage() {
           </div>
 
           <div className="p-8 md:p-12 border border-brand-border rounded-[8px] bg-brand-white/50">
-            <LoginForm />
+            <Suspense fallback={<div className="h-48 animate-pulse bg-brand-border/20 rounded" />}>
+              <LoginForm />
+            </Suspense>
           </div>
         </div>
       </div>
