@@ -97,6 +97,22 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         }
       });
     }
+
+    // Restore last pending unbooked order details if present
+    try {
+      const existingPending = JSON.parse(localStorage.getItem('dwaf_pending_checkout_items') || '[]');
+      if (existingPending.length > 0) {
+        const lastOrder = existingPending[existingPending.length - 1];
+        if (lastOrder.formValues) {
+          setForm(prev => ({ ...prev, ...lastOrder.formValues }));
+          if (lastOrder.category) {
+            setActiveTab(lastOrder.category);
+          }
+        }
+      }
+    } catch (err) {
+      // Silently ignore
+    }
   }, []);
 
   // Sync user details when currentUser state changes
@@ -173,6 +189,23 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
   const handleProceedToCheckout = (e: React.FormEvent) => {
     e.preventDefault();
     if (activeTab === 'drawing' || activeTab === 'frame') {
+      // Persist pending order to local storage cart list so user can always reload it if they return
+      try {
+        const pendingItem = {
+          id: 'PENDING-' + Date.now(),
+          category: activeTab,
+          details: activeTab === 'frame' ? form.frameSize : `${form.width}x${form.height} inches (${form.artType})`,
+          price: calculatedPrice,
+          formValues: { ...form },
+          timestamp: new Date().toISOString()
+        };
+        const existingPending = JSON.parse(localStorage.getItem('dwaf_pending_checkout_items') || '[]');
+        existingPending.push(pendingItem);
+        localStorage.setItem('dwaf_pending_checkout_items', JSON.stringify(existingPending));
+      } catch (err) {
+        // Silently skip if local storage is restricted
+      }
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setStep('checkout');
     } else {
