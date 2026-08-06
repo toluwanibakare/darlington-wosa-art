@@ -54,7 +54,7 @@ class PaymentController extends Controller
                 'name' => $request->customer_name ?? '',
             ],
             'metadata' => $request->metadata ?? [],
-            'notification_url' => url('/api/payments/webhook'),
+            'notification_url' => 'https://api.darlingtonwosa.art/api/payments/webhook',
         ];
 
         if ($request->redirect_url) {
@@ -104,6 +104,43 @@ class PaymentController extends Controller
         }
 
         $data = $response->json()['data'] ?? [];
+        $status = $data['status'] ?? 'unknown';
+
+        // Fallback: If payment verified as successful, update order and send email if not already done
+        if ($status === 'success') {
+            $reference = $data['reference'] ?? '';
+            $order = \App\Models\Order::where('order_number', $reference)->first();
+
+            if ($order && $order->status === 'pending') {
+                $oldStatus = $order->status;
+                $order->update([
+                    'status' => 'paid',
+                    'paid_at' => now(),
+                    'payment_method' => 'korapay',
+                ]);
+
+                $email = null;
+                if ($order->user) {
+                    $email = $order->user->email;
+                } else {
+                    $customerEmail = $data['customer']['email'] ?? null;
+                    if ($customerEmail) {
+                        $email = $customerEmail;
+                    } elseif (preg_match('/Customer Email:\s*([^\s\n\r]+)/i', $order->description, $matches)) {
+                        $email = trim($matches[1]);
+                    }
+                }
+
+                if ($email) {
+                    try {
+                        \Illuminate\Support\Facades\Mail::to($email)->send(new \App\Mail\OrderStatusEmail($order, $oldStatus));
+                        \Illuminate\Support\Facades\Log::info('Order confirmation email sent via verify fallback', ['email' => $email, 'order' => $order->order_number]);
+                    } catch (\Exception $e) {
+                        \Illuminate\Support\Facades\Log::error('Order email failed in verify fallback', ['error' => $e->getMessage()]);
+                    }
+                }
+            }
+        }
 
         return response()->json([
             'success' => true,
@@ -111,7 +148,7 @@ class PaymentController extends Controller
                 'reference' => $data['reference'] ?? '',
                 'amount' => $data['amount'] ?? 0,
                 'currency' => $data['currency'] ?? 'NGN',
-                'status' => $data['status'] ?? 'unknown',
+                'status' => $status,
                 'paid_at' => $data['paid_at'] ?? null,
                 'customer' => $data['customer'] ?? null,
             ],
