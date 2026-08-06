@@ -138,6 +138,12 @@ class AuthController extends Controller
             ]);
         }
 
+        if (!$user->email_verified_at) {
+            throw ValidationException::withMessages([
+                'email' => ['Please verify your email address before logging in.'],
+            ]);
+        }
+
         $user->tokens()->delete();
         $token = $user->createToken('auth-token')->plainTextToken;
 
