@@ -67,10 +67,19 @@ class AuthController extends Controller
     public function verifyOtp(Request $request)
     {
         $validated = $request->validate([
+            'email' => 'required|string|email',
             'otp' => 'required|string|size:6',
         ]);
 
-        $user = $request->user();
+        $user = User::where('email', $validated['email'])->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'No account found with this email address.'], 404);
+        }
+
+        if ($user->email_verified_at) {
+            return response()->json(['message' => 'Email is already verified.'], 400);
+        }
 
         if (!$user->otp || !$user->otp_expires_at) {
             return response()->json(['message' => 'No OTP request found.'], 400);
@@ -84,11 +93,10 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid OTP code.'], 400);
         }
 
-        $user->update([
-            'email_verified_at' => now(),
-            'otp' => null,
-            'otp_expires_at' => null,
-        ]);
+        $user->email_verified_at = now();
+        $user->otp = null;
+        $user->otp_expires_at = null;
+        $user->save();
 
         try {
             Mail::to($user->email)->send(new WelcomeEmail($user));
@@ -104,7 +112,15 @@ class AuthController extends Controller
 
     public function resendOtp(Request $request)
     {
-        $user = $request->user();
+        $validated = $request->validate([
+            'email' => 'required|string|email',
+        ]);
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'No account found with this email address.'], 404);
+        }
 
         if ($user->email_verified_at) {
             return response()->json(['message' => 'Email already verified.'], 400);
@@ -112,10 +128,9 @@ class AuthController extends Controller
 
         $otp = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
-        $user->update([
-            'otp' => Hash::make($otp),
-            'otp_expires_at' => now()->addMinutes(10),
-        ]);
+        $user->otp = Hash::make($otp);
+        $user->otp_expires_at = now()->addMinutes(10);
+        $user->save();
 
         try {
             Mail::to($user->email)->send(new OtpEmail($user, $otp));

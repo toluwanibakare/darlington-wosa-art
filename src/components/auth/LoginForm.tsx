@@ -56,8 +56,16 @@ export function LoginForm() {
       className="space-y-8"
     >
       {error && (
-        <div className="p-4 rounded-[6px] bg-red-50 border border-red-200">
-          <p className="font-sans text-xs text-red-600">{error}</p>
+        <div className="p-4 rounded-[6px] bg-red-50 border border-red-200 text-center">
+          <p className="font-sans text-xs text-red-600 mb-3">{error}</p>
+          {error.toLowerCase().includes('verify your email') && (
+            <Link
+              href={`/verify-email?email=${encodeURIComponent(form.email)}`}
+              className="inline-block px-4 py-2 text-[10px] tracking-[0.1em] uppercase font-sans font-bold bg-brand-gold text-white rounded-[4px] hover:bg-brand-gold-light transition-all"
+            >
+              Verify Email Now
+            </Link>
+          )}
         </div>
       )}
 

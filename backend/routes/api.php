@@ -93,8 +93,8 @@ Route::post('/payments/webhook', [PaymentController::class, 'webhook']);
 Route::post('/orders', [\App\Http\Controllers\Api\OrderController::class, 'store']);
 
 // OTP Verification
-Route::post('/verify-otp', [AuthController::class, 'verifyOtp'])->middleware('auth:sanctum');
-Route::post('/resend-otp', [AuthController::class, 'resendOtp'])->middleware('auth:sanctum');
+Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
+Route::post('/resend-otp', [AuthController::class, 'resendOtp']);
 
 // Authenticated routes
 Route::middleware('auth:sanctum')->group(function () {
