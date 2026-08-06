@@ -275,10 +275,12 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         // Redirect to Korapay secure checkout
         window.location.href = payRes.data.data.authorization_url;
       } else {
-        setStatusMsg({ type: 'error', text: payRes.error || 'Failed to initialize payment gateway.' });
+        const errorDetail = payRes.data?.error?.message || payRes.data?.message || 'Failed to initialize payment gateway.';
+        setStatusMsg({ type: 'error', text: errorDetail });
       }
-    } catch (e) {
-      setStatusMsg({ type: 'error', text: 'An unexpected connection error occurred.' });
+    } catch (e: any) {
+      const errMsg = e.response?.data?.error?.message || e.response?.data?.message || 'An unexpected connection error occurred.';
+      setStatusMsg({ type: 'error', text: errMsg });
     } finally {
       setLoading(false);
     }
