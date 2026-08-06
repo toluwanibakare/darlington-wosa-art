@@ -88,16 +88,24 @@ export function ContactForm() {
       api.get<any>('/user').then(res => {
         if (res.data) {
           setCurrentUser(res.data);
-          setForm(prev => ({
-            ...prev,
-            name: res.data.name || '',
-            email: res.data.email || '',
-            phone: res.data.phone || ''
-          }));
         }
       });
     }
   }, []);
+
+  // Sync user details when currentUser state changes
+  useEffect(() => {
+    if (currentUser) {
+      setForm(prev => ({
+        ...prev,
+        name: currentUser.name || '',
+        email: currentUser.email || '',
+        phone: currentUser.phone || '',
+        deliveryAddress: currentUser.address || '',
+        deliveryState: currentUser.city || 'Rivers'
+      }));
+    }
+  }, [currentUser]);
 
   // Recalculate price dynamically when dimensions or size options change
   useEffect(() => {
@@ -110,7 +118,7 @@ export function ContactForm() {
       const h = parseFloat(form.height) || 0;
       const base = parseFloat(settings['charcoal_base_price'] || '250');
       const rate = parseFloat(settings['charcoal_price_per_sq_inch'] || '2.70');
-      let price = base + (w * h * rate);
+      let price = (w * h * rate) + base;
       if (isExpress) price *= expressMultiplier;
       setCalculatedPrice(Math.round(price));
     } else if (activeTab === 'frame') {
@@ -121,7 +129,8 @@ export function ContactForm() {
         const [wStr, hStr] = sizeObj.size.split('x');
         const w = parseFloat(wStr) || 0;
         const h = parseFloat(hStr) || 0;
-        const uppsi = parseFloat(settings[sizeObj.key] || String(sizeObj.def)) / (w * h); // fallback uppsi calculated from default
+        // settings[sizeObj.key] stores the UPPSI rate directly (e.g. 50, 100, 200). If not set, default value is parsed
+        const uppsi = parseFloat(settings[sizeObj.key] || String(sizeObj.def));
         let price = (w * h) * uppsi;
         if (isExpress) price *= expressMultiplier;
         setCalculatedPrice(Math.round(price));
