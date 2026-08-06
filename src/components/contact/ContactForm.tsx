@@ -346,6 +346,15 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
             <span className="text-brand-black font-medium">{form.email}</span>
           </div>
 
+          {(activeTab === 'drawing' || activeTab === 'frame') && (
+            <div className="flex justify-between items-center text-sm font-sans border-t border-brand-border/40 pt-2">
+              <span className="text-brand-gray">Delivery Timeline</span>
+              <span className="text-brand-black font-medium capitalize">
+                {form.deliveryTimeline === 'express' ? 'Express Delivery (Under 2 Weeks - +20% Express Fee)' : 'Standard Delivery (2+ Weeks)'}
+              </span>
+            </div>
+          )}
+
           {imagePreview && (
             <div className="flex items-center gap-3 pt-2">
               <span className="text-sm font-sans text-brand-gray">Uploaded Reference</span>
@@ -455,44 +464,64 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         {/* Step 1: Customer Contact Details */}
         <div className="border border-brand-border rounded-[8px] bg-brand-white/40 p-6 space-y-6">
           <h4 className="font-display text-sm text-brand-black border-b border-brand-border pb-2">Your Contact Information</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className={labelClass}>Full Name</label>
-              <input
-                type="text"
-                name="name"
-                required
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Enter your name"
-                className={inputClass}
-              />
+          {currentUser ? (
+            <div className="bg-brand-surface/50 border border-brand-border/60 rounded-[6px] p-4 space-y-2 font-sans text-xs">
+              <div className="flex justify-between">
+                <span className="text-brand-gray">Full Name:</span>
+                <span className="text-brand-black font-semibold">{currentUser.name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-brand-gray">Email Address:</span>
+                <span className="text-brand-black font-semibold">{currentUser.email}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-brand-gray">WhatsApp / Phone:</span>
+                <span className="text-brand-black font-semibold">{currentUser.phone || form.phone}</span>
+              </div>
+              <p className="text-[10px] text-brand-gold italic font-semibold mt-1">Automatically using your secure account profile details.</p>
             </div>
-            <div>
-              <label className={labelClass}>Email Address</label>
-              <input
-                type="email"
-                name="email"
-                required
-                value={form.email}
-                onChange={handleChange}
-                placeholder="you@example.com"
-                className={inputClass}
-              />
-            </div>
-          </div>
-          <div>
-            <label className={labelClass}>WhatsApp / Phone Number</label>
-            <input
-              type="tel"
-              name="phone"
-              required
-              value={form.phone}
-              onChange={handleChange}
-              placeholder="e.g. +234 813 774 4824"
-              className={inputClass}
-            />
-          </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className={labelClass}>Full Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Enter your name"
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className={labelClass}>Email Address</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="you@example.com"
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className={labelClass}>WhatsApp / Phone Number</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  required
+                  value={form.phone}
+                  onChange={handleChange}
+                  placeholder="e.g. +234 813 774 4824"
+                  className={inputClass}
+                />
+              </div>
+            </>
+          )}
 
           {/* Delivery State & Address (Only for Physical orders like drawing and frame) */}
           {(activeTab === 'drawing' || activeTab === 'frame') && (
