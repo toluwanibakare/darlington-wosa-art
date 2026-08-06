@@ -27,7 +27,10 @@ class OrderController extends Controller
             'payment_method' => 'nullable|string|max:100',
         ]);
 
-        $order = $request->user()->orders()->create([
+        $userId = $request->user() ? $request->user()->id : null;
+
+        $order = Order::create([
+            'user_id' => $userId,
             'service_id' => $validated['service_id'] ?? null,
             'order_number' => 'ORD-' . strtoupper(Str::random(10)),
             'description' => $validated['description'] ?? null,
