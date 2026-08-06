@@ -175,6 +175,7 @@ export function ContactForm() {
       });
     }
 
+    try {
       const payload = {
         name: form.name,
         email: form.email,
