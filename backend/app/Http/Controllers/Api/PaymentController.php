@@ -12,7 +12,17 @@ class PaymentController extends Controller
 
     public function __construct()
     {
-        $this->secretKey = config('services.korapay.secret_key') ?: env('KORAPAY_SECRET_KEY');
+        // Fetch live mode boolean flag from settings
+        try {
+            $isLive = \App\Models\Setting::where('key', 'korapay_live_mode')->value('value');
+            if ($isLive === '1' || $isLive === 'true') {
+                $this->secretKey = env('KORAPAY_LIVE_SECRET_KEY') ?: env('KORAPAY_SECRET_KEY') ?: '';
+            } else {
+                $this->secretKey = env('KORAPAY_TEST_SECRET_KEY') ?: env('KORAPAY_SECRET_KEY') ?: '';
+            }
+        } catch (\Exception $e) {
+            $this->secretKey = env('KORAPAY_SECRET_KEY') ?: '';
+        }
     }
 
     protected function korapayHeaders(): array

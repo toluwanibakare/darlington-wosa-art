@@ -219,6 +219,20 @@ export default function AdminSettingsPage() {
                   />
                   <p className="text-[11px] font-sans text-brand-gray mt-1">Multiplier applied when delivery timeline is under 2 weeks.</p>
                 </div>
+                <div>
+                  <label className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-2">
+                    Korapay Gateway Mode
+                  </label>
+                  <select
+                    value={settings['korapay_live_mode'] || 'false'}
+                    onChange={(e) => updateField('korapay_live_mode', e.target.value)}
+                    className="w-full bg-brand-surface border border-brand-border rounded-[6px] px-4 py-3 text-sm text-brand-black focus:outline-none focus:border-brand-gold transition-colors font-sans cursor-pointer"
+                  >
+                    <option value="false">Test Mode (Uses KORAPAY_TEST_SECRET_KEY)</option>
+                    <option value="true">Live Mode (Uses KORAPAY_LIVE_SECRET_KEY)</option>
+                  </select>
+                  <p className="text-[11px] font-sans text-brand-gray mt-1">Controls which API credentials are used to process checkout authorizations.</p>
+                </div>
               </div>
             </div>
 
