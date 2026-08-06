@@ -21,21 +21,32 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'service_id' => 'nullable|exists:services,id',
-            'description' => 'nullable|string|max:2000',
-            'amount' => 'required|numeric|min:0',
+            'service_id'     => 'nullable|exists:services,id',
+            'description'    => 'nullable|string|max:2000',
+            'amount'         => 'required|numeric|min:0',
             'payment_method' => 'nullable|string|max:100',
+            'referral_code'  => 'nullable|string',
+            'coupon_code'    => 'nullable|string',
         ]);
 
-        $userId = $request->user() ? $request->user()->id : null;
+        // Resolve user from Bearer token even on a public route (guests allowed)
+        $userId = null;
+        $authHeader = $request->header('Authorization', '');
+        if (str_starts_with($authHeader, 'Bearer ')) {
+            $token = substr($authHeader, 7);
+            $accessToken = \Laravel\Sanctum\PersonalAccessToken::findToken($token);
+            if ($accessToken && $accessToken->tokenable) {
+                $userId = $accessToken->tokenable->id;
+            }
+        }
 
         $order = Order::create([
-            'user_id' => $userId,
-            'service_id' => $validated['service_id'] ?? null,
-            'order_number' => 'ORD-' . strtoupper(Str::random(10)),
-            'description' => $validated['description'] ?? null,
-            'amount' => $validated['amount'],
-            'status' => 'pending',
+            'user_id'        => $userId,
+            'service_id'     => $validated['service_id'] ?? null,
+            'order_number'   => 'ORD-' . strtoupper(Str::random(10)),
+            'description'    => $validated['description'] ?? null,
+            'amount'         => $validated['amount'],
+            'status'         => 'pending',
             'payment_method' => $validated['payment_method'] ?? null,
         ]);
 
@@ -43,7 +54,7 @@ class OrderController extends Controller
 
         return response()->json([
             'message' => 'Order placed successfully.',
-            'order' => $order,
+            'order'   => $order,
         ], 201);
     }
 

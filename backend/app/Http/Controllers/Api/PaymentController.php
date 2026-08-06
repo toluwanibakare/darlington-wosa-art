@@ -107,7 +107,7 @@ class PaymentController extends Controller
         $status = $data['status'] ?? 'unknown';
 
         // Fallback: If payment verified as successful, update order and send email if not already done
-        if ($status === 'success') {
+        if (in_array($status, ['success', 'successful'])) {
             $reference = $data['reference'] ?? '';
             $order = \App\Models\Order::where('order_number', $reference)->first();
 
