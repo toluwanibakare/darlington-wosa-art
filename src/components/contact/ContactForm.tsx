@@ -47,6 +47,9 @@ export function ContactForm() {
     eventLocation: '',
     eventType: 'performance', // performance, workshop, exhibition
     expectedGuests: '50',
+    // Delivery Details
+    deliveryState: 'Rivers',
+    deliveryAddress: '',
     // Billing/Summary
     referralCode: '',
     couponCode: '',
@@ -163,7 +166,7 @@ export function ContactForm() {
         message: `
           Category: ${activeTab.toUpperCase()}
           Message: ${form.message}
-          ${activeTab === 'event' ? `State: ${form.eventState}\nLocation: ${form.eventLocation}\nEvent Type: ${form.eventType}\nExpected Guests: ${form.expectedGuests}` : ''}
+          ${activeTab === 'event' ? `State: ${form.eventState}\nLocation: ${form.eventLocation}\nEvent Type: ${form.eventType}\nExpected Guests: ${form.expectedGuests}` : `Delivery State: ${form.deliveryState}\nDelivery Address: ${form.deliveryAddress}`}
         `
       };
 
@@ -219,6 +222,8 @@ export function ContactForm() {
             Dimensions / Details: ${activeTab === 'frame' ? form.frameSize : `${form.width}x${form.height} inches (${form.artType})`}
             Notes: ${form.message}
             Gift Type: ${form.giftType}
+            Delivery State: ${form.deliveryState}
+            Delivery Address: ${form.deliveryAddress}
             Paystack Ref: ${response.reference}
           `;
 
@@ -232,7 +237,7 @@ export function ContactForm() {
 
           // Save details if logged in
           if (form.saveDetails && currentUser) {
-            await api.put('/profile', { name: form.name, phone: form.phone });
+            await api.put('/profile', { name: form.name, phone: form.phone, address: form.deliveryAddress, city: form.deliveryState });
           }
 
           // Register the order
@@ -441,6 +446,33 @@ export function ContactForm() {
             />
           </div>
 
+          {/* Delivery State & Address (Only for Physical orders like drawing and frame) */}
+          {(activeTab === 'drawing' || activeTab === 'frame') && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-brand-border/40">
+              <div>
+                <label className={labelClass}>Delivery State (Nigeria)</label>
+                <select name="deliveryState" value={form.deliveryState} onChange={handleChange} className={selectClass}>
+                  {NIGERIAN_STATES.map(st => (
+                    <option key={st} value={st}>{st}</option>
+                  ))}
+                </select>
+                <p className="text-[10px] font-sans text-brand-gray mt-1">Delivery logistics will be calculated & discussed later.</p>
+              </div>
+              <div>
+                <label className={labelClass}>Delivery Address / Location</label>
+                <input
+                  type="text"
+                  name="deliveryAddress"
+                  required
+                  value={form.deliveryAddress}
+                  onChange={handleChange}
+                  placeholder="e.g. 14 Airport Road, Port Harcourt"
+                  className={inputClass}
+                />
+              </div>
+            </div>
+          )}
+
           {currentUser && (
             <div className="flex items-center gap-2 pt-2">
               <input
@@ -520,6 +552,18 @@ export function ContactForm() {
               </select>
             </div>
 
+            {/* Frame Size visual scale guide */}
+            <div>
+              <span className={labelClass}>Artwork / Frame human size scale comparison chart</span>
+              <div className="mt-2 border border-brand-border rounded-[8px] overflow-hidden bg-brand-surface/30">
+                <img
+                  src="/frame_human_scale.jpg"
+                  alt="Artwork scale reference beside a human outline"
+                  className="w-full h-auto object-cover max-h-[300px]"
+                />
+              </div>
+            </div>
+
             {/* Reference Image upload */}
             <div>
               <label className={labelClass}>Reference Image to Draw</label>
@@ -568,13 +612,13 @@ export function ContactForm() {
           <div className="space-y-6 border border-brand-border rounded-[8px] p-6 bg-brand-white/40">
             <h4 className="font-display text-sm text-brand-black border-b border-brand-border pb-2">Custom Framing Layout</h4>
             
-            {/* Frame Template visual display */}
+            {/* Frame Template visual display with human scale */}
             <div>
-              <span className={labelClass}>Frame Size template chart</span>
+              <span className={labelClass}>Frame Size scale comparison chart</span>
               <div className="mt-2 border border-brand-border rounded-[8px] overflow-hidden bg-brand-surface/30">
                 <img
-                  src="/frame_size_template.jpg"
-                  alt="Frame Size Chart Reference"
+                  src="/frame_human_scale.jpg"
+                  alt="Frame Size Chart Human Scale Reference"
                   className="w-full h-auto object-cover max-h-[300px]"
                 />
               </div>
