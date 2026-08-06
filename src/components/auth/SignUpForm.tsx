@@ -94,7 +94,7 @@ export function SignUpForm() {
           'Accept': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
         },
-        body: JSON.stringify({ otp: code }),
+        body: JSON.stringify({ email: form.email, otp: code }),
       });
       const json = await res.json();
       if (!res.ok) {
@@ -118,9 +118,11 @@ export function SignUpForm() {
       await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://api.darlingtonwosa.art'}/resend-otp`, {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
         },
+        body: JSON.stringify({ email: form.email }),
       });
     } catch {}
     setOtpLoading(false);
