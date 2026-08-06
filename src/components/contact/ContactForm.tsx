@@ -330,10 +330,8 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
 
       const payRes = await api.post<any>('/payments/initialize', payPayload);
       if (payRes.data?.success && payRes.data?.data?.authorization_url) {
-        // Open Korapay secure checkout in a new browser tab
-        window.open(payRes.data.data.authorization_url, '_blank');
-        // Transition contact form state to success screen
-        setStep('success');
+        // Redirect to Korapay secure checkout in the same window
+        window.location.href = payRes.data.data.authorization_url;
       } else {
         const errorDetail = payRes.data?.error?.message || payRes.data?.message || 'Failed to initialize payment gateway.';
         setStatusMsg({ type: 'error', text: errorDetail });
