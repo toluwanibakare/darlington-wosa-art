@@ -36,7 +36,7 @@ function ShopContent() {
           ) : (
             <div className="space-y-20">
               {categories.map((category) => {
-                const categoryItems = items.filter((item) => item.category?.id === category.id || item.category_id === category.id);
+                const categoryItems = items.filter((item) => item.category?.id === category.id);
                 if (categoryItems.length === 0) return null;
 
                 return (
