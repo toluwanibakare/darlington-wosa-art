@@ -60,13 +60,13 @@ function ShopContent() {
               })}
 
               {/* Uncategorized items if any */}
-              {items.filter(item => !item.category && !item.category_id).length > 0 && (
+              {items.filter(item => !item.category).length > 0 && (
                 <div className="space-y-6">
                   <div className="border-b border-brand-border pb-4">
                     <h2 className="font-display text-2xl text-brand-black uppercase tracking-wider">Other Works & Frames</h2>
                   </div>
                   <StaggerList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {items.filter(item => !item.category && !item.category_id).map((item) => (
+                    {items.filter(item => !item.category).map((item) => (
                       <StaggerItem key={item.id}>
                         <ShopItemCard item={item} />
                       </StaggerItem>
