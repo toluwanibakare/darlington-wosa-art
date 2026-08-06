@@ -50,9 +50,14 @@ class PaymentController extends Controller
             ->post('https://api.korapay.com/merchant/api/v1/charges/initialize', $payload);
 
         if (!$response->successful()) {
+            \Illuminate\Support\Facades\Log::error('Korapay initialization failed', [
+                'payload' => $payload,
+                'status' => $response->status(),
+                'response' => $response->json()
+            ]);
             return response()->json([
                 'success' => false,
-                'message' => 'Payment initialization failed',
+                'message' => $response->json()['message'] ?? 'Payment initialization failed',
                 'error' => $response->json(),
             ], 400);
         }
