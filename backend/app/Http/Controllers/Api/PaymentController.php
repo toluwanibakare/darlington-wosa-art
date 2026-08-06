@@ -117,17 +117,30 @@ class PaymentController extends Controller
             ],
         ]);
     }
-
     public function webhook(Request $request)
     {
         $payload = $request->all();
         $event = $payload['event'] ?? '';
         $data = $payload['data'] ?? [];
 
+        \Illuminate\Support\Facades\Log::info('Korapay webhook received', ['payload' => $payload]);
+
         if ($event === 'charge.success') {
             $reference = $data['reference'] ?? '';
+            \Illuminate\Support\Facades\Log::info('Korapay charge.success event parsed', ['reference' => $reference]);
 
             $order = \App\Models\Order::where('order_number', $reference)->first();
+            
+            if (!$order) {
+                \Illuminate\Support\Facades\Log::warning('Order not found for reference', ['reference' => $reference]);
+            } else {
+                \Illuminate\Support\Facades\Log::info('Order found for reference', [
+                    'order_number' => $order->order_number,
+                    'status' => $order->status,
+                    'user_id' => $order->user_id
+                ]);
+            }
+
             if ($order && $order->status === 'pending') {
                 $oldStatus = $order->status;
                 $order->update([
@@ -153,9 +166,15 @@ class PaymentController extends Controller
                     }
                 }
 
+                \Illuminate\Support\Facades\Log::info('Resolved customer email for notification', [
+                    'order' => $order->order_number,
+                    'email' => $email
+                ]);
+
                 if ($email) {
                     try {
                         \Illuminate\Support\Facades\Mail::to($email)->send(new \App\Mail\OrderStatusEmail($order, $oldStatus));
+                        \Illuminate\Support\Facades\Log::info('Order status email sent successfully', ['email' => $email, 'order' => $order->order_number]);
                     } catch (\Exception $e) {
                         \Illuminate\Support\Facades\Log::error('Order receipt email failed to send', [
                             'order' => $order->order_number,
