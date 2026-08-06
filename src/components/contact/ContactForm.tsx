@@ -82,8 +82,13 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     const stepParam = params.get('step');
     if (stepParam === 'success') {
       setStep('success');
-      // Clean up localStorage pending values on successful checkout
+      // Fire verify call to trigger order confirmation email
       try {
+        const pendingRef = localStorage.getItem('dwaf_pending_payment_ref');
+        if (pendingRef) {
+          api.post('/payments/verify', { reference: pendingRef }).catch(() => {});
+          localStorage.removeItem('dwaf_pending_payment_ref');
+        }
         localStorage.removeItem('dwaf_pending_checkout_items');
       } catch (err) {}
     }
@@ -367,6 +372,10 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
 
       const payRes = await api.post<any>('/payments/initialize', payPayload);
       if (payRes.data?.success && payRes.data?.data?.authorization_url) {
+        // Save reference so we can verify after redirect returns
+        try {
+          localStorage.setItem('dwaf_pending_payment_ref', payPayload.reference);
+        } catch (err) {}
         // Redirect to Korapay secure checkout in the same window
         window.location.href = payRes.data.data.authorization_url;
       } else {
