@@ -38,6 +38,10 @@ class AuthController extends Controller
         try {
             Mail::to($user->email)->send(new OtpEmail($user, $otp));
         } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Registration OTP email failed to send', [
+                'user' => $user->email,
+                'error' => $e->getMessage()
+            ]);
             report($e);
         }
 
