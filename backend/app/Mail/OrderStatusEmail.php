@@ -136,7 +136,7 @@ class OrderStatusEmail extends Mailable
         <!-- Order Number + Amount -->
         <tr>
           <td style="padding:24px 48px 0;text-align:center;">
-            <table cellpadding="0" cellspacing="0" style="margin:0 auto;">
+            <table cellpadding="0" cellspacing="0" align="center">
               <tr>
                 <td style="padding:10px 24px;background:#F5F2EB;border-radius:6px;border:1px solid #E5E0D8;text-align:center;">
                   <p style="font-family:monospace;font-size:12px;color:#5C5C5C;margin:0 0 2px;letter-spacing:1px;text-transform:uppercase;">Order Reference</p>
@@ -162,9 +162,13 @@ class OrderStatusEmail extends Mailable
         <!-- CTA Button -->
         <tr>
           <td style="padding:0 48px 36px;text-align:center;">
-            <a href="{$trackUrl}" style="display:inline-block;padding:14px 36px;background:#111111;color:#FFFFFF;border:1px solid #9E651B;border-radius:6px;font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:2px;text-decoration:none;">
-              Track Your Order
-            </a>
+            <table cellpadding="0" cellspacing="0" align="center">
+              <tr>
+                <td align="center" bgcolor="#111111" style="border-radius:6px;border:1px solid #9E651B;">
+                  <a href="{$trackUrl}" style="padding:14px 36px;font-family:Arial,sans-serif;font-size:11px;color:#FFFFFF;text-transform:uppercase;letter-spacing:2px;text-decoration:none;font-weight:bold;white-space:nowrap;">Track Your Order</a>
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
 
