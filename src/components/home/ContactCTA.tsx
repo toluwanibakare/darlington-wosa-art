@@ -1,9 +1,10 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button, Reveal } from '@/components/ui';
 import { MapPin, Phone, Mail, Clock, ArrowRight } from 'lucide-react';
+import { StartProjectModal } from '@/components/contact/StartProjectModal';
 
 const CONTACT_INFO = [
   { icon: MapPin, label: 'Studio Location', value: 'Rivers State, Nigeria' },
@@ -14,6 +15,8 @@ const CONTACT_INFO = [
 ];
 
 export function ContactCTA() {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <section className="relative w-full bg-brand-surface py-32 md:py-40 px-6 overflow-hidden border-t border-brand-border">
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20" style={{ backgroundImage: 'var(--bg-noise)' }} />
@@ -36,12 +39,10 @@ export function ContactCTA() {
               that will be cherished for generations.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/contact" className="w-full sm:w-auto">
-                <Button variant="primary" className="w-full">
-                  Start Your Project
-                  <ArrowRight size={14} className="ml-2 inline-block" />
-                </Button>
-              </Link>
+              <Button variant="primary" className="w-full sm:w-auto cursor-pointer" onClick={() => setModalOpen(true)}>
+                Start Your Project
+                <ArrowRight size={14} className="ml-2 inline-block" />
+              </Button>
               <Link href="/portfolio" className="w-full sm:w-auto">
                 <Button variant="gold" className="w-full">
                   View Portfolio
@@ -49,6 +50,8 @@ export function ContactCTA() {
               </Link>
             </div>
           </Reveal>
+
+          <StartProjectModal open={modalOpen} onClose={() => setModalOpen(false)} />
 
           {/* Right — Contact Details */}
           <Reveal delay={0.2}

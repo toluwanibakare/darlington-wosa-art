@@ -63,6 +63,13 @@ export function ContactForm() {
 
   // Fetch current user and config settings
   useEffect(() => {
+    // Get search param for active tab
+    const params = new URLSearchParams(window.location.search);
+    const tabParam = params.get('tab');
+    if (tabParam === 'drawing' || tabParam === 'frame' || tabParam === 'event' || tabParam === 'inquiry') {
+      setActiveTab(tabParam);
+    }
+
     // Get settings
     api.get<Record<string, string>>('/settings').then(res => {
       if (res.data) setSettings(res.data);
@@ -92,6 +99,9 @@ export function ContactForm() {
       const h = parseFloat(form.height) || 0;
       const base = parseFloat(settings['charcoal_base_price'] || '250');
       const rate = parseFloat(settings['charcoal_price_per_sq_inch'] || '2.70');
+      // For instance, 12 x 16 = 192 sq inches. 192 * 2.70 = 518.4 + 250 = 768.4.
+      // Wait, 12 * 16 * 2.70 = 518.4. Let's make sure it represents typical prices (e.g. rate can be updated in admin to something like 30, 40 or 50, or default is 2.70).
+      // If user meant a different calculation or if rate is correct, let's keep the formula but make sure we round it.
       const price = base + (w * h * rate);
       setCalculatedPrice(Math.round(price));
     } else if (activeTab === 'frame') {
@@ -106,6 +116,11 @@ export function ContactForm() {
   }, [form.width, form.height, form.frameSize, activeTab, settings]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    if (e.target.name === 'drawingSize') {
+      const [w, h] = e.target.value.split('x');
+      setForm(prev => ({ ...prev, width: w, height: h }));
+      return;
+    }
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -487,31 +502,22 @@ export function ContactForm() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <label className={labelClass}>Width (inches)</label>
-                <input
-                  type="number"
-                  name="width"
-                  value={form.width}
-                  onChange={handleChange}
-                  min="6"
-                  max="120"
-                  className={inputClass}
-                />
-              </div>
-              <div>
-                <label className={labelClass}>Height (inches)</label>
-                <input
-                  type="number"
-                  name="height"
-                  value={form.height}
-                  onChange={handleChange}
-                  min="6"
-                  max="120"
-                  className={inputClass}
-                />
-              </div>
+            <div>
+              <label className={labelClass}>Select Artwork size</label>
+              <select
+                name="drawingSize"
+                value={`${form.width}x${form.height}`}
+                onChange={handleChange}
+                className={selectClass}
+              >
+                <option value="8x10">8 x 10 inches</option>
+                <option value="10x12">10 x 12 inches</option>
+                <option value="12x16">12 x 16 inches</option>
+                <option value="16x20">16 x 20 inches</option>
+                <option value="20x24">20 x 24 inches</option>
+                <option value="24x30">24 x 30 inches</option>
+                <option value="30x40">30 x 40 inches</option>
+              </select>
             </div>
 
             {/* Reference Image upload */}
