@@ -55,7 +55,7 @@ class OrderStatusEmail extends Mailable
 <p style="font-family:Arial,sans-serif;font-size:14px;color:#5C5C5C;margin:0 0 20px;">Your order status has changed from <strong>{$this->oldStatus}</strong> to:</p>
 <div style="font-family:Arial,sans-serif;font-size:28px;font-weight:bold;margin:0 0 20px;">{$statusBadge}</div>
 <p style="font-family:Arial,sans-serif;font-size:13px;color:#111111;margin:0 0 4px;">Amount: <strong>₦" . number_format((float) $this->order->amount, 2) . "</strong></p>
-<a href="https://darlingtonwosa.art/dashboard/orders/{$this->order->id}" style="display:inline-block;margin-top:24px;padding:12px 28px;background:#111111;color:#FFFFFF;border:1px solid #9E651B;border-radius:6px;font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;text-decoration:none;">View Order</a>
+<a href="https://darlingtonwosa.art/dashboard?order_number={$this->order->order_number}" style="display:inline-block;margin-top:24px;padding:12px 28px;background:#111111;color:#FFFFFF;border:1px solid #9E651B;border-radius:6px;font-family:Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;text-decoration:none;">Track Your Order</a>
 </td></tr>
 <tr><td style="padding:20px 40px;text-align:center;border-top:1px solid #E5E0D8;">
 <p style="font-family:Arial,sans-serif;font-size:10px;color:#9E651B;margin:0;">Darlington Wosa Art & Frames Ltd</p>

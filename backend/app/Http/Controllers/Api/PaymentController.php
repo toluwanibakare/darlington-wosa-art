@@ -114,11 +114,35 @@ class PaymentController extends Controller
 
             $order = \App\Models\Order::where('order_number', $reference)->first();
             if ($order && $order->status === 'pending') {
+                $oldStatus = $order->status;
                 $order->update([
                     'status' => 'paid',
                     'paid_at' => now(),
                     'payment_method' => 'korapay',
                 ]);
+
+                // Determine target email for order receipt/tracking link
+                $email = null;
+                if ($order->user) {
+                    $email = $order->user->email;
+                } else {
+                    // Try parsing email from order description (for Guest checkouts)
+                    $customerEmail = $data['customer']['email'] ?? null;
+                    if ($customerEmail) {
+                        $email = $customerEmail;
+                    }
+                }
+
+                if ($email) {
+                    try {
+                        \Illuminate\Support\Facades\Mail::to($email)->send(new \App\Mail\OrderStatusEmail($order, $oldStatus));
+                    } catch (\Exception $e) {
+                        \Illuminate\Support\Facades\Log::error('Order receipt email failed to send', [
+                            'order' => $order->order_number,
+                            'error' => $e->getMessage()
+                        ]);
+                    }
+                }
             }
         }
 

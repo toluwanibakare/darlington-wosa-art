@@ -8,26 +8,26 @@ import { ContactFAQ } from '@/components/contact/ContactFAQ';
 export default function ContactPage() {
   const [step, setStep] = useState<'form' | 'checkout' | 'success'>('form');
 
-  const isCheckout = step === 'checkout';
+  const isCheckoutOrSuccess = step === 'checkout' || step === 'success';
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-brand-surface text-brand-black">
-      <ContactHero />
+      {!isCheckoutOrSuccess && <ContactHero />}
       <section className="relative w-full bg-brand-surface py-24 md:py-32 px-6 overflow-hidden">
-        <div className={`max-w-[1200px] mx-auto ${isCheckout ? 'max-w-[800px]' : 'grid grid-cols-1 lg:grid-cols-5 gap-16 lg:gap-20'}`}>
-          <div className={isCheckout ? 'w-full' : 'lg:col-span-3'}>
+        <div className={`max-w-[1200px] mx-auto ${isCheckoutOrSuccess ? 'max-w-[800px]' : 'grid grid-cols-1 lg:grid-cols-5 gap-16 lg:gap-20'}`}>
+          <div className={isCheckoutOrSuccess ? 'w-full' : 'lg:col-span-3'}>
             <Suspense fallback={<div className="h-[400px] animate-pulse bg-brand-border/30 rounded-[8px]" />}>
               <ContactForm step={step} onStepChange={setStep} />
             </Suspense>
           </div>
-          {!isCheckout && (
+          {!isCheckoutOrSuccess && (
             <div className="lg:col-span-2">
               <ContactDetails />
             </div>
           )}
         </div>
       </section>
-      {!isCheckout && <ContactFAQ />}
+      {!isCheckoutOrSuccess && <ContactFAQ />}
     </div>
   );
 }

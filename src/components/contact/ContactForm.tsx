@@ -316,7 +316,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
       // 2. Initialize Korapay payment charge redirect link
       const payPayload = {
         amount: amount,
-        reference: ref,
+        reference: orderRes.data.order?.order_number || ref,
         customer_email: form.email.trim(),
         customer_name: form.name.trim(),
         metadata: {
