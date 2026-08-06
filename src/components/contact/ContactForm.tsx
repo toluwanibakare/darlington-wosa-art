@@ -205,6 +205,32 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
   const handleProceedToCheckout = (e: React.FormEvent) => {
     e.preventDefault();
     if (activeTab === 'drawing' || activeTab === 'frame') {
+      // Timeline Validation Check: Compare selected date to today
+      if (form.deliveryDate) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const selectedDate = new Date(form.deliveryDate);
+        selectedDate.setHours(0, 0, 0, 0);
+
+        const diffTime = selectedDate.getTime() - today.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays < 0) {
+          setStatusMsg({ type: 'error', text: 'Preferred delivery date cannot be in the past. Please select a valid future date.' });
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
+
+        if (diffDays < 14 && form.deliveryTimeline === 'standard') {
+          setStatusMsg({ 
+            type: 'error', 
+            text: `The selected date (${form.deliveryDate}) is under 2 weeks from today. Please switch the Delivery Timeline to 'Express Delivery' to select this date, or choose a later date.` 
+          });
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
+      }
+
       // Persist pending order to local storage cart list so user can always reload it if they return
       try {
         const pendingItem = {
