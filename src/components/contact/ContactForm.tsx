@@ -122,21 +122,25 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     if (activeTab === 'drawing') {
       const w = parseFloat(form.width) || 0;
       const h = parseFloat(form.height) || 0;
-      const base = parseFloat(settings['charcoal_base_price'] || '250');
-      const rate = parseFloat(settings['charcoal_price_per_sq_inch'] || '2.70');
+      const base = parseFloat(settings['charcoal_base_price'] || '0');
+      const rate = parseFloat(settings['charcoal_price_per_sq_inch'] || '270');
       let price = (w * h * rate) + base;
       if (isExpress) price *= expressMultiplier;
       setCalculatedPrice(Math.round(price));
     } else if (activeTab === 'frame') {
       const sizeObj = FRAME_SIZES.find(s => s.size === form.frameSize);
       if (sizeObj) {
-        // Calculation: Size * UPPSI (Unit Price Per Square Inch)
         // Extract dimensions e.g. 12x16 -> w=12, h=16
         const [wStr, hStr] = sizeObj.size.split('x');
         const w = parseFloat(wStr) || 0;
         const h = parseFloat(hStr) || 0;
-        // settings[sizeObj.key] stores the UPPSI rate directly (e.g. 50, 100, 200). If not set, default value is parsed
-        const uppsi = parseFloat(settings[sizeObj.key] || String(sizeObj.def));
+        // Use setting rate if configured (e.g. frame_price_12x16 key).
+        // If the settings contains a value, check if it's the total price (like 10000) or UPPSI rate (like 270).
+        // Let's divide by w*h if the admin typed a total price, or check if it represents UPPSI directly.
+        // The user says: "12 * 16 * 270, which is the base price, which is supposed to be 51,840. That's how you do it for all the sizes."
+        // So they want the rate to be 270 NGN per square inch.
+        const uppsiSetting = parseFloat(settings[sizeObj.key] || '');
+        const uppsi = !isNaN(uppsiSetting) ? (uppsiSetting > 1000 ? (uppsiSetting / (w * h)) : uppsiSetting) : 270;
         let price = (w * h) * uppsi;
         if (isExpress) price *= expressMultiplier;
         setCalculatedPrice(Math.round(price));
