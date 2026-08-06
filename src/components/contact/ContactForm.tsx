@@ -50,6 +50,15 @@ export function ContactForm() {
     // Delivery Details
     deliveryState: 'Rivers',
     deliveryAddress: '',
+    deliveryTimeline: 'standard', // standard (2+ weeks), express (under 2 weeks)
+    deliveryDate: '',
+    // Event booking
+    eventState: 'Rivers',
+    eventLocation: '',
+    eventType: 'performance', // performance, workshop, exhibition
+    expectedGuests: '50',
+    eventDate: '',
+    eventDuration: '1', // in days or hours
     // Billing/Summary
     referralCode: '',
     couponCode: '',
@@ -97,26 +106,35 @@ export function ContactForm() {
 
   // Recalculate price dynamically when dimensions or size options change
   useEffect(() => {
+    // Check timeline premium (express = 20% extra fee, adjustable in admin settings)
+    const expressMultiplier = parseFloat(settings['express_fee_multiplier'] || '1.20');
+    const isExpress = form.deliveryTimeline === 'express';
+
     if (activeTab === 'drawing') {
       const w = parseFloat(form.width) || 0;
       const h = parseFloat(form.height) || 0;
       const base = parseFloat(settings['charcoal_base_price'] || '250');
       const rate = parseFloat(settings['charcoal_price_per_sq_inch'] || '2.70');
-      // For instance, 12 x 16 = 192 sq inches. 192 * 2.70 = 518.4 + 250 = 768.4.
-      // Wait, 12 * 16 * 2.70 = 518.4. Let's make sure it represents typical prices (e.g. rate can be updated in admin to something like 30, 40 or 50, or default is 2.70).
-      // If user meant a different calculation or if rate is correct, let's keep the formula but make sure we round it.
-      const price = base + (w * h * rate);
+      let price = base + (w * h * rate);
+      if (isExpress) price *= expressMultiplier;
       setCalculatedPrice(Math.round(price));
     } else if (activeTab === 'frame') {
       const sizeObj = FRAME_SIZES.find(s => s.size === form.frameSize);
       if (sizeObj) {
-        const rate = parseFloat(settings[sizeObj.key] || String(sizeObj.def));
-        setCalculatedPrice(Math.round(rate));
+        // Calculation: Size * UPPSI (Unit Price Per Square Inch)
+        // Extract dimensions e.g. 12x16 -> w=12, h=16
+        const [wStr, hStr] = sizeObj.size.split('x');
+        const w = parseFloat(wStr) || 0;
+        const h = parseFloat(hStr) || 0;
+        const uppsi = parseFloat(settings[sizeObj.key] || String(sizeObj.def)) / (w * h); // fallback uppsi calculated from default
+        let price = (w * h) * uppsi;
+        if (isExpress) price *= expressMultiplier;
+        setCalculatedPrice(Math.round(price));
       }
     } else {
       setCalculatedPrice(0);
     }
-  }, [form.width, form.height, form.frameSize, activeTab, settings]);
+  }, [form.width, form.height, form.frameSize, form.deliveryTimeline, activeTab, settings]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     if (e.target.name === 'drawingSize') {
@@ -157,7 +175,6 @@ export function ContactForm() {
       });
     }
 
-    try {
       const payload = {
         name: form.name,
         email: form.email,
@@ -166,7 +183,7 @@ export function ContactForm() {
         message: `
           Category: ${activeTab.toUpperCase()}
           Message: ${form.message}
-          ${activeTab === 'event' ? `State: ${form.eventState}\nLocation: ${form.eventLocation}\nEvent Type: ${form.eventType}\nExpected Guests: ${form.expectedGuests}` : `Delivery State: ${form.deliveryState}\nDelivery Address: ${form.deliveryAddress}`}
+          ${activeTab === 'event' ? `State: ${form.eventState}\nLocation: ${form.eventLocation}\nEvent Date: ${form.eventDate}\nEvent Duration: ${form.eventDuration}\nEvent Type: ${form.eventType}\nExpected Guests: ${form.expectedGuests}` : `Delivery State: ${form.deliveryState}\nDelivery Address: ${form.deliveryAddress}\nTimeline: ${form.deliveryTimeline}\nDate: ${form.deliveryDate}`}
         `
       };
 
@@ -183,79 +200,69 @@ export function ContactForm() {
     }
   };
 
-  const handlePaystackPayment = async () => {
+  const handleKorapayPayment = async () => {
     setLoading(true);
     setStatusMsg(null);
 
-    const email = form.email;
-    const amount = calculatedPrice; // Standard Paystack requires amount in Kobo (amount * 100), but we send NGN to endpoint
     const ref = 'DWAF-' + Math.floor(Math.random() * 1000000000);
+    const amount = calculatedPrice;
 
-    // Load Paystack Inline script
-    const loadScript = () => {
-      return new Promise((resolve) => {
-        const script = document.createElement("script");
-        script.src = "https://js.paystack.co/v1/inline.js";
-        script.onload = () => resolve(true);
-        script.onerror = () => resolve(false);
-        document.body.appendChild(script);
-      });
-    };
+    try {
+      const orderDescription = `
+        Category: ${activeTab.toUpperCase()}
+        Dimensions / Details: ${activeTab === 'frame' ? form.frameSize : `${form.width}x${form.height} inches (${form.artType})`}
+        Notes: ${form.message}
+        Gift Type: ${form.giftType}
+        Delivery State: ${form.deliveryState}
+        Delivery Address: ${form.deliveryAddress}
+        Timeline: ${form.deliveryTimeline}
+        Preferred Date: ${form.deliveryDate}
+      `;
 
-    const scriptLoaded = await loadScript();
-    if (!scriptLoaded) {
-      setStatusMsg({ type: 'error', text: 'Could not load Paystack library.' });
-      setLoading(false);
-      return;
-    }
+      // 1. Create a pending order on the backend first to get an ID & save state
+      const orderPayload = {
+        amount: amount,
+        description: orderDescription,
+        payment_method: 'korapay',
+        referral_code: form.referralCode,
+        coupon_code: form.couponCode
+      };
 
-    const handler = (window as any).PaystackPop.setup({
-      key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || 'pk_test_ddcb03f443b7beabff5e81d77a80b8577011d8c1', // Fallback test key
-      email: email,
-      amount: amount * 100, // converting to Kobo
-      ref: ref,
-      callback: async (response: any) => {
-        // Payment successful - Now register order on backend
-        try {
-          const orderDescription = `
-            Category: ${activeTab.toUpperCase()}
-            Dimensions / Details: ${activeTab === 'frame' ? form.frameSize : `${form.width}x${form.height} inches (${form.artType})`}
-            Notes: ${form.message}
-            Gift Type: ${form.giftType}
-            Delivery State: ${form.deliveryState}
-            Delivery Address: ${form.deliveryAddress}
-            Paystack Ref: ${response.reference}
-          `;
-
-          const orderPayload = {
-            amount: amount,
-            description: orderDescription,
-            payment_method: 'paystack',
-            referral_code: form.referralCode,
-            coupon_code: form.couponCode
-          };
-
-          // Save details if logged in
-          if (form.saveDetails && currentUser) {
-            await api.put('/profile', { name: form.name, phone: form.phone, address: form.deliveryAddress, city: form.deliveryState });
-          }
-
-          // Register the order
-          await api.post('/orders', orderPayload);
-          setStep('success');
-        } catch (e) {
-          setStatusMsg({ type: 'error', text: 'Payment succeeded but order logging failed. Please contact support.' });
-        } finally {
-          setLoading(false);
-        }
-      },
-      onClose: () => {
-        setStatusMsg({ type: 'error', text: 'Payment window was closed.' });
-        setLoading(false);
+      if (form.saveDetails && currentUser) {
+        await api.put('/profile', { name: form.name, phone: form.phone, address: form.deliveryAddress, city: form.deliveryState });
       }
-    });
 
-    handler.openIframe();
+      const orderRes = await api.post<any>('/orders', orderPayload);
+      if (!orderRes.data) {
+        setStatusMsg({ type: 'error', text: 'Failed to create order request. Please try again.' });
+        setLoading(false);
+        return;
+      }
+
+      // 2. Initialize Korapay payment charge redirect link
+      const payPayload = {
+        amount: amount,
+        reference: ref,
+        customer_email: form.email,
+        customer_name: form.name,
+        metadata: {
+          order_id: orderRes.data.order?.id,
+          category: activeTab
+        }
+      };
+
+      const payRes = await api.post<any>('/payments/initialize', payPayload);
+      if (payRes.data?.success && payRes.data?.data?.authorization_url) {
+        // Redirect to Korapay secure checkout
+        window.location.href = payRes.data.data.authorization_url;
+      } else {
+        setStatusMsg({ type: 'error', text: payRes.error || 'Failed to initialize payment gateway.' });
+      }
+    } catch (e) {
+      setStatusMsg({ type: 'error', text: 'An unexpected connection error occurred.' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const labelClass = "font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/80";
@@ -369,9 +376,9 @@ export function ContactForm() {
           <Button variant="secondary" onClick={() => setStep('form')} disabled={loading}>
             Back to Details
           </Button>
-          <Button variant="primary" className="flex-1" onClick={handlePaystackPayment} disabled={loading}>
+          <Button variant="primary" className="flex-1" onClick={handleKorapayPayment} disabled={loading}>
             {loading ? <Loader2 className="animate-spin inline-block mr-2" size={14} /> : <CreditCard className="inline-block mr-2" size={14} />}
-            Pay Now with Paystack
+            Pay Now with Korapay
           </Button>
         </div>
       </motion.div>
@@ -448,29 +455,52 @@ export function ContactForm() {
 
           {/* Delivery State & Address (Only for Physical orders like drawing and frame) */}
           {(activeTab === 'drawing' || activeTab === 'frame') && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-brand-border/40">
-              <div>
-                <label className={labelClass}>Delivery State (Nigeria)</label>
-                <select name="deliveryState" value={form.deliveryState} onChange={handleChange} className={selectClass}>
-                  {NIGERIAN_STATES.map(st => (
-                    <option key={st} value={st}>{st}</option>
-                  ))}
-                </select>
-                <p className="text-[10px] font-sans text-brand-gray mt-1">Delivery logistics will be calculated & discussed later.</p>
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-brand-border/40">
+                <div>
+                  <label className={labelClass}>Delivery State (Nigeria)</label>
+                  <select name="deliveryState" value={form.deliveryState} onChange={handleChange} className={selectClass}>
+                    {NIGERIAN_STATES.map(st => (
+                      <option key={st} value={st}>{st}</option>
+                    ))}
+                  </select>
+                  <p className="text-[10px] font-sans text-brand-gray mt-1">Delivery logistics will be calculated & discussed later.</p>
+                </div>
+                <div>
+                  <label className={labelClass}>Delivery Address / Location</label>
+                  <input
+                    type="text"
+                    name="deliveryAddress"
+                    required
+                    value={form.deliveryAddress}
+                    onChange={handleChange}
+                    placeholder="e.g. 14 Airport Road, Port Harcourt"
+                    className={inputClass}
+                  />
+                </div>
               </div>
-              <div>
-                <label className={labelClass}>Delivery Address / Location</label>
-                <input
-                  type="text"
-                  name="deliveryAddress"
-                  required
-                  value={form.deliveryAddress}
-                  onChange={handleChange}
-                  placeholder="e.g. 14 Airport Road, Port Harcourt"
-                  className={inputClass}
-                />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                <div>
+                  <label className={labelClass}>Delivery Timeline</label>
+                  <select name="deliveryTimeline" value={form.deliveryTimeline} onChange={handleChange} className={selectClass}>
+                    <option value="standard">Standard Delivery (2+ Weeks)</option>
+                    <option value="express">Express Delivery (Under 2 Weeks - 20% extra fee)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className={labelClass}>Preferred Delivery Date</label>
+                  <input
+                    type="date"
+                    name="deliveryDate"
+                    required
+                    value={form.deliveryDate}
+                    onChange={handleChange}
+                    className={inputClass}
+                  />
+                </div>
               </div>
-            </div>
+            </>
           )}
 
           {currentUser && (
@@ -728,6 +758,32 @@ export function ContactForm() {
                   value={form.expectedGuests}
                   onChange={handleChange}
                   placeholder="e.g. 150"
+                  className={inputClass}
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className={labelClass}>Event Date</label>
+                <input
+                  type="date"
+                  name="eventDate"
+                  required
+                  value={form.eventDate}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Event Duration (Hours/Days)</label>
+                <input
+                  type="text"
+                  name="eventDuration"
+                  required
+                  value={form.eventDuration}
+                  onChange={handleChange}
+                  placeholder="e.g. 5 hours, 3 days"
                   className={inputClass}
                 />
               </div>

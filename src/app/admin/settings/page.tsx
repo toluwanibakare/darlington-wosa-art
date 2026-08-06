@@ -205,6 +205,20 @@ export default function AdminSettingsPage() {
                   />
                   <p className="text-[11px] font-sans text-brand-gray mt-1">Cost calculated: width * height * rate.</p>
                 </div>
+                <div>
+                  <label className="font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-2">
+                    Express Order Fee Multiplier (e.g. 1.20 = 20% extra fee)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={settings['express_fee_multiplier'] || '1.20'}
+                    onChange={(e) => updateField('express_fee_multiplier', e.target.value)}
+                    className="w-full bg-transparent border border-brand-border rounded-[6px] px-4 py-3 text-sm text-brand-black focus:outline-none focus:border-brand-gold transition-colors font-sans"
+                    placeholder="e.g. 1.20"
+                  />
+                  <p className="text-[11px] font-sans text-brand-gray mt-1">Multiplier applied when delivery timeline is under 2 weeks.</p>
+                </div>
               </div>
             </div>
 
