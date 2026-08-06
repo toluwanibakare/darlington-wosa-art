@@ -270,6 +270,9 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
       const orderDescription = `
         Category: ${activeTab.toUpperCase()}
         Dimensions / Details: ${activeTab === 'frame' ? form.frameSize : `${form.width}x${form.height} inches (${form.artType})`}
+        Customer Name: ${form.name}
+        Customer Email: ${form.email}
+        Customer Phone: ${form.phone}
         Notes: ${form.message}
         Gift Type: ${form.giftType}
         Delivery State: ${form.deliveryState}

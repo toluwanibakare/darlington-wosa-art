@@ -126,10 +126,15 @@ class PaymentController extends Controller
                 if ($order->user) {
                     $email = $order->user->email;
                 } else {
-                    // Try parsing email from order description (for Guest checkouts)
+                    // 1. Try parsing email from Korapay webhook customer data
                     $customerEmail = $data['customer']['email'] ?? null;
                     if ($customerEmail) {
                         $email = $customerEmail;
+                    } else {
+                        // 2. Fallback: Parse guest email address directly from order description using regex lookup
+                        if (preg_match('/Customer Email:\s*([^\s\n\r]+)/i', $order->description, $matches)) {
+                            $email = trim($matches[1]);
+                        }
                     }
                 }
 
