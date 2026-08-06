@@ -236,49 +236,7 @@ export default function AdminSettingsPage() {
               </div>
             </div>
 
-            {/* Frame Size Pricing Config Table */}
-            <div className="border border-brand-border rounded-[8px] overflow-hidden">
-              <div className="px-6 py-4 bg-brand-surface border-b border-brand-border">
-                <h2 className="font-display text-base text-brand-black">Frame Size & Pricing Table</h2>
-                <p className="font-sans text-xs text-brand-gray mt-1">Manage sizes and their corresponding pricing for the frame custom ordering form</p>
-              </div>
-              <div className="p-6">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left font-sans text-xs">
-                    <thead>
-                      <tr className="border-b border-brand-border">
-                        <th className="pb-3 font-sans tracking-[0.1em] uppercase text-brand-gray/70">Dimension (inches)</th>
-                        <th className="pb-3 font-sans tracking-[0.1em] uppercase text-brand-gray/70">Price (NGN)</th>
-                        <th className="pb-3 text-right"></th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-brand-border/40">
-                      {[
-                        { size: '8x10', key: 'frame_price_8x10', def: '5000' },
-                        { size: '10x12', key: 'frame_price_10x12', def: '7500' },
-                        { size: '12x16', key: 'frame_price_12x16', def: '10000' },
-                        { size: '16x20', key: 'frame_price_16x20', def: '15000' },
-                        { size: '20x24', key: 'frame_price_20x24', def: '22000' },
-                        { size: '24x30', key: 'frame_price_24x30', def: '30000' },
-                        { size: '30x40', key: 'frame_price_30x40', def: '45000' },
-                      ].map((fItem) => (
-                        <tr key={fItem.size}>
-                          <td className="py-3 font-medium text-brand-black">{fItem.size} inches</td>
-                          <td className="py-2">
-                            <input
-                              type="number"
-                              value={settings[fItem.key] || fItem.def}
-                              onChange={(e) => updateField(fItem.key, e.target.value)}
-                              className="w-32 bg-transparent border border-brand-border/60 rounded px-2 py-1 focus:outline-none focus:border-brand-gold text-brand-black"
-                            />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+
 
             {/* Community */}
             <div className="border border-brand-border rounded-[8px] overflow-hidden">
