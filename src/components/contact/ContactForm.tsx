@@ -65,6 +65,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
 
   const [loading, setLoading] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [dateError, setDateError] = useState<string | null>(null);
   const [localStep, setLocalStep] = useState<'form' | 'checkout' | 'success'>('form');
   const activeStep = step || localStep;
   const setStep = (val: 'form' | 'checkout' | 'success') => {
@@ -186,12 +187,17 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
   }, [form.width, form.height, form.frameSize, form.deliveryTimeline, activeTab, settings]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    if (e.target.name === 'drawingSize') {
-      const [w, h] = e.target.value.split('x');
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+    // Clear inline date error when user adjusts the date or timeline
+    if (name === 'deliveryDate' || name === 'deliveryTimeline') {
+      setDateError(null);
+    }
+    if (name === 'drawingSize') {
+      const [w, h] = value.split('x');
       setForm(prev => ({ ...prev, width: w, height: h }));
       return;
     }
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -216,17 +222,12 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
         if (diffDays < 0) {
-          setStatusMsg({ type: 'error', text: 'Preferred delivery date cannot be in the past. Please select a valid future date.' });
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setDateError('Delivery date cannot be in the past. Please select a future date.');
           return;
         }
 
         if (diffDays < 14 && form.deliveryTimeline === 'standard') {
-          setStatusMsg({ 
-            type: 'error', 
-            text: `The selected date (${form.deliveryDate}) is under 2 weeks from today. Please switch the Delivery Timeline to 'Express Delivery' to select this date, or choose a later date.` 
-          });
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setDateError(`Date is under 2 weeks away. Switch to 'Express Delivery' or pick a later date.`);
           return;
         }
       }
@@ -642,8 +643,11 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
                     required
                     value={form.deliveryDate}
                     onChange={handleChange}
-                    className={inputClass}
+                    className={`${inputClass} ${dateError ? 'border-red-400 focus:border-red-400' : ''}`}
                   />
+                  {dateError && (
+                    <p className="mt-1.5 text-[11px] text-red-500 font-sans leading-snug">{dateError}</p>
+                  )}
                 </div>
               </div>
             </>
