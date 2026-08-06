@@ -46,7 +46,7 @@ export function Header() {
     { label: 'Services', href: '/services' },
     { label: 'Classes', href: '/classes' },
     { label: 'Reviews', href: '/reviews' },
-    { label: 'Shop', href: '/shop' },
+    { label: 'Catalog', href: '/shop' },
   ] as const;
 
   const isActiveCheck = (href: string) => {

@@ -10,7 +10,6 @@ import type { ShopCategory, ShopItem } from '@/components/shop';
 function ShopContent() {
   const [categories, setCategories] = useState<ShopCategory[]>([]);
   const [items, setItems] = useState<ShopItem[]>([]);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,62 +23,61 @@ function ShopContent() {
     });
   }, []);
 
-  const filtered = activeCategory
-    ? items.filter((i) => i.category?.slug === activeCategory)
-    : items;
-
   return (
     <>
       <ShopHero />
 
       <section className="relative w-full px-6 pb-32 bg-brand-surface text-brand-black">
         <div className="max-w-[1400px] mx-auto">
-          {categories.length > 0 && (
-            <Reveal className="flex flex-wrap items-center gap-3 mb-12">
-              <button
-                onClick={() => setActiveCategory(null)}
-                className={`px-5 py-2 rounded-full font-sans text-[10px] tracking-[0.15em] uppercase transition-all ${
-                  !activeCategory
-                    ? 'bg-brand-gold text-brand-black'
-                    : 'border border-brand-border text-brand-gray hover:border-brand-gold hover:text-brand-gold'
-                }`}
-              >
-                All
-              </button>
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.slug)}
-                  className={`px-5 py-2 rounded-full font-sans text-[10px] tracking-[0.15em] uppercase transition-all ${
-                    activeCategory === cat.slug
-                      ? 'bg-brand-gold text-brand-black'
-                      : 'border border-brand-border text-brand-gray hover:border-brand-gold hover:text-brand-gold'
-                  }`}
-                >
-                  {cat.name}
-                </button>
-              ))}
-            </Reveal>
-          )}
-
           {loading ? (
             <div className="flex items-center justify-center py-20">
               <Loader2 size={24} className="animate-spin text-brand-gold" />
             </div>
-          ) : filtered.length === 0 ? (
-            <p className="font-sans text-brand-gray text-center py-20">No artworks available in this category.</p>
           ) : (
-            <StaggerList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filtered.map((item) => (
-                <StaggerItem key={item.id}>
-                  <ShopItemCard item={item} />
-                </StaggerItem>
-              ))}
-            </StaggerList>
+            <div className="space-y-20">
+              {categories.map((category) => {
+                const categoryItems = items.filter((item) => item.category?.id === category.id || item.category_id === category.id);
+                if (categoryItems.length === 0) return null;
+
+                return (
+                  <div key={category.id} className="space-y-6">
+                    <div className="border-b border-brand-border pb-4">
+                      <h2 className="font-display text-2xl text-brand-black uppercase tracking-wider">{category.name}</h2>
+                      {category.description && (
+                        <p className="font-sans text-xs text-brand-gray mt-1">{category.description}</p>
+                      )}
+                    </div>
+
+                    <StaggerList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                      {categoryItems.map((item) => (
+                        <StaggerItem key={item.id}>
+                          <ShopItemCard item={item} />
+                        </StaggerItem>
+                      ))}
+                    </StaggerList>
+                  </div>
+                );
+              })}
+
+              {/* Uncategorized items if any */}
+              {items.filter(item => !item.category && !item.category_id).length > 0 && (
+                <div className="space-y-6">
+                  <div className="border-b border-brand-border pb-4">
+                    <h2 className="font-display text-2xl text-brand-black uppercase tracking-wider">Other Works & Frames</h2>
+                  </div>
+                  <StaggerList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {items.filter(item => !item.category && !item.category_id).map((item) => (
+                      <StaggerItem key={item.id}>
+                        <ShopItemCard item={item} />
+                      </StaggerItem>
+                    ))}
+                  </StaggerList>
+                </div>
+              )}
+            </div>
           )}
         </div>
       </section>
-
     </>
   );
 }

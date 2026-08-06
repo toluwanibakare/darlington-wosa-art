@@ -59,6 +59,9 @@ Route::post('/contact', [ContactController::class, 'store']);
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
 Route::post('/newsletter/unsubscribe', [NewsletterController::class, 'unsubscribe']);
+Route::get('/settings', function () {
+    return response()->json(\App\Models\Setting::all()->pluck('value', 'key'));
+});
 
 Route::get('/testimonials', [TestimonialController::class, 'index']);
 Route::get('/testimonials/stats', [TestimonialController::class, 'stats']);
