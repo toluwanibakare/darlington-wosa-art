@@ -286,7 +286,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
 
   const labelClass = "font-sans text-[10px] tracking-[0.15em] uppercase text-brand-gray/80";
   const inputClass = "w-full bg-transparent border-b border-brand-border pb-2.5 pt-1 text-sm text-brand-black placeholder:text-brand-gray/30 focus:outline-none focus:border-brand-gold transition-colors font-sans";
-  const selectClass = "w-full bg-transparent border-b border-brand-border pb-2.5 pt-1 text-sm text-brand-black focus:outline-none focus:border-brand-gold transition-colors font-sans cursor-pointer";
+  const selectClass = "w-full bg-transparent border-b border-brand-border pb-2.5 pt-1 text-sm text-brand-black focus:outline-none focus:border-brand-gold transition-colors font-sans cursor-pointer [&>option]:bg-brand-surface [&>option]:text-brand-black";
 
   if (activeStep === 'success') {
     return (
