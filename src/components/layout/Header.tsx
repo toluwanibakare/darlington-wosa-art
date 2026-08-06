@@ -86,14 +86,14 @@ export function Header() {
         }`}
       >
         {/* Desktop Logo */}
-        <div className={`flex-1 flex justify-start ${mobileMenuOpen ? 'max-md:invisible max-md:pointer-events-none' : ''}`}>
+        <div className={`flex-1 flex justify-start ${mobileMenuOpen ? 'max-lg:invisible max-lg:pointer-events-none' : ''}`}>
           <Link href="/" className="transition-transform duration-300 hover:scale-105 active:scale-95 flex items-center shrink-0">
-            <Logo height={60} variant={isNavbarDark ? 'dark' : 'light'} className="hidden md:block origin-left transition-transform duration-300" />
-            <Logo height={48} variant={isNavbarDark ? 'dark' : 'light'} className="md:hidden origin-left transition-transform duration-300 ml-4" />
+            <Logo height={60} variant={isNavbarDark ? 'dark' : 'light'} className="hidden lg:block origin-left transition-transform duration-300" />
+            <Logo height={48} variant={isNavbarDark ? 'dark' : 'light'} className="lg:hidden origin-left transition-transform duration-300 ml-4" />
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center justify-center gap-6 lg:gap-10 flex-1 mt-0.5">
+        <nav className="hidden lg:flex items-center justify-center gap-6 lg:gap-10 flex-1 mt-0.5">
           {!isAuthPage && navItems.map((item) => {
             const isActive = isActiveCheck(item.href);
             return (
@@ -122,12 +122,12 @@ export function Header() {
         </nav>
 
         {/* Mobile Active Page */}
-        <span className={`md:hidden flex-1 text-left pl-2 font-sans text-sm sm:text-base tracking-[0.15em] uppercase text-brand-gold font-bold ${mobileMenuOpen ? 'invisible pointer-events-none' : ''}`}>
+        <span className={`lg:hidden flex-1 text-left pl-2 font-sans text-sm sm:text-base tracking-[0.15em] uppercase text-brand-gold font-bold ${mobileMenuOpen ? 'invisible pointer-events-none' : ''}`}>
           {isAuthPage ? (pathname === '/login' ? 'Sign In' : 'Sign Up') : activePage}
         </span>
 
         {/* Desktop Actions */}
-        <div className="hidden md:flex items-center justify-end whitespace-nowrap transition-all duration-700 flex-1 gap-3">
+        <div className="hidden lg:flex items-center justify-end whitespace-nowrap transition-all duration-700 flex-1 gap-3">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -248,7 +248,7 @@ export function Header() {
         {/* Mobile Hamburger */}
         <button
           onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(!mobileMenuOpen); }}
-          className={`md:hidden p-1 cursor-pointer transition-colors relative z-[200] ${
+          className={`lg:hidden p-1 cursor-pointer transition-colors relative z-[200] ${
             isNavbarDark ? 'text-white hover:text-brand-gold' : 'text-[#111111] hover:text-brand-gold'
           }`}
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
@@ -279,14 +279,14 @@ export function Header() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
               onClick={(e) => { e.stopPropagation(); setMobileMenuOpen(false); }}
-              className="md:hidden fixed inset-0 bg-black/40 z-[150]"
+              className="lg:hidden fixed inset-0 bg-black/40 z-[150]"
             />
             <motion.nav
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-               className="md:hidden fixed top-0 right-0 bottom-0 w-[75vw] sm:w-[280px] z-[150] bg-brand-surface border-l border-brand-border px-6 sm:px-8 overflow-y-auto"
+               className="lg:hidden fixed top-0 right-0 bottom-0 w-[75vw] sm:w-[280px] z-[150] bg-brand-surface border-l border-brand-border px-6 sm:px-8 overflow-y-auto"
                onClick={(e) => e.stopPropagation()}>
                <div className="flex flex-col gap-1 pt-20">
                 {[...navItems, { label: 'Contact', href: '/contact' }].map((item) => {
