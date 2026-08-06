@@ -271,6 +271,13 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         Preferred Date: ${form.deliveryDate}
       `;
 
+      // Client-side validation checks
+      if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
+        setStatusMsg({ type: 'error', text: 'Please fill in your name, email address, and phone number before proceeding.' });
+        setLoading(false);
+        return;
+      }
+
       // 1. Create a pending order on the backend first to get an ID & save state
       const orderPayload = {
         amount: amount,
@@ -281,7 +288,15 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
       };
 
       if (form.saveDetails && currentUser) {
-        await api.put('/profile', { name: form.name, phone: form.phone, address: form.deliveryAddress, city: form.deliveryState });
+        // Clean parameters to ensure they pass Laravel's validation rules
+        const profilePayload: any = {
+          name: form.name.trim(),
+          phone: form.phone.trim().substring(0, 20)
+        };
+        if (form.deliveryAddress.trim()) profilePayload.address = form.deliveryAddress.trim();
+        if (form.deliveryState.trim()) profilePayload.city = form.deliveryState.trim();
+
+        await api.put('/profile', profilePayload);
       }
 
       const orderRes = await api.post<any>('/orders', orderPayload);
@@ -295,8 +310,8 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
       const payPayload = {
         amount: amount,
         reference: ref,
-        customer_email: form.email,
-        customer_name: form.name,
+        customer_email: form.email.trim(),
+        customer_name: form.name.trim(),
         metadata: {
           order_id: orderRes.data.order?.id,
           category: activeTab
