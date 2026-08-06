@@ -122,7 +122,8 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     if (activeTab === 'drawing') {
       const w = parseFloat(form.width) || 0;
       const h = parseFloat(form.height) || 0;
-      const rate = parseFloat(settings['charcoal_price_per_sq_inch'] || '270');
+      let rate = parseFloat(settings['charcoal_price_per_sq_inch'] || '270');
+      if (rate < 10) rate *= 100; // normalize old 2.70 database value to 270
       let price = w * h * rate;
       if (isExpress) price *= expressMultiplier;
       setCalculatedPrice(Math.round(price));
@@ -138,7 +139,10 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         // Let's divide by w*h if the admin typed a total price, or check if it represents UPPSI directly.
         // The user says: "12 * 16 * 270, which is the base price, which is supposed to be 51,840. That's how you do it for all the sizes."
         // So they want the rate to be 270 NGN per square inch.
-        const uppsiSetting = parseFloat(settings[sizeObj.key] || '');
+        let uppsiSetting = parseFloat(settings[sizeObj.key] || '');
+        if (!isNaN(uppsiSetting) && uppsiSetting < 10) {
+          uppsiSetting *= 100; // normalize decimal to full number (e.g. 2.70 to 270)
+        }
         const uppsi = !isNaN(uppsiSetting) ? (uppsiSetting > 1000 ? (uppsiSetting / (w * h)) : uppsiSetting) : 270;
         let price = (w * h) * uppsi;
         if (isExpress) price *= expressMultiplier;
