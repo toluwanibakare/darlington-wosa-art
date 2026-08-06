@@ -67,7 +67,7 @@ class PaymentController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'authorization_url' => $data['data']['authorization_url'] ?? null,
+                'authorization_url' => $data['data']['checkout_url'] ?? $data['data']['authorization_url'] ?? null,
                 'reference' => $request->reference,
                 'access_code' => $data['data']['access_code'] ?? null,
             ],
