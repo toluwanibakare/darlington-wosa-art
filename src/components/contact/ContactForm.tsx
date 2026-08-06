@@ -122,9 +122,8 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     if (activeTab === 'drawing') {
       const w = parseFloat(form.width) || 0;
       const h = parseFloat(form.height) || 0;
-      const base = parseFloat(settings['charcoal_base_price'] || '0');
       const rate = parseFloat(settings['charcoal_price_per_sq_inch'] || '270');
-      let price = (w * h * rate) + base;
+      let price = w * h * rate;
       if (isExpress) price *= expressMultiplier;
       setCalculatedPrice(Math.round(price));
     } else if (activeTab === 'frame') {
