@@ -71,6 +71,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     setLocalStep(val);
     if (onStepChange) onStepChange(val);
   };
+  const [guestCheckoutChoice, setGuestCheckoutChoice] = useState<boolean | null>(null);
   const [calculatedPrice, setCalculatedPrice] = useState(0);
 
   // Fetch current user and config settings
@@ -420,7 +421,29 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         ))}
       </div>
 
-      <form onSubmit={handleProceedToCheckout} className="space-y-8">
+      {!currentUser && !guestCheckoutChoice && activeTab !== 'inquiry' ? (
+        <div className="border border-brand-border rounded-[8px] bg-brand-white/40 p-8 text-center space-y-6 animate-fade-in font-sans">
+          <h4 className="font-display text-lg text-brand-black">Complete Your Request</h4>
+          <p className="text-sm text-brand-gray max-w-md mx-auto">
+            Log in to automatically pre-fill your order details and track updates in your dashboard, or continue directly as a guest.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
+            <a
+              href="/signup"
+              className="px-6 py-3 border border-brand-gold text-brand-black hover:bg-brand-gold hover:text-brand-black transition-colors rounded-[8px] text-xs uppercase tracking-wider font-semibold"
+            >
+              Log In or Sign Up
+            </a>
+            <button
+              onClick={() => setGuestCheckoutChoice(true)}
+              className="px-6 py-3 bg-brand-black text-brand-white hover:bg-brand-black/90 transition-colors rounded-[8px] text-xs uppercase tracking-wider font-semibold"
+            >
+              Continue as Guest
+            </button>
+          </div>
+        </div>
+      ) : (
+        <form onSubmit={handleProceedToCheckout} className="space-y-8">
         
         {/* Step 1: Customer Contact Details */}
         <div className="border border-brand-border rounded-[8px] bg-brand-white/40 p-6 space-y-6">
@@ -830,6 +853,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         </div>
 
       </form>
+      )}
     </div>
   );
 }
