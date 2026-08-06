@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import React from 'react';
 import Link from 'next/link';
 import { ForgotPasswordForm } from '@/components/auth/ForgotPasswordForm';
-import { Logo } from '@/components/ui';
 
 export const metadata: Metadata = {
   title: "Reset Password | Darlington Wosa Art & Frames Ltd",
@@ -32,9 +31,6 @@ export default function ForgotPasswordPage() {
       <div className="relative z-10 flex-1 flex items-center justify-center px-6 py-24">
         <div className="w-full max-w-[480px]">
           <div className="mb-12 text-center">
-            <Link href="/" className="inline-block mb-8">
-              <Logo height={48} />
-            </Link>
             <h1 className="font-display text-3xl md:text-4xl text-brand-black mb-3">
               Reset Password
             </h1>
