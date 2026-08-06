@@ -76,8 +76,17 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
 
   // Fetch current user and config settings
   useEffect(() => {
-    // Get search param for active tab
+    // Get search param for active tab or checkout success landing
     const params = new URLSearchParams(window.location.search);
+    const stepParam = params.get('step');
+    if (stepParam === 'success') {
+      setStep('success');
+      // Clean up localStorage pending values on successful checkout
+      try {
+        localStorage.removeItem('dwaf_pending_checkout_items');
+      } catch (err) {}
+    }
+
     const tabParam = params.get('tab');
     if (tabParam === 'drawing' || tabParam === 'frame' || tabParam === 'event' || tabParam === 'inquiry') {
       setActiveTab(tabParam);
@@ -322,6 +331,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         reference: orderRes.data.order?.order_number || ref,
         customer_email: form.email.trim(),
         customer_name: form.name.trim(),
+        redirect_url: window.location.origin + '/contact?step=success',
         metadata: {
           order_id: orderRes.data.order?.id,
           category: activeTab

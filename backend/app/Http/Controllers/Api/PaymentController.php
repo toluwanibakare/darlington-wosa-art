@@ -41,6 +41,7 @@ class PaymentController extends Controller
             'reference' => 'required|string',
             'customer_email' => 'required|email',
             'customer_name' => 'nullable|string',
+            'redirect_url' => 'nullable|string|url',
             'metadata' => 'nullable|array',
         ]);
 
@@ -55,6 +56,10 @@ class PaymentController extends Controller
             'metadata' => $request->metadata ?? [],
             'notification_url' => url('/api/payments/webhook'),
         ];
+
+        if ($request->redirect_url) {
+            $payload['redirect_url'] = $request->redirect_url;
+        }
 
         $response = Http::withHeaders($this->korapayHeaders())
             ->post('https://api.korapay.com/merchant/api/v1/charges/initialize', $payload);
