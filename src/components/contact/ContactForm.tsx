@@ -24,7 +24,7 @@ const FRAME_SIZES = [
   { size: '30x40', key: 'frame_price_30x40', def: 45000 },
 ];
 
-export function ContactForm() {
+export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout' | 'success', onStepChange?: (step: 'form' | 'checkout' | 'success') => void }) {
   const [activeTab, setActiveTab] = useState<'drawing' | 'frame' | 'event' | 'inquiry'>('inquiry');
   const [settings, setSettings] = useState<Record<string, string>>({});
   const [currentUser, setCurrentUser] = useState<any>(null);
@@ -65,7 +65,12 @@ export function ContactForm() {
 
   const [loading, setLoading] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error', text: string } | null>(null);
-  const [step, setStep] = useState<'form' | 'checkout' | 'success'>('form');
+  const [localStep, setLocalStep] = useState<'form' | 'checkout' | 'success'>('form');
+  const activeStep = step || localStep;
+  const setStep = (val: 'form' | 'checkout' | 'success') => {
+    setLocalStep(val);
+    if (onStepChange) onStepChange(val);
+  };
   const [calculatedPrice, setCalculatedPrice] = useState(0);
 
   // Fetch current user and config settings
@@ -160,6 +165,7 @@ export function ContactForm() {
   const handleProceedToCheckout = (e: React.FormEvent) => {
     e.preventDefault();
     if (activeTab === 'drawing' || activeTab === 'frame') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setStep('checkout');
     } else {
       // Direct submission for Events and General inquiries (no payment needed upfront)
@@ -274,7 +280,7 @@ export function ContactForm() {
   const inputClass = "w-full bg-transparent border-b border-brand-border pb-2.5 pt-1 text-sm text-brand-black placeholder:text-brand-gray/30 focus:outline-none focus:border-brand-gold transition-colors font-sans";
   const selectClass = "w-full bg-transparent border-b border-brand-border pb-2.5 pt-1 text-sm text-brand-black focus:outline-none focus:border-brand-gold transition-colors font-sans cursor-pointer";
 
-  if (step === 'success') {
+  if (activeStep === 'success') {
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
@@ -297,7 +303,7 @@ export function ContactForm() {
     );
   }
 
-  if (step === 'checkout') {
+  if (activeStep === 'checkout') {
     return (
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -378,7 +384,7 @@ export function ContactForm() {
         )}
 
         <div className="flex gap-4 pt-4">
-          <Button variant="secondary" onClick={() => setStep('form')} disabled={loading}>
+          <Button variant="secondary" onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setStep('form'); }} disabled={loading}>
             Back to Details
           </Button>
           <Button variant="primary" className="flex-1" onClick={handleKorapayPayment} disabled={loading}>

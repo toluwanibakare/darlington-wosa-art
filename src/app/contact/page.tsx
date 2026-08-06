@@ -1,45 +1,33 @@
-import type { Metadata } from "next";
-import React, { Suspense } from 'react';
+"use client";
+
+import React, { useState, Suspense } from 'react';
 import { ContactHero } from '@/components/contact/ContactHero';
 import { ContactForm } from '@/components/contact/ContactForm';
 import { ContactFAQ } from '@/components/contact/ContactFAQ';
-export const metadata: Metadata = {
-  title: "Contact | Darlington Wosa Art & Frames Ltd",
-  description: "Get in touch with Darlington Wosa Art & Frames Ltd. Book a commission, inquire about framing services, or visit our studio in Rivers State, Nigeria.",
-  openGraph: {
-    title: "Contact | Darlington Wosa Art & Frames Ltd",
-    description: "Get in touch with Darlington Wosa Art & Frames Ltd. Book a commission, inquire about framing services, or visit our studio in Rivers State, Nigeria.",
-    url: "https://darlingtonwosaart.com/contact",
-    siteName: "Darlington Wosa Art & Frames Ltd",
-    locale: "en_NG",
-    type: "website",
-    images: [{ url: "/logo_white.png", width: 512, height: 512, alt: "Darlington Wosa Art & Frames Ltd" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Contact | Darlington Wosa Art & Frames Ltd",
-    description: "Book a commission, inquire about framing, or visit our studio in Rivers State, Nigeria.",
-    images: ["/logo_white.png"],
-  },
-};
 
 export default function ContactPage() {
+  const [step, setStep] = useState<'form' | 'checkout' | 'success'>('form');
+
+  const isCheckout = step === 'checkout';
+
   return (
     <div className="flex flex-col w-full min-h-screen bg-brand-surface text-brand-black">
       <ContactHero />
       <section className="relative w-full bg-brand-surface py-24 md:py-32 px-6 overflow-hidden">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-5 gap-16 lg:gap-20">
-          <div className="lg:col-span-3">
+        <div className={`max-w-[1200px] mx-auto ${isCheckout ? 'max-w-[800px]' : 'grid grid-cols-1 lg:grid-cols-5 gap-16 lg:gap-20'}`}>
+          <div className={isCheckout ? 'w-full' : 'lg:col-span-3'}>
             <Suspense fallback={<div className="h-[400px] animate-pulse bg-brand-border/30 rounded-[8px]" />}>
-              <ContactForm />
+              <ContactForm step={step} onStepChange={setStep} />
             </Suspense>
           </div>
-          <div className="lg:col-span-2">
-            <ContactDetails />
-          </div>
+          {!isCheckout && (
+            <div className="lg:col-span-2">
+              <ContactDetails />
+            </div>
+          )}
         </div>
       </section>
-      <ContactFAQ />
+      {!isCheckout && <ContactFAQ />}
     </div>
   );
 }
