@@ -90,10 +90,17 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
 
     // Get user if logged in
     const token = localStorage.getItem('auth_token');
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      try {
+        setCurrentUser(JSON.parse(savedUser));
+      } catch (e) {}
+    }
     if (token) {
       api.get<any>('/user').then(res => {
-        if (res.data) {
-          setCurrentUser(res.data);
+        if (res.data && res.data.user) {
+          setCurrentUser(res.data.user);
+          localStorage.setItem('user', JSON.stringify(res.data.user));
         }
       });
     }
