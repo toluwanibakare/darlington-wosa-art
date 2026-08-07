@@ -42,6 +42,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     giftType: 'none', // none, birthday, anniversary, corporate, memorial
     // Frame Size
     frameSize: '12x16',
+    frameType: 'Frameless', // Frameless, Acrylic Frameless, Golden Edge Frameless, Normal Wooden or Fiber Frame, Floating Frame
     // Delivery Details
     deliveryState: 'Rivers',
     deliveryAddress: '',
@@ -242,7 +243,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         const pendingItem = {
           id: 'PENDING-' + Date.now(),
           category: activeTab,
-          details: activeTab === 'frame' ? form.frameSize : `${form.width}x${form.height} inches (${form.artType})`,
+          details: activeTab === 'frame' ? `${form.frameSize} (${form.frameType})` : `${form.width}x${form.height} inches (${form.artType})`,
           price: calculatedPrice,
           formValues: { ...form },
           timestamp: new Date().toISOString()
@@ -310,7 +311,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     try {
       const orderDescription = `
         Category: ${activeTab.toUpperCase()}
-        Dimensions / Details: ${activeTab === 'frame' ? form.frameSize : `${form.width}x${form.height} inches (${form.artType})`}
+        Dimensions / Details: ${activeTab === 'frame' ? `${form.frameSize} (${form.frameType})` : `${form.width}x${form.height} inches (${form.artType})`}
         Customer Name: ${form.name}
         Customer Email: ${form.email}
         Customer Phone: ${form.phone}
@@ -813,18 +814,31 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
               </div>
             </div>
 
-            <div>
-              <label className={labelClass}>Select Frame Size & View Price</label>
-              <select name="frameSize" value={form.frameSize} onChange={handleChange} className={selectClass}>
-                {FRAME_SIZES.map(sz => {
-                  const val = parseFloat(settings[sz.key] || String(sz.def));
-                  return (
-                    <option key={sz.size} value={sz.size}>
-                      {sz.size} inches (₦{val.toLocaleString()})
-                    </option>
-                  );
-                })}
-              </select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className={labelClass}>Select Frame Size & View Price</label>
+                <select name="frameSize" value={form.frameSize} onChange={handleChange} className={selectClass}>
+                  {FRAME_SIZES.map(sz => {
+                    const val = parseFloat(settings[sz.key] || String(sz.def));
+                    return (
+                      <option key={sz.size} value={sz.size}>
+                        {sz.size} inches (₦{val.toLocaleString()})
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+
+              <div>
+                <label className={labelClass}>Frame Type</label>
+                <select name="frameType" value={form.frameType} onChange={handleChange} className={selectClass}>
+                  <option value="Frameless">Frameless</option>
+                  <option value="Acrylic Frameless">Acrylic Frameless</option>
+                  <option value="Golden Edge Frameless">Golden Edge Frameless</option>
+                  <option value="Normal Wooden or Fiber Frame">Normal Wooden or Fiber Frame</option>
+                  <option value="Floating Frame">Floating Frame</option>
+                </select>
+              </div>
             </div>
 
             {/* Reference Image upload */}
