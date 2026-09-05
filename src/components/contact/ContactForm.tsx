@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button, Reveal } from '@/components/ui';
 import { Send, Check, Image as ImageIcon, CreditCard, ChevronRight, Loader2, Sparkles } from 'lucide-react';
 import { api } from '@/lib/api';
+import { FrameScaleVisual } from './FrameScaleVisual';
+import { FrameStyleSelector } from './FrameStyleSelector';
 
 const NIGERIAN_STATES = [
   "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", 
@@ -42,7 +44,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     giftType: 'none', // none, birthday, anniversary, corporate, memorial
     // Frame Size
     frameSize: '12x16',
-    frameType: 'Frameless', // Frameless, Acrylic Frameless, Golden Edge Frameless, Normal Wooden or Fiber Frame, Floating Frame
+    frameType: 'Modern Black', // Modern Black, Natural Wood, Gold Leaf, Frameless, Floating Frame
     // Delivery Details
     deliveryState: 'Rivers',
     deliveryAddress: '',
@@ -742,14 +744,13 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
               </select>
             </div>
 
-            {/* Frame Size visual scale guide */}
+            {/* Artwork size visual scale in real room context */}
             <div>
-              <span className={labelClass}>Artwork / Frame human size scale comparison chart</span>
-              <div className="mt-2 border border-brand-border rounded-[8px] overflow-hidden bg-brand-surface/30">
-                <img
-                  src="/frame_human_scale.jpg"
-                  alt="Artwork scale reference beside a human outline"
-                  className="w-full h-auto object-cover max-h-[300px]"
+              <span className={labelClass}>See how it fits in your space</span>
+              <div className="mt-2">
+                <FrameScaleVisual
+                  width={parseFloat(form.width) || 12}
+                  height={parseFloat(form.height) || 16}
                 />
               </div>
             </div>
@@ -802,44 +803,36 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
           <div className="space-y-6 border border-brand-border rounded-[8px] p-6 bg-brand-white/40">
             <h4 className="font-display text-sm text-brand-black border-b border-brand-border pb-2">Custom Framing Layout</h4>
             
-            {/* Frame Template visual display with human scale */}
+            {/* Frame visual scale in real room context */}
             <div>
-              <span className={labelClass}>Frame Size scale comparison chart</span>
-              <div className="mt-2 border border-brand-border rounded-[8px] overflow-hidden bg-brand-surface/30">
-                <img
-                  src="/frame_human_scale.jpg"
-                  alt="Frame Size Chart Human Scale Reference"
-                  className="w-full h-auto object-cover max-h-[300px]"
+              <span className={labelClass}>See how it fits in your space</span>
+              <div className="mt-2">
+                <FrameScaleVisual
+                  width={parseFloat(form.frameSize.split('x')[0]) || 12}
+                  height={parseFloat(form.frameSize.split('x')[1]) || 16}
+                  frameStyle={form.frameType}
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className={labelClass}>Select Frame Size & View Price</label>
-                <select name="frameSize" value={form.frameSize} onChange={handleChange} className={selectClass}>
-                  {FRAME_SIZES.map(sz => {
-                    const val = parseFloat(settings[sz.key] || String(sz.def));
-                    return (
-                      <option key={sz.size} value={sz.size}>
-                        {sz.size} inches (₦{val.toLocaleString()})
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-
-              <div>
-                <label className={labelClass}>Frame Type</label>
-                <select name="frameType" value={form.frameType} onChange={handleChange} className={selectClass}>
-                  <option value="Frameless">Frameless</option>
-                  <option value="Acrylic Frameless">Acrylic Frameless</option>
-                  <option value="Golden Edge Frameless">Golden Edge Frameless</option>
-                  <option value="Normal Wooden or Fiber Frame">Normal Wooden or Fiber Frame</option>
-                  <option value="Floating Frame">Floating Frame</option>
-                </select>
-              </div>
+            <div>
+              <label className={labelClass}>Select Frame Size & View Price</label>
+              <select name="frameSize" value={form.frameSize} onChange={handleChange} className={selectClass}>
+                {FRAME_SIZES.map(sz => {
+                  const val = parseFloat(settings[sz.key] || String(sz.def));
+                  return (
+                    <option key={sz.size} value={sz.size}>
+                      {sz.size} inches (₦{val.toLocaleString()})
+                    </option>
+                  );
+                })}
+              </select>
             </div>
+
+            <FrameStyleSelector
+              value={form.frameType}
+              onChange={(v) => setForm((p) => ({ ...p, frameType: v }))}
+            />
 
             {/* Reference Image upload */}
             <div>

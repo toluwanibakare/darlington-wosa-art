@@ -132,6 +132,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Prevent horizontal scroll from decorative elements.
+   Use `clip` (not `hidden`) so it doesn't create a scroll
+   container, which would break position: sticky. */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
 /* Base text constraints */
 p {
   max-width: 65ch;
