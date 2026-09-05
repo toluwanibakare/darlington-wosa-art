@@ -16,26 +16,30 @@ interface SceneDef {
   region: { x: number; y: number; w: number; h: number };
   label: string;
   icon: typeof SOFA_ICON;
+  sceneScale: [number, number];
 }
 
 const SCENES: Record<Exclude<SceneKey, 'chart'>, SceneDef> = {
   sofa: {
-    viewBox: [110, 96],
-    region: { x: 12, y: 6, w: 86, h: 40 },
+    viewBox: [100, 100],
+    region: { x: 10, y: 4, w: 80, h: 38 },
     label: 'Above a Sofa',
     icon: SOFA_ICON,
+    sceneScale: [100 / 110, 100 / 96],
   },
   desk: {
-    viewBox: [84, 100],
-    region: { x: 10, y: 4, w: 64, h: 22 },
+    viewBox: [100, 100],
+    region: { x: 10, y: 4, w: 80, h: 38 },
     label: 'Above a Desk',
     icon: DESK_ICON,
+    sceneScale: [100 / 84, 100 / 100],
   },
   bed: {
-    viewBox: [84, 92],
-    region: { x: 10, y: 4, w: 64, h: 28 },
+    viewBox: [100, 100],
+    region: { x: 10, y: 0, w: 80, h: 38 },
     label: 'Above a Bed',
     icon: BED_ICON,
+    sceneScale: [100 / 84, 100 / 92],
   },
 };
 
@@ -112,10 +116,6 @@ export function FrameScaleVisual({ width, height, frameStyle }: FrameScaleVisual
           role="img"
           aria-label={`Frame measuring ${w} by ${h} inches shown ${def.label.toLowerCase()}`}
         >
-          {scene === 'sofa' && <SofaScene />}
-          {scene === 'desk' && <DeskScene />}
-          {scene === 'bed' && <BedScene />}
-
           {/* Hanging zone guide */}
           <rect
             x={region.x}
@@ -139,6 +139,13 @@ export function FrameScaleVisual({ width, height, frameStyle }: FrameScaleVisual
             style={style}
             uid={uid}
           />
+
+          {/* Scene drawn on top so furniture (e.g. desk monitor) overlaps the frame */}
+          <g transform={`scale(${def.sceneScale[0]}, ${def.sceneScale[1]})`}>
+            {scene === 'sofa' && <SofaScene />}
+            {scene === 'desk' && <DeskScene />}
+            {scene === 'bed' && <BedScene />}
+          </g>
 
           {/* Dimension callouts */}
           <DimLine
