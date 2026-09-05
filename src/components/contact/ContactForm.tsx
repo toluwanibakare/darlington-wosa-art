@@ -26,6 +26,19 @@ const FRAME_SIZES = [
   { size: '30x40', key: 'frame_price_30x40', def: 45000 },
 ];
 
+// Derive the delivery timeline from the preferred date: anything 2+ weeks out
+// falls under standard delivery, so the express surcharge never applies to it.
+const adjustTimelineForDate = (deliveryDate: string, currentTimeline: string) => {
+  if (!deliveryDate) return currentTimeline;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const selectedDate = new Date(deliveryDate + 'T00:00:00');
+  selectedDate.setHours(0, 0, 0, 0);
+  const diffTime = selectedDate.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays >= 14 ? 'standard' : currentTimeline;
+};
+
 export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout' | 'success', onStepChange?: (step: 'form' | 'checkout' | 'success') => void }) {
   const [activeTab, setActiveTab] = useState<'drawing' | 'frame' | 'event' | 'inquiry'>('inquiry');
   const [settings, setSettings] = useState<Record<string, string>>({});
@@ -129,7 +142,11 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
       if (existingPending.length > 0) {
         const lastOrder = existingPending[existingPending.length - 1];
         if (lastOrder.formValues) {
-          setForm(prev => ({ ...prev, ...lastOrder.formValues }));
+          setForm(prev => {
+            const merged = { ...prev, ...lastOrder.formValues };
+            merged.deliveryTimeline = adjustTimelineForDate(merged.deliveryDate, merged.deliveryTimeline);
+            return merged;
+          });
           if (lastOrder.category) {
             setActiveTab(lastOrder.category);
           }
@@ -196,6 +213,15 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+
+    // Auto-adjust the timeline when a preferred delivery date is picked:
+    // a date 2+ weeks out belongs to standard delivery, so switch off express.
+    if (name === 'deliveryDate' && value) {
+      setForm(prev => ({ ...prev, deliveryDate: value, deliveryTimeline: adjustTimelineForDate(value, prev.deliveryTimeline) }));
+      setDateError(null);
+      return;
+    }
+
     setForm(prev => ({ ...prev, [name]: value }));
     // Clear inline date error when user adjusts the date or timeline
     if (name === 'deliveryDate' || name === 'deliveryTimeline') {
