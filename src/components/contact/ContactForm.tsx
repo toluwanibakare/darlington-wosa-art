@@ -27,7 +27,7 @@ const FRAME_SIZES = [
 ];
 
 // Derive the delivery timeline from the preferred date: anything 2+ weeks out
-// falls under standard delivery, so the express surcharge never applies to it.
+// falls under standard delivery; dates under 2 weeks require express delivery.
 const adjustTimelineForDate = (deliveryDate: string, currentTimeline: string) => {
   if (!deliveryDate) return currentTimeline;
   const today = new Date();
@@ -36,7 +36,7 @@ const adjustTimelineForDate = (deliveryDate: string, currentTimeline: string) =>
   selectedDate.setHours(0, 0, 0, 0);
   const diffTime = selectedDate.getTime() - today.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return diffDays >= 14 ? 'standard' : currentTimeline;
+  return diffDays >= 14 ? 'standard' : 'express';
 };
 
 export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout' | 'success', onStepChange?: (step: 'form' | 'checkout' | 'success') => void }) {
@@ -215,11 +215,29 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     const { name, value } = e.target;
 
     // Auto-adjust the timeline when a preferred delivery date is picked:
-    // a date 2+ weeks out belongs to standard delivery, so switch off express.
+    // Dates under 2 weeks require express delivery; dates 2+ weeks out default to standard delivery.
     if (name === 'deliveryDate' && value) {
-      setForm(prev => ({ ...prev, deliveryDate: value, deliveryTimeline: adjustTimelineForDate(value, prev.deliveryTimeline) }));
+      const newTimeline = adjustTimelineForDate(value, form.deliveryTimeline);
+      setForm(prev => ({ ...prev, deliveryDate: value, deliveryTimeline: newTimeline }));
       setDateError(null);
       return;
+    }
+
+    if (name === 'deliveryTimeline') {
+      if (value === 'standard' && form.deliveryDate) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const selectedDate = new Date(form.deliveryDate + 'T00:00:00');
+        selectedDate.setHours(0, 0, 0, 0);
+        const diffTime = selectedDate.getTime() - today.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays < 14) {
+          setDateError("Standard delivery requires at least 2 weeks (14 days). Express delivery applies for dates under 2 weeks.");
+          setForm(prev => ({ ...prev, deliveryTimeline: 'express' }));
+          return;
+        }
+      }
     }
 
     setForm(prev => ({ ...prev, [name]: value }));
