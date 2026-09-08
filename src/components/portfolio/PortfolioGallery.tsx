@@ -261,27 +261,31 @@ export function PortfolioGallery() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { api } = require('@/lib/api');
+    const { api, getValidImageUrl } = require('@/lib/api');
     api.get('/portfolio')
       .then((res: any) => {
         if (res.data) {
           // Map DB response to expected structure
-          const items = res.data.map((item: any) => ({
-            id: item.id,
-            title: item.title,
-            category: item.category,
-            type: item.type || 'image',
-            src: item.src || item.image || '',
-            thumb: item.thumb || item.image || '',
-            width: item.width || 1200,
-            height: item.height || 1500,
-            description: item.description || '',
-            client: item.client || '',
-            year: item.year || '',
-            medium: item.medium || '',
-            videoEmbed: item.video_embed || '',
-            videoSrc: item.video_src || ''
-          }));
+          const items = res.data.map((item: any) => {
+            const rawSrc = item.src || item.image || '';
+            const rawThumb = item.thumb || item.image || rawSrc;
+            return {
+              id: item.id,
+              title: item.title,
+              category: item.category,
+              type: item.type || 'image',
+              src: getValidImageUrl(rawSrc, '/images/projects/IMG_5028.JPG'),
+              thumb: getValidImageUrl(rawThumb, '/images/projects/IMG_5028.JPG'),
+              width: item.width || 1200,
+              height: item.height || 1500,
+              description: item.description || '',
+              client: item.client || '',
+              year: item.year || '',
+              medium: item.medium || '',
+              videoEmbed: item.video_embed || '',
+              videoSrc: item.video_src || ''
+            };
+          });
           setPortfolioItems(items.length > 0 ? items : PORTFOLIO_DATA);
         } else {
           setPortfolioItems(PORTFOLIO_DATA);

@@ -71,3 +71,34 @@ export const api = {
   upload: <T>(endpoint: string, body: Record<string, unknown>) =>
     request<T>(endpoint, { method: 'POST', body: buildFormData(body) }),
 };
+
+export function getValidImageUrl(src: string | null | undefined, fallback: string = '/images/projects/IMG_5028.JPG'): string {
+  if (!src || typeof src !== 'string' || !src.trim()) {
+    return fallback;
+  }
+  let clean = src.trim();
+
+  if (clean.includes('placeholder.jpg')) {
+    return fallback;
+  }
+  if (clean.includes('sample_sketch1.jpg') || clean.includes('sample_sketch2.jpg')) {
+    return '/images/projects/IMG_5028.JPG';
+  }
+  if (clean.includes('sample_charcoal1.jpg') || clean.includes('sample_charcoal2.jpg')) {
+    return '/images/projects/IMG_5029.JPG';
+  }
+  if (clean.includes('sample_frame1.jpg') || clean.includes('sample_frame2.jpg')) {
+    return '/images/16_30.jpeg';
+  }
+
+  if (clean.includes('127.0.0.1:8000') || clean.includes('localhost:8000')) {
+    clean = clean.replace(/^https?:\/\/[^\/]+/, 'https://api.darlingtonwosa.art');
+  }
+
+  if (clean.startsWith('storage/') || clean.startsWith('/storage/')) {
+    const relativeStoragePath = clean.startsWith('/') ? clean : `/${clean}`;
+    return `https://api.darlingtonwosa.art${relativeStoragePath}`;
+  }
+
+  return clean;
+}

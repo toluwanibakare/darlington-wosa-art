@@ -52,12 +52,12 @@ function api() {
 }
 
 const SAMPLE_IMAGES = [
-  { label: 'Pencil Sketch 1 (Face)', url: '/images/sample_sketch1.jpg' },
-  { label: 'Pencil Sketch 2 (Portrait)', url: '/images/sample_sketch2.jpg' },
-  { label: 'Charcoal Painting 1', url: '/images/sample_charcoal1.jpg' },
-  { label: 'Charcoal Painting 2', url: '/images/sample_charcoal2.jpg' },
-  { label: 'Framed Artwork 1', url: '/images/sample_frame1.jpg' },
-  { label: 'Framed Artwork 2', url: '/images/sample_frame2.jpg' }
+  { label: 'Charcoal Portrait 1', url: '/images/projects/IMG_5028.JPG' },
+  { label: 'Charcoal Portrait 2', url: '/images/projects/IMG_5029.JPG' },
+  { label: 'Charcoal Portrait 3', url: '/images/projects/IMG_5030.JPG' },
+  { label: 'Framed Artwork 16x20', url: '/images/16_30.jpeg' },
+  { label: 'Framed Artwork 20x24', url: '/images/20_24.jpeg' },
+  { label: 'Framed Artwork 30x40', url: '/images/30_40.jpeg' }
 ];
 
 const defaultForm = {

@@ -4,15 +4,26 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { ShoppingCart, MessageCircle, CheckCircle } from 'lucide-react';
 import { ShopItem } from './ShopTypes';
-import { api } from '@/lib/api';
+import { api, getValidImageUrl } from '@/lib/api';
 import { useCart } from './CartContext';
 import { NegotiationModal } from './NegotiationModal';
+
+const DEFAULT_SHOP_FALLBACK = '/images/projects/IMG_5028.JPG';
 
 export function ShopItemCard({ item }: { item: ShopItem }) {
   const { refresh } = useCart();
   const [added, setAdded] = useState(false);
   const [negoOpen, setNegoOpen] = useState(false);
   const [imgIndex, setImgIndex] = useState(0);
+
+  const rawImages = item.images && item.images.length > 0 ? item.images : [DEFAULT_SHOP_FALLBACK];
+  const images = rawImages.map(img => getValidImageUrl(img, DEFAULT_SHOP_FALLBACK));
+
+  const [currentImgSrc, setCurrentImgSrc] = useState<string>(() => images[0] || DEFAULT_SHOP_FALLBACK);
+
+  React.useEffect(() => {
+    setCurrentImgSrc(images[imgIndex] || DEFAULT_SHOP_FALLBACK);
+  }, [imgIndex, item.images]);
 
   const handleAddToCart = async () => {
     const token = localStorage.getItem('auth_token');
@@ -27,8 +38,6 @@ export function ShopItemCard({ item }: { item: ShopItem }) {
       setTimeout(() => setAdded(false), 2000);
     }
   };
-
-  const images = item.images.length > 0 ? item.images : ['/placeholder.jpg'];
 
   return (
     <>
@@ -50,11 +59,12 @@ export function ShopItemCard({ item }: { item: ShopItem }) {
               ))}
             </div>
           )}
-          <Image
-            src={images[imgIndex]}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={currentImgSrc}
             alt={item.name}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            onError={() => setCurrentImgSrc(DEFAULT_SHOP_FALLBACK)}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         </div>
 
