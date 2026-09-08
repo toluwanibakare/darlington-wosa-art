@@ -1155,8 +1155,18 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
                   <img
                     src={SIZE_SAMPLES[sampleSizeKey]?.image || '/images/16_30.jpeg'}
                     alt={`${sampleSizeKey} artwork size sample`}
-                    className="w-full max-h-[60vh] object-contain rounded-[6px]"
+                    className="w-full max-h-[60vh] object-contain rounded-[6px] block"
                   />
+                  {/* Brand Watermark Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none p-6">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/images/logo.png"
+                      alt=""
+                      aria-hidden="true"
+                      className="w-48 md:w-64 max-w-[50%] h-auto object-contain opacity-25 filter drop-shadow-md brightness-110"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
