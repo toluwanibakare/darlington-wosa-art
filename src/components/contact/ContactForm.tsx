@@ -37,6 +37,11 @@ const SIZE_SAMPLES: Record<string, { title: string; image: string; dimensions: s
     image: '/images/16_30.jpeg',
     dimensions: 'Standard Frame Dimensions: 16 × 20 inches (40.6 × 50.8 cm)',
   },
+  '20x24': {
+    title: '20 × 24 Inches Artwork & Frame Sample',
+    image: '/images/20_24.jpeg',
+    dimensions: 'Medium Portrait Frame Dimensions: 20 × 24 inches (50.8 × 61.0 cm)',
+  },
   '30x40': {
     title: '30 × 40 Inches Artwork & Frame Sample',
     image: '/images/30_40.jpeg',

@@ -181,7 +181,7 @@ export function FrameScaleVisual({ width, height, frameStyle, onOpenSample }: Fr
           </div>
         )}
       </div>
-      {((w === 10 && h === 12) || (w === 16 && h === 20) || (w === 30 && h === 40)) && (
+      {((w === 10 && h === 12) || (w === 16 && h === 20) || (w === 20 && h === 24) || (w === 30 && h === 40)) && (
         <div className="mt-3 p-3 border border-brand-gold/40 bg-brand-gold/10 rounded-[6px] flex items-center justify-between animate-fade-in">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-brand-gold animate-pulse" />
