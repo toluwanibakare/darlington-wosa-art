@@ -27,6 +27,11 @@ const FRAME_SIZES = [
 ];
 
 const SIZE_SAMPLES: Record<string, { title: string; image: string; dimensions: string }> = {
+  '8x10': {
+    title: '8 × 10 Inches Artwork & Frame Sample',
+    image: '/images/8_10.jpeg',
+    dimensions: 'Small Desk Frame Dimensions: 8 × 10 inches (20.3 × 25.4 cm)',
+  },
   '10x12': {
     title: '10 × 12 Inches Artwork & Frame Sample',
     image: '/images/10_12.jpeg',
