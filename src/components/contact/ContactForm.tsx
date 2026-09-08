@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button, Reveal } from '@/components/ui';
-import { Send, Check, Image as ImageIcon, CreditCard, ChevronRight, Loader2, Sparkles } from 'lucide-react';
+import { Send, Check, Image as ImageIcon, CreditCard, ChevronRight, Loader2, Sparkles, X, Eye } from 'lucide-react';
 import { api } from '@/lib/api';
 import { FrameScaleVisual } from './FrameScaleVisual';
 import { FrameStyleSelector } from './FrameStyleSelector';
@@ -25,6 +25,19 @@ const FRAME_SIZES = [
   { size: '24x30', key: 'frame_price_24x30', def: 30000 },
   { size: '30x40', key: 'frame_price_30x40', def: 45000 },
 ];
+
+const SIZE_SAMPLES: Record<string, { title: string; image: string; dimensions: string }> = {
+  '16x20': {
+    title: '16 × 20 Inches Artwork & Frame Sample',
+    image: '/images/16_30.jpeg',
+    dimensions: 'Standard Frame Dimensions: 16 × 20 inches (40.6 × 50.8 cm)',
+  },
+  '30x40': {
+    title: '30 × 40 Inches Artwork & Frame Sample',
+    image: '/images/30_40.jpeg',
+    dimensions: 'Large Statement Frame Dimensions: 30 × 40 inches (76.2 × 101.6 cm)',
+  },
+};
 
 // Derive the delivery timeline from the preferred date: anything 2+ weeks out
 // falls under standard delivery; dates under 2 weeks require express delivery.
@@ -82,6 +95,24 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
   const [loading, setLoading] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const [dateError, setDateError] = useState<string | null>(null);
+  const [showSampleModal, setShowSampleModal] = useState(false);
+  const [sampleSizeKey, setSampleSizeKey] = useState<string>('16x20');
+
+  const handleOpenSampleModal = (sizeKey?: string) => {
+    if (sizeKey && SIZE_SAMPLES[sizeKey]) {
+      setSampleSizeKey(sizeKey);
+    } else {
+      const drawingKey = `${form.width}x${form.height}`;
+      if (SIZE_SAMPLES[drawingKey]) {
+        setSampleSizeKey(drawingKey);
+      } else if (SIZE_SAMPLES[form.frameSize]) {
+        setSampleSizeKey(form.frameSize);
+      } else {
+        setSampleSizeKey('16x20');
+      }
+    }
+    setShowSampleModal(true);
+  };
   const [localStep, setLocalStep] = useState<'form' | 'checkout' | 'success'>('form');
   const activeStep = step || localStep;
   const setStep = (val: 'form' | 'checkout' | 'success') => {
@@ -248,6 +279,18 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     if (name === 'drawingSize') {
       const [w, h] = value.split('x');
       setForm(prev => ({ ...prev, width: w, height: h }));
+      if (SIZE_SAMPLES[value]) {
+        setSampleSizeKey(value);
+        setShowSampleModal(true);
+      }
+      return;
+    }
+    if (name === 'frameSize') {
+      setForm(prev => ({ ...prev, frameSize: value }));
+      if (SIZE_SAMPLES[value]) {
+        setSampleSizeKey(value);
+        setShowSampleModal(true);
+      }
       return;
     }
   };
@@ -786,6 +829,21 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
                 <option value="24x30">24 x 30 inches</option>
                 <option value="30x40">30 x 40 inches</option>
               </select>
+              {SIZE_SAMPLES[`${form.width}x${form.height}`] && (
+                <div className="mt-2.5 p-3 border border-brand-gold/40 bg-brand-gold/10 rounded-[6px] flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Eye size={16} className="text-brand-gold" />
+                    <span className="font-sans text-xs text-brand-black font-medium">{form.width} × {form.height} inches Photo Sample Available</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenSampleModal(`${form.width}x${form.height}`)}
+                    className="px-3 py-1 bg-brand-gold text-brand-black font-sans text-[10px] font-semibold tracking-wider uppercase rounded hover:bg-brand-black hover:text-brand-white transition-colors"
+                  >
+                    View Sample
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Artwork size visual scale in real room context */}
@@ -795,6 +853,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
                 <FrameScaleVisual
                   width={parseFloat(form.width) || 12}
                   height={parseFloat(form.height) || 16}
+                  onOpenSample={(key) => handleOpenSampleModal(key)}
                 />
               </div>
             </div>
@@ -855,6 +914,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
                   width={parseFloat(form.frameSize.split('x')[0]) || 12}
                   height={parseFloat(form.frameSize.split('x')[1]) || 16}
                   frameStyle={form.frameType}
+                  onOpenSample={(key) => handleOpenSampleModal(key)}
                 />
               </div>
             </div>
@@ -871,6 +931,21 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
                   );
                 })}
               </select>
+              {SIZE_SAMPLES[form.frameSize] && (
+                <div className="mt-2.5 p-3 border border-brand-gold/40 bg-brand-gold/10 rounded-[6px] flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Eye size={16} className="text-brand-gold" />
+                    <span className="font-sans text-xs text-brand-black font-medium">{form.frameSize.replace('x', ' × ')} inches Photo Sample Available</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenSampleModal(form.frameSize)}
+                    className="px-3 py-1 bg-brand-gold text-brand-black font-sans text-[10px] font-semibold tracking-wider uppercase rounded hover:bg-brand-black hover:text-brand-white transition-colors"
+                  >
+                    View Sample
+                  </button>
+                </div>
+              )}
             </div>
 
             <FrameStyleSelector
@@ -1030,6 +1105,73 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
 
       </form>
       )}
+
+      {/* 16x20 Size Sample Popup Modal */}
+      <AnimatePresence>
+        {showSampleModal && (
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowSampleModal(false)}
+              className="absolute inset-0 bg-black/75 backdrop-blur-md"
+            />
+
+            {/* Modal Content */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 15 }}
+              transition={{ type: 'spring', duration: 0.4 }}
+              className="relative w-full max-w-2xl bg-brand-surface border border-brand-border rounded-[12px] p-6 md:p-8 overflow-hidden shadow-2xl z-10 text-brand-black"
+            >
+              {/* Subtle background noise texture */}
+              <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20" style={{ backgroundImage: 'var(--bg-noise)' }} />
+
+              <div className="relative z-10">
+                <button
+                  onClick={() => setShowSampleModal(false)}
+                  className="absolute -top-2 -right-2 p-2 text-brand-gray hover:text-brand-black bg-brand-white/80 rounded-full transition-colors"
+                  aria-label="Close modal"
+                >
+                  <X size={18} />
+                </button>
+
+                <div className="text-center mb-4">
+                  <span className="font-sans text-[10px] tracking-[0.2em] uppercase text-brand-gold font-semibold block mb-1">
+                    Size Sample Preview
+                  </span>
+                  <h3 className="font-display text-2xl text-brand-black">
+                    {SIZE_SAMPLES[sampleSizeKey]?.title || `${sampleSizeKey.replace('x', ' × ')} Inches Artwork & Frame Sample`}
+                  </h3>
+                  <p className="font-sans text-xs text-brand-gray mt-1">
+                    Real physical artwork sample rendered in {sampleSizeKey.replace('x', ' × ')} inches format by Darlington Wosa Art & Frames Ltd.
+                  </p>
+                </div>
+
+                <div className="relative border border-brand-border rounded-[8px] overflow-hidden bg-brand-black/5 flex items-center justify-center my-4">
+                  <img
+                    src={SIZE_SAMPLES[sampleSizeKey]?.image || '/images/16_30.jpeg'}
+                    alt={`${sampleSizeKey} artwork size sample`}
+                    className="w-full max-h-[60vh] object-contain rounded-[6px]"
+                  />
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+                  <span className="font-sans text-[11px] text-brand-gray">
+                    {SIZE_SAMPLES[sampleSizeKey]?.dimensions || `Dimensions: ${sampleSizeKey.replace('x', ' × ')} inches`}
+                  </span>
+                  <Button variant="primary" onClick={() => setShowSampleModal(false)}>
+                    Close Preview
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

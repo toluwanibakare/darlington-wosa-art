@@ -54,9 +54,10 @@ interface FrameScaleVisualProps {
   width: number;
   height: number;
   frameStyle?: string | null;
+  onOpenSample?: (sizeKey?: string) => void;
 }
 
-export function FrameScaleVisual({ width, height, frameStyle }: FrameScaleVisualProps) {
+export function FrameScaleVisual({ width, height, frameStyle, onOpenSample }: FrameScaleVisualProps) {
   const [scene, setScene] = useState<SceneKey>('chart');
   const uid = useId().replace(/:/g, '');
   const style = getFrameStyle(frameStyle);
@@ -180,6 +181,23 @@ export function FrameScaleVisual({ width, height, frameStyle }: FrameScaleVisual
           </div>
         )}
       </div>
+      {((w === 16 && h === 20) || (w === 30 && h === 40)) && (
+        <div className="mt-3 p-3 border border-brand-gold/40 bg-brand-gold/10 rounded-[6px] flex items-center justify-between animate-fade-in">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-brand-gold animate-pulse" />
+            <span className="font-sans text-xs text-brand-black font-medium">{w} × {h} inches Photo Sample Available</span>
+          </div>
+          {onOpenSample && (
+            <button
+              type="button"
+              onClick={() => onOpenSample(`${w}x${h}`)}
+              className="px-3 py-1 bg-brand-gold text-brand-black font-sans text-[10px] font-semibold tracking-wider uppercase rounded hover:bg-brand-black hover:text-brand-white transition-colors"
+            >
+              View Sample Image
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
