@@ -42,10 +42,15 @@ const SIZE_SAMPLES: Record<string, { title: string; image: string; dimensions: s
     image: '/images/20_24.jpeg',
     dimensions: 'Medium Portrait Frame Dimensions: 20 × 24 inches (50.8 × 61.0 cm)',
   },
+  '24x30': {
+    title: '24 × 30 Inches Artwork & Frame Sample',
+    image: '/images/24_30.jpeg',
+    dimensions: 'Large Feature Frame Dimensions: 24 × 30 inches (61.0 × 76.2 cm)',
+  },
   '30x40': {
     title: '30 × 40 Inches Artwork & Frame Sample',
     image: '/images/30_40.jpeg',
-    dimensions: 'Large Statement Frame Dimensions: 30 × 40 inches (76.2 × 101.6 cm)',
+    dimensions: 'Grand Statement Frame Dimensions: 30 × 40 inches (76.2 × 101.6 cm)',
   },
 };
 
