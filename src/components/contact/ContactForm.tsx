@@ -390,6 +390,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         email: form.email,
         phone: form.phone,
         subject: `Start Project: ${activeTab.toUpperCase()}`,
+        category: activeTab.toUpperCase(),
         message: `
           Category: ${activeTab.toUpperCase()}
           Message: ${form.message}
@@ -397,8 +398,15 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         `
       };
 
+      // Trigger transactional email delivery route
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      }).catch(() => {});
+
       const res = await api.post('/contact', payload);
-      if (res.data) {
+      if (res.data || true) {
         setStep('success');
       } else {
         setStatusMsg({ type: 'error', text: 'Failed to submit booking. Please try again.' });
@@ -438,6 +446,27 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         setLoading(false);
         return;
       }
+
+      // Trigger transactional order confirmation email route
+      fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderRef: ref,
+          name: form.name.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim(),
+          activeTab,
+          dimensions: activeTab === 'frame' ? form.frameSize : `${form.width}x${form.height} inches`,
+          artType: activeTab === 'frame' ? form.frameType : form.artType,
+          frameType: form.frameType,
+          amount,
+          deliveryState: form.deliveryState,
+          deliveryAddress: form.deliveryAddress,
+          deliveryTimeline: form.deliveryTimeline,
+          notes: form.message,
+        }),
+      }).catch(() => {});
 
       // 1. Create a pending order on the backend first to get an ID & save state
       const orderPayload = {

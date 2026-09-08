@@ -57,6 +57,7 @@ import { ThemeProvider } from "@/components/providers";
 import { CartProvider, CartDrawer } from "@/components/shop";
 import { HeaderWrapper } from "@/components/layout/HeaderWrapper";
 import { ConditionalFooter } from "@/components/layout/ConditionalFooter";
+import { WhatsAppFAB } from "@/components/layout/WhatsAppFAB";
 import { CharcoalDust } from "@/components/effects/CharcoalDust";
 import { LoadingScreen } from "@/components/effects/LoadingScreen";
 import { ScrollToTop } from "@/components/effects/ScrollToTop";
@@ -85,6 +86,7 @@ export default function RootLayout({
             </main>
             <ConditionalFooter />
             <ScrollToTop />
+            <WhatsAppFAB />
             <StarPaintDust />
             <CartDrawer />
           </CartProvider>

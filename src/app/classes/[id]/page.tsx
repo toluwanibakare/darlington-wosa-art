@@ -160,10 +160,24 @@ export default function ClassBookingPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        subject: `Class Booking Confirmation: ${classData.title}`,
+        category: 'Art Class Booking',
+        message: `Booked Class: ${classData.title}\nDate: ${selectedDate}\nTime Slot: ${selectedTime}\nNotes: ${form.notes || 'None'}`
+      })
+    }).catch(() => {});
+
     setTimeout(() => {
       setIsSubmitting(false);
       setIsComplete(true);
-    }, 2000);
+    }, 1500);
   };
 
   const availableDates = dateOptions.filter((d) => !d.disabled);
