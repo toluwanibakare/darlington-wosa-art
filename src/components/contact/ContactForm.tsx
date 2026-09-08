@@ -27,6 +27,11 @@ const FRAME_SIZES = [
 ];
 
 const SIZE_SAMPLES: Record<string, { title: string; image: string; dimensions: string }> = {
+  '10x12': {
+    title: '10 × 12 Inches Artwork & Frame Sample',
+    image: '/images/10_12.jpeg',
+    dimensions: 'Compact Portrait Frame Dimensions: 10 × 12 inches (25.4 × 30.5 cm)',
+  },
   '16x20': {
     title: '16 × 20 Inches Artwork & Frame Sample',
     image: '/images/16_30.jpeg',
