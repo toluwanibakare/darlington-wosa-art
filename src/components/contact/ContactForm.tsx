@@ -99,10 +99,19 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     // Event booking
     eventState: 'Rivers',
     eventLocation: '',
-    eventType: 'performance', // performance, workshop, exhibition
+    eventType: 'paint_sip', // paint_sip, performance, workshop, exhibition
     expectedGuests: '50',
     eventDate: '',
-    eventDuration: '1', // in days or hours
+    eventDuration: '2 hours', // in days or hours
+    // Paint and Sip logistics
+    psSessionDuration: '2 hours',
+    psTablesChairs: 'Venue / Host provides tables and chairs',
+    psWeatherBackup: 'Indoor backup space available',
+    psWaterElectricity: 'Direct access to both water and electricity',
+    psRefreshments: 'Client will handle all refreshments',
+    psCanvasSize: '10x12', // 10x12 or 12x16
+    psTakeHomeItems: 'Standard canvas only',
+    psSetupPackupTime: '1 hour before and 1 hour after',
     // Billing/Summary
     referralCode: '',
     couponCode: '',
@@ -385,16 +394,27 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     }
 
     try {
+      const paintSipDetails = form.eventType === 'paint_sip' ? `
+          PAINT & SIP LOGISTICS:
+          - Session Duration: ${form.psSessionDuration}
+          - Tables & Chairs Responsibility: ${form.psTablesChairs}
+          - Outdoor Weather Backup Plan: ${form.psWeatherBackup}
+          - Water & Electricity Access: ${form.psWaterElectricity}
+          - Refreshments Provision: ${form.psRefreshments}
+          - Canvas Size Expected: ${form.psCanvasSize}
+          - Take-home Items Required: ${form.psTakeHomeItems}
+          - Setup & Pack-up Allowance: ${form.psSetupPackupTime}` : '';
+
       const payload = {
         name: form.name,
         email: form.email,
         phone: form.phone,
-        subject: `Start Project: ${activeTab.toUpperCase()}`,
-        category: activeTab.toUpperCase(),
+        subject: activeTab === 'event' && form.eventType === 'paint_sip' ? 'Paint and Sip Event Booking Request' : `Start Project: ${activeTab.toUpperCase()}`,
+        category: activeTab === 'event' && form.eventType === 'paint_sip' ? 'Paint & Sip' : activeTab.toUpperCase(),
         message: `
           Category: ${activeTab.toUpperCase()}
           Message: ${form.message}
-          ${activeTab === 'event' ? `State: ${form.eventState}\nLocation: ${form.eventLocation}\nEvent Date: ${form.eventDate}\nEvent Duration: ${form.eventDuration}\nEvent Type: ${form.eventType}\nExpected Guests: ${form.expectedGuests}` : `Delivery State: ${form.deliveryState}\nDelivery Address: ${form.deliveryAddress}\nTimeline: ${form.deliveryTimeline}\nDate: ${form.deliveryDate}`}
+          ${activeTab === 'event' ? `State: ${form.eventState}\nLocation: ${form.eventLocation}\nEvent Date: ${form.eventDate}\nEvent Duration: ${form.eventDuration}\nEvent Type: ${form.eventType === 'paint_sip' ? 'Paint and Sip Session' : form.eventType}\nExpected Guests: ${form.expectedGuests}${paintSipDetails}` : `Delivery State: ${form.deliveryState}\nDelivery Address: ${form.deliveryAddress}\nTimeline: ${form.deliveryTimeline}\nDate: ${form.deliveryDate}`}
         `
       };
 
@@ -1078,6 +1098,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
               <div>
                 <label className={labelClass}>Showcase / Event Type</label>
                 <select name="eventType" value={form.eventType} onChange={handleChange} className={selectClass}>
+                  <option value="paint_sip">Paint and Sip Session</option>
                   <option value="performance">Live Art / Sketch Performance</option>
                   <option value="workshop">Creative Art Workshop</option>
                   <option value="exhibition">Art Exhibition Showcase</option>
@@ -1085,13 +1106,13 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
               </div>
 
               <div>
-                <label className={labelClass}>Expected Guests</label>
+                <label className={labelClass}>Expected Guests / Participants</label>
                 <input
                   type="number"
                   name="expectedGuests"
                   value={form.expectedGuests}
                   onChange={handleChange}
-                  placeholder="e.g. 150"
+                  placeholder="e.g. 50"
                   className={inputClass}
                 />
               </div>
@@ -1117,11 +1138,128 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
                   required
                   value={form.eventDuration}
                   onChange={handleChange}
-                  placeholder="e.g. 5 hours, 3 days"
+                  placeholder="e.g. 2 hours, 5 hours"
                   className={inputClass}
                 />
               </div>
             </div>
+
+            {/* Paint and Sip Logistics Questionnaire */}
+            {form.eventType === 'paint_sip' && (
+              <div className="space-y-6 border border-brand-gold/40 rounded-[8px] p-6 bg-brand-gold/[0.04]">
+                <div className="border-b border-brand-gold/20 pb-3">
+                  <h5 className="font-display text-sm text-brand-black tracking-wide">Paint & Sip Logistics Questionnaire</h5>
+                  <p className="font-sans text-xs text-brand-gray/80 mt-1 leading-relaxed">
+                    We ask these questions to ensure an accurate quote covering all logistics for your Paint & Sip session, especially for outdoor setups.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Question 1 */}
+                  <div>
+                    <label className={labelClass}>1. Painting Session Duration</label>
+                    <p className="text-[11px] text-brand-gray/70 mb-1">How many hours is the painting session planned to last?</p>
+                    <input
+                      type="text"
+                      name="psSessionDuration"
+                      required
+                      value={form.psSessionDuration}
+                      onChange={handleChange}
+                      placeholder="e.g. 2 hours, 3 hours"
+                      className={inputClass}
+                    />
+                  </div>
+
+                  {/* Question 2 */}
+                  <div>
+                    <label className={labelClass}>2. Tables & Chairs Responsibility</label>
+                    <p className="text-[11px] text-brand-gray/70 mb-1">Who is responsible for providing tables and chairs?</p>
+                    <select name="psTablesChairs" value={form.psTablesChairs} onChange={handleChange} className={selectClass}>
+                      <option value="Venue / Host provides tables and chairs">Client / Venue provides tables and chairs</option>
+                      <option value="Darlington Wosa Art expected to provide">Darlington Wosa Art to provide / rent</option>
+                      <option value="Shared / Co-coordinated">Shared / Co-coordinated</option>
+                    </select>
+                  </div>
+
+                  {/* Question 3 */}
+                  <div>
+                    <label className={labelClass}>3. Outdoor Weather Backup Plan</label>
+                    <p className="text-[11px] text-brand-gray/70 mb-1">Backup plan in case of poor weather at outdoor venue?</p>
+                    <input
+                      type="text"
+                      name="psWeatherBackup"
+                      required
+                      value={form.psWeatherBackup}
+                      onChange={handleChange}
+                      placeholder="e.g. Covered hall alternative, marquee tent"
+                      className={inputClass}
+                    />
+                  </div>
+
+                  {/* Question 4 */}
+                  <div>
+                    <label className={labelClass}>4. Water & Electricity Access</label>
+                    <p className="text-[11px] text-brand-gray/70 mb-1">Direct access to water and electricity at the site?</p>
+                    <select name="psWaterElectricity" value={form.psWaterElectricity} onChange={handleChange} className={selectClass}>
+                      <option value="Direct access to both water and electricity">Yes - Direct access to both water and electricity</option>
+                      <option value="Water access only">Water access only</option>
+                      <option value="Electricity access only">Electricity access only</option>
+                      <option value="No direct access (special setup needed)">No direct access (special arrangements needed)</option>
+                    </select>
+                  </div>
+
+                  {/* Question 5 */}
+                  <div>
+                    <label className={labelClass}>5. Refreshments Responsibility</label>
+                    <p className="text-[11px] text-brand-gray/70 mb-1">Will you handle refreshments, or should we provide them?</p>
+                    <select name="psRefreshments" value={form.psRefreshments} onChange={handleChange} className={selectClass}>
+                      <option value="Client will handle all refreshments">Client / Host handles refreshments</option>
+                      <option value="Darlington Wosa Art expected to provide">Darlington Wosa Art expected to provide</option>
+                      <option value="No refreshments required">No refreshments required</option>
+                    </select>
+                  </div>
+
+                  {/* Question 6 */}
+                  <div>
+                    <label className={labelClass}>6. Expected Canvas Size</label>
+                    <p className="text-[11px] text-brand-gray/70 mb-1">Standard size is 10×12 or 12×16 inches</p>
+                    <select name="psCanvasSize" value={form.psCanvasSize} onChange={handleChange} className={selectClass}>
+                      <option value="10x12">10 × 12 inches (Standard Canvas)</option>
+                      <option value="12x16">12 × 16 inches (Standard Canvas)</option>
+                      <option value="Custom Size">Custom / Mixed Canvas Sizes</option>
+                    </select>
+                  </div>
+
+                  {/* Question 7 */}
+                  <div>
+                    <label className={labelClass}>7. Take-home Items Required</label>
+                    <p className="text-[11px] text-brand-gray/70 mb-1">Additional items beyond the standard canvas?</p>
+                    <input
+                      type="text"
+                      name="psTakeHomeItems"
+                      value={form.psTakeHomeItems}
+                      onChange={handleChange}
+                      placeholder="e.g. Branded aprons, easel kits, none"
+                      className={inputClass}
+                    />
+                  </div>
+
+                  {/* Question 8 */}
+                  <div>
+                    <label className={labelClass}>8. Venue Setup & Pack-up Time</label>
+                    <p className="text-[11px] text-brand-gray/70 mb-1">How much setup/pack-up time allowed at venue?</p>
+                    <input
+                      type="text"
+                      name="psSetupPackupTime"
+                      value={form.psSetupPackupTime}
+                      onChange={handleChange}
+                      placeholder="e.g. 1 hour before and 1 hour after"
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div>
               <label className={labelClass}>Art expectations / Showcase request</label>
