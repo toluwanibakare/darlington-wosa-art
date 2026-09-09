@@ -42,7 +42,7 @@ export function FrameGuideModal({ open, onClose }: FrameGuideModalProps) {
             <div className="relative w-full h-full overflow-auto rounded-[8px] bg-brand-surface shadow-2xl">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/frame_guide.jpg"
+                src="/frame_guide.png"
                 alt="Frame size guide showing available dimensions for museum-grade framing"
                 className="w-full h-auto object-contain"
                 style={{ maxHeight: '85vh' }}

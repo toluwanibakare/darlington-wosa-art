@@ -77,7 +77,7 @@ export function FrameScaleVisual({ width, height, frameStyle, onOpenSample }: Fr
         <div className="border border-brand-border rounded-[8px] overflow-hidden bg-brand-surface/30">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/frame_view.jpeg"
+            src="/frame_guide.png"
             alt="All available frame sizes shown together for comparison"
             className="w-full h-auto object-contain"
           />
