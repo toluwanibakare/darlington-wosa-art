@@ -98,7 +98,7 @@ export function FrameGuideModal({ open, onClose }: FrameGuideModalProps) {
                       <thead>
                         <tr className="border-b border-brand-gold/30 bg-brand-gold/10 text-brand-surface">
                           <th className="py-3.5 px-4 font-display tracking-wider text-xs uppercase text-brand-gold">Size (Inches)</th>
-                          <th className="py-3.5 px-4 font-display tracking-wider text-xs uppercase text-brand-surface">Without Glass</th>
+                          <th className="py-3.5 px-4 font-display tracking-wider text-xs uppercase text-brand-surface">Without Acrylic Glass</th>
                           <th className="py-3.5 px-4 font-display tracking-wider text-xs uppercase text-brand-gold">With Acrylic Glass</th>
                         </tr>
                       </thead>

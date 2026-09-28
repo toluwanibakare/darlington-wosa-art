@@ -447,7 +447,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     const amount = calculatedPrice;
 
     try {
-      const glassLabel = form.frameGlass === 'with_glass' ? 'With Acrylic Glass' : 'Without Glass';
+      const glassLabel = form.frameGlass === 'with_glass' ? 'With Acrylic Glass' : 'Without Acrylic Glass';
       const orderDescription = `
         Category: ${activeTab.toUpperCase()}
         Dimensions / Details: ${activeTab === 'frame' ? `${form.frameSize} (${form.frameType}, ${glassLabel})` : `${form.width}x${form.height} inches (${form.artType})`}
@@ -1006,7 +1006,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
                   const price = form.frameGlass === 'without_glass' ? sz.withoutGlass : sz.withGlass;
                   return (
                     <option key={sz.size} value={sz.size}>
-                      {sz.size.replace('x', ' × ')} inches — ₦{price.toLocaleString()} ({form.frameGlass === 'with_glass' ? 'With Glass' : 'Without Glass'})
+                      {sz.size.replace('x', ' × ')} inches — ₦{price.toLocaleString()} ({form.frameGlass === 'with_glass' ? 'With Acrylic Glass' : 'Without Acrylic Glass'})
                     </option>
                   );
                 })}
@@ -1028,7 +1028,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
               )}
             </div>
 
-            {/* Glass Finish Options (With Acrylic Glass / Without Glass) */}
+            {/* Glass Finish Options (With Acrylic Glass / Without Acrylic Glass) */}
             <div>
               <label className={labelClass}>Glass Finish Option</label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1.5">
@@ -1054,8 +1054,8 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
                       : 'border-brand-border text-brand-gray hover:border-brand-gold/50'
                   }`}
                 >
-                  <div className="text-xs font-semibold text-brand-black">Without Glass</div>
-                  <div className="text-[10px] text-brand-gray/80 mt-0.5">Open matte canvas / board style finish</div>
+                  <div className="text-xs font-semibold text-brand-black">Without Acrylic Glass</div>
+                  <div className="text-[10px] text-brand-gray/80 mt-0.5">Open matte canvas / board style finish without acrylic glass</div>
                 </button>
               </div>
             </div>
