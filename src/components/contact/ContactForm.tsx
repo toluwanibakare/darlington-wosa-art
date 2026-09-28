@@ -7,6 +7,7 @@ import { Send, Check, Image as ImageIcon, CreditCard, ChevronRight, Loader2, Spa
 import { api } from '@/lib/api';
 import { FrameScaleVisual } from './FrameScaleVisual';
 import { FrameStyleSelector } from './FrameStyleSelector';
+import { FrameGuideModal } from '@/components/services/FrameGuideModal';
 
 const NIGERIAN_STATES = [
   "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", 
@@ -17,13 +18,15 @@ const NIGERIAN_STATES = [
 ];
 
 const FRAME_SIZES = [
-  { size: '8x10', key: 'frame_price_8x10', def: 5000 },
-  { size: '10x12', key: 'frame_price_10x12', def: 7500 },
-  { size: '12x16', key: 'frame_price_12x16', def: 10000 },
-  { size: '16x20', key: 'frame_price_16x20', def: 15000 },
-  { size: '20x24', key: 'frame_price_20x24', def: 22000 },
-  { size: '24x30', key: 'frame_price_24x30', def: 30000 },
-  { size: '30x40', key: 'frame_price_30x40', def: 45000 },
+  { size: '8x10', withoutGlass: 10000, withGlass: 12000 },
+  { size: '10x12', withoutGlass: 15000, withGlass: 20000 },
+  { size: '12x16', withoutGlass: 25000, withGlass: 30000 },
+  { size: '16x20', withoutGlass: 30000, withGlass: 35000 },
+  { size: '20x24', withoutGlass: 35000, withGlass: 40000 },
+  { size: '20x30', withoutGlass: 40000, withGlass: 45000 },
+  { size: '24x30', withoutGlass: 50000, withGlass: 65000 },
+  { size: '24x36', withoutGlass: 65000, withGlass: 70000 },
+  { size: '30x40', withoutGlass: 90000, withGlass: 130000 },
 ];
 
 const SIZE_SAMPLES: Record<string, { title: string; image: string; dimensions: string }> = {
@@ -47,10 +50,20 @@ const SIZE_SAMPLES: Record<string, { title: string; image: string; dimensions: s
     image: '/images/20_24.jpeg',
     dimensions: 'Medium Portrait Frame Dimensions: 20 × 24 inches (50.8 × 61.0 cm)',
   },
+  '20x30': {
+    title: '20 × 30 Inches Artwork & Frame Sample',
+    image: '/images/20_24.jpeg',
+    dimensions: 'Large Gallery Frame Dimensions: 20 × 30 inches (50.8 × 76.2 cm)',
+  },
   '24x30': {
     title: '24 × 30 Inches Artwork & Frame Sample',
     image: '/images/24_30.jpeg',
     dimensions: 'Large Feature Frame Dimensions: 24 × 30 inches (61.0 × 76.2 cm)',
+  },
+  '24x36': {
+    title: '24 × 36 Inches Artwork & Frame Sample',
+    image: '/images/24_30.jpeg',
+    dimensions: 'Statement Wall Frame Dimensions: 24 × 36 inches (61.0 × 91.4 cm)',
   },
   '30x40': {
     title: '30 × 40 Inches Artwork & Frame Sample',
@@ -88,8 +101,9 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     height: '16',
     artType: 'charcoal', // charcoal, pencil, colored-pencil
     giftType: 'none', // none, birthday, anniversary, corporate, memorial
-    // Frame Size
+    // Frame Size & Glass Option
     frameSize: '12x16',
+    frameGlass: 'with_glass', // with_glass, without_glass
     frameType: 'Modern Black', // Modern Black, Natural Wood, Gold Leaf, Frameless, Floating Frame
     // Delivery Details
     deliveryState: 'Rivers',
@@ -125,6 +139,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const [dateError, setDateError] = useState<string | null>(null);
   const [showSampleModal, setShowSampleModal] = useState(false);
+  const [showFrameGuideModal, setShowFrameGuideModal] = useState(false);
   const [sampleSizeKey, setSampleSizeKey] = useState<string>('16x20');
 
   const handleOpenSampleModal = (sizeKey?: string) => {
@@ -248,28 +263,14 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     } else if (activeTab === 'frame') {
       const sizeObj = FRAME_SIZES.find(s => s.size === form.frameSize);
       if (sizeObj) {
-        // Extract dimensions e.g. 12x16 -> w=12, h=16
-        const [wStr, hStr] = sizeObj.size.split('x');
-        const w = parseFloat(wStr) || 0;
-        const h = parseFloat(hStr) || 0;
-        // Use setting rate if configured (e.g. frame_price_12x16 key).
-        // If the settings contains a value, check if it's the total price (like 10000) or UPPSI rate (like 270).
-        // Let's divide by w*h if the admin typed a total price, or check if it represents UPPSI directly.
-        // The user says: "12 * 16 * 270, which is the base price, which is supposed to be 51,840. That's how you do it for all the sizes."
-        // So they want the rate to be 270 NGN per square inch.
-        let uppsiSetting = parseFloat(settings[sizeObj.key] || '');
-        if (!isNaN(uppsiSetting) && uppsiSetting < 10) {
-          uppsiSetting *= 100; // normalize decimal to full number (e.g. 2.70 to 270)
-        }
-        const uppsi = !isNaN(uppsiSetting) ? (uppsiSetting > 1000 ? (uppsiSetting / (w * h)) : uppsiSetting) : 270;
-        let price = (w * h) * uppsi;
+        let price = form.frameGlass === 'without_glass' ? sizeObj.withoutGlass : sizeObj.withGlass;
         if (isExpress) price *= expressMultiplier;
         setCalculatedPrice(Math.round(price));
       }
     } else {
       setCalculatedPrice(0);
     }
-  }, [form.width, form.height, form.frameSize, form.deliveryTimeline, activeTab, settings]);
+  }, [form.width, form.height, form.frameSize, form.frameGlass, form.deliveryTimeline, activeTab, settings]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -446,9 +447,10 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
     const amount = calculatedPrice;
 
     try {
+      const glassLabel = form.frameGlass === 'with_glass' ? 'With Acrylic Glass' : 'Without Glass';
       const orderDescription = `
         Category: ${activeTab.toUpperCase()}
-        Dimensions / Details: ${activeTab === 'frame' ? `${form.frameSize} (${form.frameType})` : `${form.width}x${form.height} inches (${form.artType})`}
+        Dimensions / Details: ${activeTab === 'frame' ? `${form.frameSize} (${form.frameType}, ${glassLabel})` : `${form.width}x${form.height} inches (${form.artType})`}
         Customer Name: ${form.name}
         Customer Email: ${form.email}
         Customer Phone: ${form.phone}
@@ -477,9 +479,9 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
           email: form.email.trim(),
           phone: form.phone.trim(),
           activeTab,
-          dimensions: activeTab === 'frame' ? form.frameSize : `${form.width}x${form.height} inches`,
+          dimensions: activeTab === 'frame' ? `${form.frameSize} (${glassLabel})` : `${form.width}x${form.height} inches`,
           artType: activeTab === 'frame' ? form.frameType : form.artType,
-          frameType: form.frameType,
+          frameType: activeTab === 'frame' ? `${form.frameType} (${glassLabel})` : form.frameType,
           amount,
           deliveryState: form.deliveryState,
           deliveryAddress: form.deliveryAddress,
@@ -989,13 +991,22 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
             </div>
 
             <div>
-              <label className={labelClass}>Select Frame Size & View Price</label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className={labelClass}>Select Frame Size</label>
+                <button
+                  type="button"
+                  onClick={() => setShowFrameGuideModal(true)}
+                  className="font-sans text-xs text-brand-gold hover:underline font-medium cursor-pointer"
+                >
+                  View Full Price List & Size Guide
+                </button>
+              </div>
               <select name="frameSize" value={form.frameSize} onChange={handleChange} className={selectClass}>
                 {FRAME_SIZES.map(sz => {
-                  const val = parseFloat(settings[sz.key] || String(sz.def));
+                  const price = form.frameGlass === 'without_glass' ? sz.withoutGlass : sz.withGlass;
                   return (
                     <option key={sz.size} value={sz.size}>
-                      {sz.size} inches (₦{val.toLocaleString()})
+                      {sz.size.replace('x', ' × ')} inches — ₦{price.toLocaleString()} ({form.frameGlass === 'with_glass' ? 'With Glass' : 'Without Glass'})
                     </option>
                   );
                 })}
@@ -1015,6 +1026,38 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
                   </button>
                 </div>
               )}
+            </div>
+
+            {/* Glass Finish Options (With Acrylic Glass / Without Glass) */}
+            <div>
+              <label className={labelClass}>Glass Finish Option</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1.5">
+                <button
+                  type="button"
+                  onClick={() => setForm(p => ({ ...p, frameGlass: 'with_glass' }))}
+                  className={`p-3.5 rounded-[6px] border text-left transition-all cursor-pointer font-sans ${
+                    form.frameGlass === 'with_glass'
+                      ? 'border-brand-gold bg-brand-gold/10 text-brand-black font-medium shadow-sm'
+                      : 'border-brand-border text-brand-gray hover:border-brand-gold/50'
+                  }`}
+                >
+                  <div className="text-xs font-semibold text-brand-black">With Acrylic Glass</div>
+                  <div className="text-[10px] text-brand-gray/80 mt-0.5">Protective crystal clear acrylic glass finish</div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setForm(p => ({ ...p, frameGlass: 'without_glass' }))}
+                  className={`p-3.5 rounded-[6px] border text-left transition-all cursor-pointer font-sans ${
+                    form.frameGlass === 'without_glass'
+                      ? 'border-brand-gold bg-brand-gold/10 text-brand-black font-medium shadow-sm'
+                      : 'border-brand-border text-brand-gray hover:border-brand-gold/50'
+                  }`}
+                >
+                  <div className="text-xs font-semibold text-brand-black">Without Glass</div>
+                  <div className="text-[10px] text-brand-gray/80 mt-0.5">Open matte canvas / board style finish</div>
+                </button>
+              </div>
             </div>
 
             <FrameStyleSelector
@@ -1369,6 +1412,9 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
           </div>
         )}
       </AnimatePresence>
+
+      {/* Frame Price List & Size Guide Modal */}
+      <FrameGuideModal open={showFrameGuideModal} onClose={() => setShowFrameGuideModal(false)} />
     </div>
   );
 }
