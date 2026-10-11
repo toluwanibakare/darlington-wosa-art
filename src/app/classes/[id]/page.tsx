@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { api } from '@/lib/api';
 import {
   ArrowLeft,
   Clock,
@@ -96,6 +97,7 @@ export default function ClassBookingPage() {
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [form, setForm] = useState({ name: '', phone: '', email: '', notes: '' });
@@ -157,27 +159,25 @@ export default function ClassBookingPage() {
     if (step < 3) setStep(step + 1);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
 
-    fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: form.name,
-        email: form.email,
-        phone: form.phone,
-        subject: `Class Booking Confirmation: ${classData.title}`,
-        category: 'Art Class Booking',
-        message: `Booked Class: ${classData.title}\nDate: ${selectedDate}\nTime Slot: ${selectedTime}\nNotes: ${form.notes || 'None'}`
-      })
-    }).catch(() => {});
+    const res = await api.post('/contact', {
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      subject: `Class Booking: ${classData.title}`,
+      message: `Booked Class: ${classData.title}\nDate: ${selectedDate}\nTime Slot: ${selectedTime}\nNotes: ${form.notes || 'None'}`,
+    });
 
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsComplete(true);
-    }, 1500);
+    setIsSubmitting(false);
+    if (res.error) {
+      setSubmitError('We could not submit your booking. Please try again or reach us on WhatsApp.');
+      return;
+    }
+    setIsComplete(true);
   };
 
   const availableDates = dateOptions.filter((d) => !d.disabled);
@@ -447,6 +447,9 @@ export default function ClassBookingPage() {
                     </div>
 
                     <form onSubmit={handleSubmit}>
+                      {submitError && (
+                        <p className="mb-4 font-sans text-xs text-red-600 text-center">{submitError}</p>
+                      )}
                       <button
                         type="submit"
                         disabled={isSubmitting}

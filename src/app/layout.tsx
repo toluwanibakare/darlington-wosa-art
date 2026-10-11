@@ -21,8 +21,7 @@ const pinyonScript = Pinyon_Script({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://darlingtonwosa.art"),
-  title: "Darlington Wosa Art & Frames Ltd",
+  metadataBase: new URL("https://www.darlingtonwosa.art"),  title: "Darlington Wosa Art & Frames Ltd",
   description: "Premium Art, Framing, and Creative Services — Darlington Wosa Art & Frames Ltd, Rivers State, Nigeria. Custom portraiture, museum-grade framing, and art education since 2018.",
   icons: {
     icon: [
@@ -32,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Darlington Wosa Art & Frames Ltd",
     description: "Premium handcrafted portraiture, bespoke museum-grade framing, and art education by Darlington Wosa. Based in Rivers State, Nigeria.",
-    url: "https://darlingtonwosa.art",
+    url: "https://www.darlingtonwosa.art",
     siteName: "Darlington Wosa Art & Frames Ltd",
     locale: "en_NG",
     type: "website",

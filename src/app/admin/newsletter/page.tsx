@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Loader2, Trash2, Send, CheckCircle, XCircle, Users, AlertCircle } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface Subscriber {
   id: number;
@@ -26,7 +27,6 @@ export default function NewsletterPage() {
   const [sending, setSending] = useState(false);
   const [sendMessage, setSendMessage] = useState('');
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
   const apiAdmin = {
     get: async (endpoint: string) => {
       const token = localStorage.getItem('auth_token');

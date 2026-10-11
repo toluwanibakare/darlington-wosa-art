@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, EyeOff, ArrowRight, Loader2, Check, X, Mail } from 'lucide-react';
-import { api } from '@/lib/api';
+import { api, API_BASE } from '@/lib/api';
 
 export function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -85,7 +85,7 @@ export function SignUpForm() {
     setOtpError('');
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://api.darlingtonwosa.art'}/verify-otp`, {
+      const res = await fetch(`${API_BASE}/verify-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ export function SignUpForm() {
     setResendCooldown(60);
     setOtpLoading(true);
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://api.darlingtonwosa.art'}/resend-otp`, {
+      await fetch(`${API_BASE}/resend-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

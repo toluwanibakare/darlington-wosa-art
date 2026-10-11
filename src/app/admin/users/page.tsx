@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Trash2, Loader2, ChevronLeft, ChevronRight, Users as UsersIcon } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface User {
   id: number;
@@ -25,7 +26,6 @@ interface PaginatedResponse {
   total: number;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 const apiAdmin = {
   get: async <T extends unknown>(endpoint: string): Promise<T> => {

@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import {
   Layers, Plus, X, Loader2, Trash2, Check, ArrowLeft,
 } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface ShopCategory {
   id: number;
@@ -18,7 +19,6 @@ interface ShopCategory {
   items_count: number;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 function api() {
   const token = localStorage.getItem('auth_token');

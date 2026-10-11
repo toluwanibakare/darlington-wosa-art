@@ -6,6 +6,7 @@ import {
   Ticket, Loader2, Plus, Edit2, Trash2, ChevronLeft, ChevronRight,
   Tag, Percent,
 } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface Coupon {
   id: number;
@@ -58,7 +59,6 @@ export default function PromotionsPage() {
   const [form, setForm] = useState<CouponForm>(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
   const apiAdmin = {
     get: async (endpoint: string) => {
       const token = localStorage.getItem('auth_token');

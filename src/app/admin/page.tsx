@@ -7,6 +7,7 @@ import {
   Users, ShoppingBag, Calendar, MessageSquare, TrendingUp, ArrowUpRight,
   Package, Palette, Star, GitFork, Plus, ChevronRight,
 } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface DashboardStats {
   total_users: number; total_orders: number; total_revenue: number;
@@ -16,7 +17,6 @@ interface DashboardStats {
   subscribers?: number; classes?: number;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.darlingtonwosa.art';
 const formatNaira = (a: number) => `₦${a.toLocaleString()}`;
 
 const quickActions = [

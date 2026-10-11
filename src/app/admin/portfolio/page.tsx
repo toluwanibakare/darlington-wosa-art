@@ -6,6 +6,7 @@ import {
   Plus, Edit3, Trash2, X, Loader2, Search,
   ChevronLeft, ChevronRight, AlertCircle, CheckCircle,
 } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface PortfolioItem {
   id: number;
@@ -31,7 +32,6 @@ interface PaginatedResponse {
 
 const CATEGORIES = ['All', 'Charcoal Portraits', 'Pencil Drawings', 'Mixed Media', 'Corporate', 'Creative Events'];
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 const apiAdmin = {
   get: async (endpoint: string) => {

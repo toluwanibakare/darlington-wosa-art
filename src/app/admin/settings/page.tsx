@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import {
   Settings, Save, Loader2, CheckCircle, Link,
 } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface SettingsMap {
   [key: string]: string;
@@ -34,7 +35,6 @@ const api = {
   },
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<SettingsMap>({});

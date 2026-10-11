@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import {
   Gift, Plus, X, Loader2, Trash2, Check, User,
 } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface RewardEntry {
   id: number;
@@ -22,7 +23,6 @@ interface UserOption {
   email: string;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://api.darlingtonwosa.art';
 
 function api() {
   const token = localStorage.getItem('auth_token');

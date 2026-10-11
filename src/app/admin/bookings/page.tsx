@@ -6,6 +6,7 @@ import {
   Calendar, Loader2, Search, X, Edit2, Trash2, ChevronLeft, ChevronRight,
   CheckCircle, Clock, AlertCircle, XCircle,
 } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface BookingUser {
   name: string;
@@ -63,7 +64,6 @@ export default function BookingsPage() {
   const [editStatus, setEditStatus] = useState('');
   const [saving, setSaving] = useState(false);
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
   const apiAdmin = {
     get: async (endpoint: string) => {
       const token = localStorage.getItem('auth_token');

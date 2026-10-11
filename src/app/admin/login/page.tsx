@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Lock, LogIn, Loader2, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 export default function AdminLoginPage() {
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
   const router = useRouter();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');

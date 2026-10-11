@@ -6,6 +6,7 @@ import {
   Star, Plus, X, Loader2, Trash2, ChevronLeft, ChevronRight, Quote,
   Check, AlertCircle, ThumbsUp, ThumbsDown, MessageSquare,
 } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface Testimonial {
   id: number;
@@ -76,7 +77,6 @@ const api = {
   },
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 const defaultForm: FormData = {
   name: '', role: '', content: '', rating: 5, image: '', is_featured: false, is_active: true,

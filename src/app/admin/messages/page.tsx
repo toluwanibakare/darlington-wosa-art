@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import {
   Mail, Trash2, ChevronLeft, ChevronRight, X, Loader2, MessageSquare, Inbox,
 } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface Message {
   id: number;
@@ -42,7 +43,6 @@ const api = {
   },
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 export default function AdminMessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);

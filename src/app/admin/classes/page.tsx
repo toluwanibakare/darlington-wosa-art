@@ -6,6 +6,7 @@ import {
   Plus, Edit3, Trash2, X, Loader2, Search,
   ChevronLeft, ChevronRight, AlertCircle, CheckCircle, Users, Clock,
 } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface ClassItem {
   id: number;
@@ -34,7 +35,6 @@ interface PaginatedResponse {
 
 const LEVELS = ['Beginner', 'Intermediate', 'Advanced', 'All Levels'];
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 const apiAdmin = {
   get: async (endpoint: string) => {

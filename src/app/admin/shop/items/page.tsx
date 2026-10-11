@@ -7,6 +7,7 @@ import {
   Package, Plus, X, Loader2, Trash2, ChevronLeft, ChevronRight,
   Check, Search, Image as ImageIcon, ArrowLeft,
 } from 'lucide-react';
+import { API_BASE } from '@/lib/api';
 
 interface ShopItem {
   id: number;
@@ -38,7 +39,6 @@ interface PaginatedResponse {
   total: number;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
 
 function api() {
   const token = localStorage.getItem('auth_token');
