@@ -2,13 +2,11 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, EyeOff, ArrowRight, Loader2, Check, X, Mail } from 'lucide-react';
 import { api } from '@/lib/api';
 
 export function SignUpForm() {
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -147,7 +145,7 @@ export function SignUpForm() {
     );
   }
 
-  const inputClass = "w-full bg-transparent border-b border-brand-border pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans";
+  const inputClass = "w-full bg-transparent border-b border-brand-border px-4 pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans";
   const labelClass = "font-sans text-[11px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-3";
 
   return (
@@ -177,9 +175,9 @@ export function SignUpForm() {
           <div className="relative">
             <input id="password" type={showPassword ? 'text' : 'password'} required minLength={8}
               value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className={`${inputClass} pr-10`} placeholder="Create a strong password" />
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-0 bottom-3 text-brand-gray/50 hover:text-brand-gold transition-colors cursor-pointer" aria-label={showPassword ? 'Hide password' : 'Show password'}>
-              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              className={`${inputClass} pr-12 ${showPassword ? '' : 'text-xl tracking-[0.2em] placeholder:text-sm placeholder:tracking-normal'}`} placeholder="Create a strong password" />
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 bottom-3 text-brand-gray/50 hover:text-brand-gold transition-colors cursor-pointer" aria-label={showPassword ? 'Hide password' : 'Show password'}>
+              {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
             </button>
           </div>
           <p className="font-sans text-[10px] text-brand-gray/40 mt-2">Minimum 8 characters</p>

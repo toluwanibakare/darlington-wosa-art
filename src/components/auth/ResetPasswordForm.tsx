@@ -50,7 +50,7 @@ export function ResetPasswordForm() {
     );
   }
 
-  const inputClass = "w-full bg-transparent border-b border-brand-border pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans pr-10";
+  const inputClass = "w-full bg-transparent border-b border-brand-border px-4 pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans pr-12";
 
   return (
     <motion.form
@@ -75,11 +75,11 @@ export function ResetPasswordForm() {
             required
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className={inputClass}
+            className={`${inputClass} ${showPassword ? '' : 'text-xl tracking-[0.2em] placeholder:text-sm placeholder:tracking-normal'}`}
             placeholder="Enter new password"
           />
-          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-0 bottom-3 text-brand-gray/50 hover:text-brand-gold transition-colors cursor-pointer">
-            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 bottom-3 text-brand-gray/50 hover:text-brand-gold transition-colors cursor-pointer">
+            {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
           </button>
         </div>
       </div>
@@ -95,11 +95,11 @@ export function ResetPasswordForm() {
             required
             value={form.confirmPassword}
             onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-            className={inputClass}
+            className={`${inputClass} ${showConfirm ? '' : 'text-xl tracking-[0.2em] placeholder:text-sm placeholder:tracking-normal'}`}
             placeholder="Confirm new password"
           />
-          <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-0 bottom-3 text-brand-gray/50 hover:text-brand-gold transition-colors cursor-pointer">
-            {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+          <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-4 bottom-3 text-brand-gray/50 hover:text-brand-gold transition-colors cursor-pointer">
+            {showConfirm ? <Eye size={16} /> : <EyeOff size={16} />}
           </button>
         </div>
       </div>

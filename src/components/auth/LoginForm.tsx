@@ -79,7 +79,7 @@ export function LoginForm() {
           required
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
-          className="w-full bg-transparent border-b border-brand-border pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans"
+          className="w-full bg-transparent border-b border-brand-border px-4 pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans"
           placeholder="your@email.com"
         />
       </div>
@@ -95,16 +95,16 @@ export function LoginForm() {
             required
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className="w-full bg-transparent border-b border-brand-border pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans pr-10"
+            className={`w-full bg-transparent border-b border-brand-border px-4 pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans pr-12 ${showPassword ? '' : 'text-xl tracking-[0.2em] placeholder:text-sm placeholder:tracking-normal'}`}
             placeholder="Enter your password"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-0 bottom-3 text-brand-gray/50 hover:text-brand-gold transition-colors cursor-pointer"
+            className="absolute right-4 bottom-3 text-brand-gray/50 hover:text-brand-gold transition-colors cursor-pointer"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
-            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
           </button>
         </div>
       </div>
