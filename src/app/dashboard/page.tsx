@@ -190,13 +190,13 @@ export default function DashboardOverview() {
       action: n.title || 'Notification',
       detail: n.message || '',
       time: n.date || n.created_at || '',
-      sortDate: new Date(n.date || n.created_at || Date.now()),
+      sortDate: new Date(n.date || n.created_at || 0),
     })),
     ...transactions.slice(0, 5).map((t) => ({
       action: t.description || (t.type ? `${t.type} transaction` : 'Transaction'),
       detail: t.amount ? formatNaira(Number(t.amount)) : '',
       time: t.date || t.created_at || '',
-      sortDate: new Date(t.date || t.created_at || Date.now()),
+      sortDate: new Date(t.date || t.created_at || 0),
     })),
   ];
 

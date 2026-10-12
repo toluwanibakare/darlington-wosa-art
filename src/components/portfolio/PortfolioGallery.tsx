@@ -3,7 +3,26 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Play, Maximize2, Calendar, User, Tag } from 'lucide-react';
+import { api, getValidImageUrl } from '@/lib/api';
 import { PORTFOLIO_DATA, CATEGORIES, type PortfolioItem } from './portfolio-data';
+
+interface ApiPortfolioItem {
+  id: number;
+  title: string;
+  category: string;
+  type?: 'image' | 'video';
+  src?: string;
+  image?: string;
+  thumb?: string;
+  width?: number;
+  height?: number;
+  description?: string;
+  client?: string;
+  year?: string;
+  medium?: string;
+  video_embed?: string;
+  video_src?: string;
+}
 
 /* ── Filter Bar ── */
 
@@ -261,12 +280,11 @@ export function PortfolioGallery() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { api, getValidImageUrl } = require('@/lib/api');
-    api.get('/portfolio')
-      .then((res: any) => {
+    api.get<ApiPortfolioItem[]>('/portfolio')
+      .then((res) => {
         if (res.data) {
           // Map DB response to expected structure
-          const items = res.data.map((item: any) => {
+          const items = res.data.map((item): PortfolioItem => {
             const rawSrc = item.src || item.image || '';
             const rawThumb = item.thumb || item.image || rawSrc;
             return {

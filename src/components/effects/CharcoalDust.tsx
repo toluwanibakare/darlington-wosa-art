@@ -8,7 +8,7 @@ export function CharcoalDust() {
       className="fixed inset-0 z-[1] pointer-events-none overflow-hidden"
       style={{
         opacity: 'var(--grain-opacity, 0.08)',
-        mixBlendMode: 'var(--grain-mode)' as any,
+        mixBlendMode: 'var(--grain-mode)' as React.CSSProperties['mixBlendMode'],
       }}
       aria-hidden="true"
     >

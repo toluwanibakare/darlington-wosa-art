@@ -87,7 +87,10 @@ export default function AdminPortfolioPage() {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [detailItem, setDetailItem] = useState<PortfolioItem | null>(null);
 
-  useEffect(() => { fetchItems(); }, [page, activeCategory]);
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const fetchItems = async () => {
     setLoading(true);
@@ -106,10 +109,7 @@ export default function AdminPortfolioPage() {
     }
   };
 
-  const showToast = (message: string, type: 'success' | 'error') => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
-  };
+  useEffect(() => { fetchItems(); }, [page, activeCategory]);
 
   const openCreate = () => {
     setEditing(null);

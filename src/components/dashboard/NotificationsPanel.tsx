@@ -57,6 +57,7 @@ export function NotificationsPanel({ open, onClose, unreadCount: _unreadCount, o
   const [filter, setFilter] = useState('all');
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(false);
+  const [now] = useState(() => Date.now());
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const fetchNotifications = useCallback(async () => {
@@ -95,7 +96,7 @@ export function NotificationsPanel({ open, onClose, unreadCount: _unreadCount, o
       : notifications.filter((n) => n.type === filter);
 
   const timeAgo = (dateStr: string) => {
-    const diff = Date.now() - new Date(dateStr).getTime();
+    const diff = now - new Date(dateStr).getTime();
     const mins = Math.floor(diff / 60000);
     if (mins < 1) return 'Just now';
     if (mins < 60) return `${mins}m ago`;

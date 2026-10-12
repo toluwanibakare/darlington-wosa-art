@@ -11,24 +11,47 @@ const TABS = [
   { label: 'E-Books', value: 'courses', icon: BookOpen },
 ];
 
+interface ClassListing {
+  id: string | number;
+  title: string;
+  price: number | string;
+  description?: string;
+  duration?: string;
+  max_students?: number;
+  schedule?: string;
+  level?: string;
+}
+
+interface EbookListing {
+  id: string | number;
+  title: string;
+  price?: string;
+  description?: string;
+  pages?: string | number;
+  format?: string;
+  level?: string;
+}
+
+type ListPayload<T> = T[] | { data?: T[] };
+
+function toList<T>(payload: ListPayload<T> | undefined): T[] {
+  const items = Array.isArray(payload) ? payload : payload?.data;
+  return Array.isArray(items) ? items : [];
+}
+
 export default function ClassesPage() {
   const [activeTab, setActiveTab] = useState('classes');
-  const [classesList, setClassesList] = useState<any[]>([]);
-  const [ebooksList, setEbooksList] = useState<any[]>([]);
+  const [classesList, setClassesList] = useState<ClassListing[]>([]);
+  const [ebooksList, setEbooksList] = useState<EbookListing[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
-      api.get('/classes').catch(() => ({ data: [] })),
-      api.get('/ebooks').catch(() => ({ data: [] })),
-    ]).then(([classRes, ebookRes]: any[]) => {
-      const classPayload = classRes.data;
-      const classItems = classPayload?.data || classPayload || [];
-      setClassesList(Array.isArray(classItems) ? classItems : []);
-
-      const ebookPayload = ebookRes.data;
-      const ebookItems = ebookPayload?.data || ebookPayload || [];
-      setEbooksList(Array.isArray(ebookItems) ? ebookItems : []);
+      api.get<ListPayload<ClassListing>>('/classes'),
+      api.get<ListPayload<EbookListing>>('/ebooks'),
+    ]).then(([classRes, ebookRes]) => {
+      setClassesList(toList(classRes.data));
+      setEbooksList(toList(ebookRes.data));
 
       setLoading(false);
     });

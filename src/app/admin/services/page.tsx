@@ -81,7 +81,10 @@ export default function AdminServicesPage() {
   const [search, setSearch] = useState('');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
-  useEffect(() => { fetchServices(); }, [page]);
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const fetchServices = async () => {
     setLoading(true);
@@ -99,10 +102,7 @@ export default function AdminServicesPage() {
     }
   };
 
-  const showToast = (message: string, type: 'success' | 'error') => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
-  };
+  useEffect(() => { fetchServices(); }, [page]);
 
   const openCreate = () => {
     setEditing(null);

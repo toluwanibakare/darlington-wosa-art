@@ -85,10 +85,29 @@ const adjustTimelineForDate = (deliveryDate: string, currentTimeline: string) =>
   return diffDays >= 14 ? 'standard' : 'express';
 };
 
+interface CurrentUser {
+  name?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+}
+
+interface OrderResponse {
+  order?: { id?: number; order_number?: string };
+}
+
+interface PaymentResponse {
+  success?: boolean;
+  message?: string;
+  error?: { message?: string };
+  data?: { authorization_url?: string };
+}
+
 export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout' | 'success', onStepChange?: (step: 'form' | 'checkout' | 'success') => void }) {
   const [activeTab, setActiveTab] = useState<'drawing' | 'frame' | 'event' | 'inquiry'>('inquiry');
   const [settings, setSettings] = useState<Record<string, string>>({});
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   
   // Form states
   const [form, setForm] = useState({
@@ -203,7 +222,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
       } catch (e) {}
     }
     if (token) {
-      api.get<any>('/user').then(res => {
+      api.get<{ user?: CurrentUser }>('/user').then(res => {
         if (res.data && res.data.user) {
           setCurrentUser(res.data.user);
           localStorage.setItem('user', JSON.stringify(res.data.user));
@@ -360,7 +379,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
       // Persist pending order to local storage cart list so user can always reload it if they return
       try {
         const pendingItem = {
-          id: 'PENDING-' + Date.now(),
+          id: 'PENDING-' + crypto.randomUUID(),
           category: activeTab,
           details: activeTab === 'frame' ? `${form.frameSize} (${form.frameType})` : `${form.width}x${form.height} inches (${form.artType})`,
           price: calculatedPrice,
@@ -473,7 +492,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
 
       if (form.saveDetails && currentUser) {
         // Clean parameters to ensure they pass Laravel's validation rules
-        const profilePayload: any = {
+        const profilePayload: Record<string, string> = {
           name: form.name.trim(),
           phone: form.phone.trim().substring(0, 20)
         };
@@ -483,7 +502,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         await api.put('/profile', profilePayload);
       }
 
-      const orderRes = await api.post<any>('/orders', orderPayload);
+      const orderRes = await api.post<OrderResponse>('/orders', orderPayload);
       if (!orderRes.data) {
         setStatusMsg({ type: 'error', text: 'Failed to create order request. Please try again.' });
         setLoading(false);
@@ -503,7 +522,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         }
       };
 
-      const payRes = await api.post<any>('/payments/initialize', payPayload);
+      const payRes = await api.post<PaymentResponse>('/payments/initialize', payPayload);
       if (payRes.data?.success && payRes.data?.data?.authorization_url) {
         // Save reference so we can verify after redirect returns
         try {
@@ -515,9 +534,8 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         const errorDetail = payRes.data?.error?.message || payRes.data?.message || 'Failed to initialize payment gateway.';
         setStatusMsg({ type: 'error', text: errorDetail });
       }
-    } catch (e: any) {
-      const errMsg = e.response?.data?.error?.message || e.response?.data?.message || 'An unexpected connection error occurred.';
-      setStatusMsg({ type: 'error', text: errMsg });
+    } catch {
+      setStatusMsg({ type: 'error', text: 'An unexpected connection error occurred.' });
     } finally {
       setLoading(false);
     }
@@ -664,7 +682,7 @@ export function ContactForm({ step, onStepChange }: { step?: 'form' | 'checkout'
         ].map((tab) => (
           <button
             key={tab.id}
-            onClick={() => { setActiveTab(tab.id as any); setStatusMsg(null); }}
+            onClick={() => { setActiveTab(tab.id as typeof activeTab); setStatusMsg(null); }}
             className={`px-4 py-2 rounded-full font-sans text-[10px] tracking-[0.12em] uppercase transition-all duration-300 ${
               activeTab === tab.id
                 ? 'bg-brand-gold text-brand-black font-semibold'

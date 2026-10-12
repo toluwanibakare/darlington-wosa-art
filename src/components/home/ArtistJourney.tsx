@@ -53,7 +53,7 @@ export function ArtistJourney() {
           <Reveal
           >
             <span className="text-[11px] tracking-[0.2em] uppercase text-brand-gold font-sans block mb-6">
-              The Artist's Journey
+              The Artist&apos;s Journey
             </span>
             <h2 className="font-display text-text-h2 text-brand-black leading-tight mb-8">
               The Hands Behind <br/> The Artwork

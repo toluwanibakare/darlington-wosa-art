@@ -101,7 +101,7 @@ export default function ClassBookingPage() {
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [form, setForm] = useState({ name: '', phone: '', email: '', notes: '' });
-  const [eventForm, setEventForm] = useState({
+  const [eventForm, setEventForm] = useState<Record<string, string>>({
     venue: '',
     isIndoor: '',
     eventDate: '',
@@ -357,7 +357,7 @@ export default function ClassBookingPage() {
                           <label className="font-sans text-[11px] tracking-[0.15em] uppercase text-brand-gray/70 block mb-3">{q.label}</label>
                           <input
                             type={q.type}
-                            value={(eventForm as any)[q.key]}
+                            value={eventForm[q.key]}
                             onChange={(e) => setEventForm({ ...eventForm, [q.key]: e.target.value })}
                             className="w-full bg-transparent border-b border-brand-border pb-3 pt-1 text-sm text-brand-black placeholder:text-brand-gray/40 focus:outline-none focus:border-brand-gold transition-colors font-sans"
                             placeholder="Your answer"

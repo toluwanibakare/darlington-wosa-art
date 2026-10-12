@@ -63,12 +63,14 @@ export function Hero() {
 
       panel.style.transform = `translateY(${yOffset}px) scale(${scale})`;
     });
-
-    rafRef.current = requestAnimationFrame(updateArc);
   }, []);
 
   useEffect(() => {
-    rafRef.current = requestAnimationFrame(updateArc);
+    const tick = () => {
+      updateArc();
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
   }, [updateArc]);
 

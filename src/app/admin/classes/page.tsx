@@ -88,7 +88,10 @@ export default function AdminClassesPage() {
   const [search, setSearch] = useState('');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
-  useEffect(() => { fetchClasses(); }, [page]);
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
 
   const fetchClasses = async () => {
     setLoading(true);
@@ -106,10 +109,7 @@ export default function AdminClassesPage() {
     }
   };
 
-  const showToast = (message: string, type: 'success' | 'error') => {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
-  };
+  useEffect(() => { fetchClasses(); }, [page]);
 
   const openCreate = () => {
     setEditing(null);

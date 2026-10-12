@@ -61,7 +61,7 @@ export function FounderIntro() {
                 Today, I have completed over 300 art projects, including creating charcoal portraits of all the past Vice Chancellors of the University of Port Harcourt from inception to 2015, painting a portrait of the current Governor of Akwa Ibom State, and producing artworks for many other prominent individuals. My studio specializes in hyper-realistic charcoal, alongside work in pastel and acrylic, and I serve over 50 clients ranging from individuals to institutions and notable personalities.
               </p>
               <p>
-                Parallel to my studio practice, my mission is rooted in the belief that excellence is a learned discipline. As an active art educator and course creator, I provide the structured mentorship and devotion necessary for aspiring artists to scale up their skills. Driven by an unwavering pursuit of creativity and perfection, I don't just create art — I preserve moments, elevate spaces, and mentor the next generation of creative mastery.
+                Parallel to my studio practice, my mission is rooted in the belief that excellence is a learned discipline. As an active art educator and course creator, I provide the structured mentorship and devotion necessary for aspiring artists to scale up their skills. Driven by an unwavering pursuit of creativity and perfection, I don&apos;t just create art — I preserve moments, elevate spaces, and mentor the next generation of creative mastery.
               </p>
             </Reveal>
 

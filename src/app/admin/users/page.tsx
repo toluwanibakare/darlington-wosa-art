@@ -28,7 +28,7 @@ interface PaginatedResponse {
 
 
 const apiAdmin = {
-  get: async <T extends unknown>(endpoint: string): Promise<T> => {
+  get: async <T,>(endpoint: string): Promise<T> => {
     const token = localStorage.getItem('auth_token');
     const res = await fetch(`${API_BASE}/admin${endpoint}`, {
       headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },

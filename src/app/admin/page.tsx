@@ -17,6 +17,23 @@ interface DashboardStats {
   subscribers?: number; classes?: number;
 }
 
+interface RecentOrder {
+  id: number;
+  order_number?: string;
+  amount?: number | string;
+  status?: string;
+  user?: { name?: string };
+}
+
+interface RecentMessage {
+  id: number;
+  name?: string;
+  message?: string;
+  content?: string;
+  subject?: string;
+  created_at: string;
+}
+
 const formatNaira = (a: number) => `₦${a.toLocaleString()}`;
 
 const quickActions = [
@@ -29,8 +46,8 @@ const quickActions = [
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [recentOrders, setRecentOrders] = useState<any[]>([]);
-  const [recentMessages, setRecentMessages] = useState<any[]>([]);
+  const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([]);
+  const [recentMessages, setRecentMessages] = useState<RecentMessage[]>([]);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -190,7 +207,7 @@ export default function AdminDashboard() {
                   <p className="font-sans text-xs text-brand-gray/50 text-center py-8">No orders yet</p>
                 ) : (
                   <div className="space-y-2">
-                    {recentOrders.map((o: any) => (
+                    {recentOrders.map((o) => (
                       <div key={o.id} className="flex items-center justify-between py-2 border-b border-brand-border/30 last:border-0">
                         <div>
                           <p className="font-sans text-xs text-brand-black">#{o.order_number || o.id}</p>
@@ -216,7 +233,7 @@ export default function AdminDashboard() {
                   <p className="font-sans text-xs text-brand-gray/50 text-center py-8">No messages yet</p>
                 ) : (
                   <div className="space-y-2">
-                    {recentMessages.map((m: any) => (
+                    {recentMessages.map((m) => (
                       <div key={m.id} className="flex items-start gap-3 py-2 border-b border-brand-border/30 last:border-0">
                         <div className="w-7 h-7 rounded-full bg-brand-gold/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                           <span className="font-sans text-[10px] font-medium text-brand-gold">{(m.name || '?').charAt(0)}</span>
