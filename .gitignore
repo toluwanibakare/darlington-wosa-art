@@ -52,3 +52,8 @@ error.txt
 /vendor
 backend/vendor.zip
 
+
+# local content drafts and build artifacts
+/about.txt
+/new_update.txt
+/backend.zip
